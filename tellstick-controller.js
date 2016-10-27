@@ -16,7 +16,6 @@ function debug() {
 	console.log.apply(this, arguments);
 }
 
-
 var App = function() {
 
 	prefixLogs();
