@@ -19,16 +19,24 @@ function debug() {
 
 var App = function() {
 
-	var Terrace = require('./scripts/terrace.js');
-	var DiningRoom = require('./scripts/dining-room.js');
-	var Cellar = require('./scripts/cellar.js');
+	prefixLogs();
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
-	cmd.option('-h --host <host>', 'connect to specified server', 'localhost');
-	cmd.option('-p --port <port>', 'connect to specified port', 3001);
 	cmd.parse(process.argv);
 
+	if (cmd.log) {
+		var date = new Date();
+		var path = sprintf('%s/logs', __dirname);
+		var name = sprintf('%04d-%02d-%02d-%02d-%02d-%02d.log', date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+
+		mkpath(path);
+		redirectLogs(Path.join(path, name));
+	}
+
+	var Terrace = require('./scripts/terrace.js');
+	var DiningRoom = require('./scripts/dining-room.js');
+	var Cellar = require('./scripts/cellar.js');
 
 	new Terrace();
 	new DiningRoom();
