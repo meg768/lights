@@ -22,6 +22,12 @@ var App = function() {
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
+	cmd.option('-t --terrace', 'Control terrace lights');
+	cmd.option('-c --cellar', 'Control cellar lights');
+	cmd.option('-o --office', 'Control office lights');
+	cmd.option('-d --diningroom', 'Control dining room lights');
+	cmd.option('-v --vacation', 'Control lights during vacation');
+
 	cmd.parse(process.argv);
 
 	if (cmd.log) {
@@ -33,25 +39,35 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	var Terrace = require('./scripts/terrace.js');
-	var DiningRoom = require('./scripts/dining-room.js');
-	var Cellar = require('./scripts/cellar.js');
+	if (cmd.terrace) {
+		console.log('Activating terrace...');
+		var Module = require('./scripts/terrace.js');
+		new Module();
+	}
 
-	new Terrace();
-	new DiningRoom();
-	new Cellar();
+	if (cmd.cellar) {
+		console.log('Activating cellar...');
+		var Module = require('./scripts/cellar.js');
+		new Module();
+	}
 
-/*
-	var motionSensor = tellstick.getDevice('RV-01');
-	var buttonA = tellstick.getDevice('FK-01-01');
-	var buttonB = tellstick.getDevice('FK-01-02');
-	var buttonC = tellstick.getDevice('FK-01-03');
+	if (cmd.diningroom) {
+		console.log('Activating dining room...');
+		var Module = require('./scripts/dining-room.js');
+		new Module();
+	}
 
-	motionSensor.on('ON', function() {
-		console.log('MOvement!');
-		buttonA.setState('ON');
-	});
-*/
+	if (cmd.vacation) {
+		console.log('Activating vacation lightning...');
+		var Module = require('./scripts/vacation.js');
+		new Module();
+	}
+
+	if (cmd.office) {
+		console.log('Activating office lightning...');
+		var Module = require('./scripts/office.js');
+		new Module();
+	}
 
 };
 
