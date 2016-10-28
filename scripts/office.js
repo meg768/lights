@@ -28,7 +28,6 @@ var Module = module.exports = function() {
 		}
 
 		_motionSensor.on('ON', function() {
-			debug('Movement...');
 		});
 
 		_lightSensor.on('ON', function() {

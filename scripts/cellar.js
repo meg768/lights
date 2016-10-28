@@ -65,7 +65,7 @@ var Module = module.exports = function() {
 		_masterSwitch.setState('OFF');
 
 		// Start to listen after a while
-		setTimeout(listen, 3000);
+		setTimeout(listen, 10000);
 
 	}
 
