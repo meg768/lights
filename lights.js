@@ -22,6 +22,8 @@ var App = function() {
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
+	cmd.option('-h --host <host>', 'specifies host (localhost)', 'localhost');
+	cmd.option('-p --port <port>', 'specifies port (3000)', 3000);
 	cmd.option('-t --terrace', 'Control terrace lights');
 	cmd.option('-c --cellar', 'Control cellar lights');
 	cmd.option('-o --office', 'Control office lights');
@@ -29,6 +31,8 @@ var App = function() {
 	cmd.option('-v --vacation', 'Control lights during vacation');
 
 	cmd.parse(process.argv);
+
+	tellstick.connect(cmd.host, cmd.port);
 
 	if (cmd.log) {
 		var date = new Date();

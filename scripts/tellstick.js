@@ -8,7 +8,6 @@ var sprintf = require('yow').sprintf;
 var isObject = require('yow').isObject;
 var isString = require('yow').isString;
 var isDate = require('yow').isDate;
-var socket = require('socket.io-client')('http://app-o.se:3000');
 var Schedule = require('node-schedule');
 var EventEmitter = require('events');
 
@@ -18,7 +17,7 @@ function debug() {
 }
 
 
-var Device = function(name) {
+var Device = function(socket, name) {
 
 	var _this = this;
 	var _triggers  = [];
@@ -178,29 +177,38 @@ util.inherits(Device, EventEmitter);
 var Tellstick = function() {
 
 	var _devices = {};
+	var _socket = undefined;
 
-	socket.on('tellstick', function(params) {
 
-		console.log(params);
-		var device = _devices[params.name];
+	this.connect = function(host, port) {
 
-		if (device != undefined) {
+		var url = sprintf('http://%s:%d', host, port);
 
-			device.emit(params.status);
-		}
-	})
+		console.log('Connecting to %s...', url);
 
-	socket.on('hello', function(params) {
-		console.log('hello!');
-	})
+		_socket = require('socket.io-client')(url);
 
+		_socket.on('tellstick', function(params) {
+
+			console.log(params);
+			var device = _devices[params.name];
+
+			if (device != undefined) {
+
+				device.emit(params.status);
+			}
+		})
+
+		_socket.on('hello', function(params) {
+			console.log('hello!');
+		});
+	}
 
 	this.getDevice = function(name) {
 		var device = _devices[name];
 
 		if (_devices[name] == undefined)
-			_devices[name] = new Device(name);
-
+			_devices[name] = new Device(_socket, name);
 
 		return _devices[name];
 	}
