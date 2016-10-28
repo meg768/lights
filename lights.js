@@ -42,39 +42,44 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	tellstick.connect(cmd.host, cmd.port);
+	function run() {
+		tellstick.connect(cmd.host, cmd.port);
 
 
-	if (cmd.terrace || cmd.all) {
-		console.log('Activating terrace...');
-		var Module = require('./scripts/terrace.js');
-		new Module();
+		if (cmd.terrace || cmd.all) {
+			console.log('Activating terrace...');
+			var Module = require('./scripts/terrace.js');
+			new Module();
+		}
+
+		if (cmd.cellar || cmd.all) {
+			console.log('Activating cellar...');
+			var Module = require('./scripts/cellar.js');
+			new Module();
+		}
+
+		if (cmd.diningroom || cmd.all) {
+			console.log('Activating dining room...');
+			var Module = require('./scripts/dining-room.js');
+			new Module();
+		}
+
+		if (cmd.vacation) {
+			console.log('Activating vacation lightning...');
+			var Module = require('./scripts/vacation.js');
+			new Module();
+		}
+
+		if (cmd.office || cmd.all) {
+			console.log('Activating office lightning...');
+			var Module = require('./scripts/office.js');
+			new Module();
+		}
+
 	}
 
-	if (cmd.cellar || cmd.all) {
-		console.log('Activating cellar...');
-		var Module = require('./scripts/cellar.js');
-		new Module();
-	}
-
-	if (cmd.diningroom || cmd.all) {
-		console.log('Activating dining room...');
-		var Module = require('./scripts/dining-room.js');
-		new Module();
-	}
-
-	if (cmd.vacation) {
-		console.log('Activating vacation lightning...');
-		var Module = require('./scripts/vacation.js');
-		new Module();
-	}
-
-	if (cmd.office || cmd.all) {
-		console.log('Activating office lightning...');
-		var Module = require('./scripts/office.js');
-		new Module();
-	}
-
+	console.log('Will start in 30 seconds...');
+	setTimeout(run, 30000)
 };
 
 new App();
