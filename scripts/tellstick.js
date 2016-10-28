@@ -190,7 +190,6 @@ var Tellstick = function() {
 
 		_socket.on('tellstick', function(params) {
 
-			console.log(params);
 			var device = _devices[params.name];
 
 			if (device != undefined) {
