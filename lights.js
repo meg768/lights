@@ -29,6 +29,7 @@ var App = function() {
 	cmd.option('-o --office', 'Control office lights');
 	cmd.option('-d --diningroom', 'Control dining room lights');
 	cmd.option('-v --vacation', 'Control lights during vacation');
+	cmd.option('-a --all', 'Control lights everywhere');
 
 	cmd.parse(process.argv);
 
@@ -43,19 +44,19 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	if (cmd.terrace) {
+	if (cmd.terrace || cmd.all) {
 		console.log('Activating terrace...');
 		var Module = require('./scripts/terrace.js');
 		new Module();
 	}
 
-	if (cmd.cellar) {
+	if (cmd.cellar || cmd.all) {
 		console.log('Activating cellar...');
 		var Module = require('./scripts/cellar.js');
 		new Module();
 	}
 
-	if (cmd.diningroom) {
+	if (cmd.diningroom || cmd.all) {
 		console.log('Activating dining room...');
 		var Module = require('./scripts/dining-room.js');
 		new Module();
@@ -67,7 +68,7 @@ var App = function() {
 		new Module();
 	}
 
-	if (cmd.office) {
+	if (cmd.office || cmd.all) {
 		console.log('Activating office lightning...');
 		var Module = require('./scripts/office.js');
 		new Module();
