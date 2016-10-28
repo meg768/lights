@@ -77,9 +77,11 @@ var App = function() {
 		}
 
 	}
-
+/*
 	console.log('Will start in 30 seconds...');
-	setTimeout(run, 30000)
+	setTimeout(run, 30000);
+*/
+	run();
 };
 
 new App();

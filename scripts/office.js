@@ -28,6 +28,7 @@ var Module = module.exports = function() {
 		}
 
 		_motionSensor.on('ON', function() {
+			console.log('Motion detected on RV-01.')
 		});
 
 		_lightSensor.on('ON', function() {

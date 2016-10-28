@@ -10,7 +10,7 @@ var isString = require('yow').isString;
 var isDate = require('yow').isDate;
 var Schedule = require('node-schedule');
 var EventEmitter = require('events');
-
+var io = require('socket.io-client');
 
 function debug() {
 	console.log.apply(this, arguments);
@@ -182,11 +182,12 @@ var Tellstick = function() {
 
 	this.connect = function(host, port) {
 
-		var url = sprintf('http://%s:%d', host, port);
+		var url = sprintf('http://%s:%d/%s', host, port, 'tellstick');
 
 		console.log('Connecting to %s...', url);
 
-		_socket = require('socket.io-client')(url);
+		//_socket = io.connect(url, {path:'/telldus'});
+		_socket = io.connect(url);
 
 		_socket.on('tellstick', function(params) {
 
