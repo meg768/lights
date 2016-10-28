@@ -33,8 +33,6 @@ var App = function() {
 
 	cmd.parse(process.argv);
 
-	tellstick.connect(cmd.host, cmd.port);
-
 	if (cmd.log) {
 		var date = new Date();
 		var path = sprintf('%s/logs', __dirname);
@@ -43,6 +41,9 @@ var App = function() {
 		mkpath(path);
 		redirectLogs(Path.join(path, name));
 	}
+
+	tellstick.connect(cmd.host, cmd.port);
+
 
 	if (cmd.terrace || cmd.all) {
 		console.log('Activating terrace...');
