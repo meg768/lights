@@ -30,6 +30,7 @@ var App = function() {
 	cmd.option('-d --diningroom', 'Control dining room lights');
 	cmd.option('-v --vacation', 'Control lights during vacation');
 	cmd.option('-a --all', 'Control lights everywhere');
+	cmd.option('-w --wait <wait>', 'wait a bit before starting to listen to port (30000)', 30000);
 
 	cmd.parse(process.argv);
 
@@ -77,11 +78,7 @@ var App = function() {
 		}
 
 	}
-/*
-	console.log('Will start in 30 seconds...');
-	setTimeout(run, 30000);
-*/
-	run();
+	setTimeout(run, cmd.wait);
 };
 
 new App();
