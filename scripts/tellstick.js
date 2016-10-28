@@ -193,7 +193,7 @@ var Tellstick = function() {
 			var device = _devices[params.name];
 
 			if (device != undefined) {
-				console.log(JSON.stringify(params);
+				console.log(JSON.stringify(params));
 				device.emit(params.status);
 			}
 		})
