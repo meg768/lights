@@ -29,7 +29,7 @@ var Module = module.exports = function() {
 		}
 
 		tellstick.getDevice('FK-01-03').on('ON', function() {
-			matrix.emit('emoji', {text:'Important', priority:'high'});
+			matrix.emit('emoji', {priority:'high'});
 
 		});
 
