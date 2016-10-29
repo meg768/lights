@@ -28,12 +28,12 @@ var Module = module.exports = function() {
 			}, _delay);
 		}
 
-		tellstick.getDevice('FK-01-03').on('ON', function() {
-			matrix.emit('emoji', {priority:'high'});
+		tellstick.getDevice('FK-01-03').on('OFF', function() {
+			matrix.emit('stop', {});
 
 		});
 
-		tellstick.getDevice('FK-01-03').on('OFF', function() {
+		tellstick.getDevice('FK-01-03').on('ON', function() {
 			matrix.emit('text', {text:'low', priority:'low'});
 
 		});
