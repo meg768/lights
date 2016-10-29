@@ -33,7 +33,7 @@ var Module = module.exports = function() {
 
 		});
 
-		tellstick.getDevice('FK-01-03').on('ON', function() {
+		tellstick.getDevice('FK-01-03').on('OFF', function() {
 			matrix.emit('text', {text:'low', priority:'low'});
 
 		});
