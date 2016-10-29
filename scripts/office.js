@@ -29,38 +29,8 @@ var Module = module.exports = function() {
 		}
 
 		tellstick.getDevice('FK-01-03').on('ON', function() {
-			console.log('Stop!');
-			matrix.emit('stop', {});
-			setTimeout(function() {
-				matrix.emit('text', {text:'X'});
+			matrix.emit('text', {text:'Important', important:true});
 
-			}, 200);
-		});
-
-		_motionSensor.on('ONFF', function() {
-			if (!_motionSensor.disabled) {
-				_motionSensor.disabled = true;
-				setTimeout(function() {
-					_motionSensor.disabled = false;
-
-				}, 60000);
-				console.log('Motion detected on RV-01.')
-				matrix.emit('animation', {duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
-
-			}
-		});
-
-		_motionSensor.on('ONX', function() {
-			if (!_motionSensor.disabled) {
-				_motionSensor.disabled = true;
-				setTimeout(function() {
-					_motionSensor.disabled = false;
-
-				}, 2000);
-				console.log('Motion detected on RV-01.')
-				matrix.emit('emoji', {pause:1, id:random(750) + 1});
-
-			}
 		});
 
 		_motionSensor.on('ON', function() {
@@ -69,12 +39,15 @@ var Module = module.exports = function() {
 				setTimeout(function() {
 					_motionSensor.disabled = false;
 
-				}, 2000);
+				}, 10000);
 				console.log('Motion detected on RV-01.')
-				matrix.emit('text', {text:'Important', important:true});
+				matrix.emit('animation', {duration:10, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
 
 			}
 		});
+
+
+
 
 		_lightSensor.on('ON', function() {
 			debug('Getting darker, turning on lights...');
