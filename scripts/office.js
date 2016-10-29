@@ -29,11 +29,11 @@ var Module = module.exports = function() {
 		}
 
 		tellstick.getDevice('FK-01-01').on('ON', function() {
-			console.log('Clear!');
-			matrix.emit('clear', {});
+			//console.log('Clear!');
+			//matrix.emit('clear', {});
 		});
 
-		_motionSensor.on('ON', function() {
+		_motionSensor.on('ONFF', function() {
 			if (!_motionSensor.disabled) {
 				_motionSensor.disabled = true;
 				setTimeout(function() {
@@ -42,6 +42,19 @@ var Module = module.exports = function() {
 				}, 60000);
 				console.log('Motion detected on RV-01.')
 				matrix.emit('animation', {duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
+
+			}
+		});
+
+		_motionSensor.on('ON', function() {
+			if (!_motionSensor.disabled) {
+				_motionSensor.disabled = true;
+				setTimeout(function() {
+					_motionSensor.disabled = false;
+
+				}, 2000);
+				console.log('Motion detected on RV-01.')
+				matrix.emit('emoji', {name:random(750) + 1});
 
 			}
 		});
