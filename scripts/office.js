@@ -43,7 +43,7 @@ var Module = module.exports = function() {
 				_motionSensor.disabled = true;
 
 				console.log('Motion detected on RV-01.')
-				matrix.emit('animation', {priority:'high', duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+				matrix.emit('animation', {priority:'high', duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
 
 				setTimeout(function() {
 					_motionSensor.disabled = false;
