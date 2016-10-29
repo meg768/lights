@@ -34,7 +34,7 @@ var Module = module.exports = function() {
 			setTimeout(function() {
 				matrix.emit('text', {text:'X'});
 
-			}, 100);
+			}, 200);
 		});
 
 		_motionSensor.on('ONFF', function() {
@@ -50,7 +50,7 @@ var Module = module.exports = function() {
 			}
 		});
 
-		_motionSensor.on('ON', function() {
+		_motionSensor.on('ONX', function() {
 			if (!_motionSensor.disabled) {
 				_motionSensor.disabled = true;
 				setTimeout(function() {
@@ -59,6 +59,19 @@ var Module = module.exports = function() {
 				}, 2000);
 				console.log('Motion detected on RV-01.')
 				matrix.emit('emoji', {pause:1, id:random(750) + 1});
+
+			}
+		});
+
+		_motionSensor.on('ON', function() {
+			if (!_motionSensor.disabled) {
+				_motionSensor.disabled = true;
+				setTimeout(function() {
+					_motionSensor.disabled = false;
+
+				}, 2000);
+				console.log('Motion detected on RV-01.')
+				matrix.emit('text', {text:'Important', important:true});
 
 			}
 		});
