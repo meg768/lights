@@ -34,7 +34,7 @@ var Module = module.exports = function() {
 			setTimeout(function() {
 				matrix.emit('text', {text:'X'});
 
-			}, 10);
+			}, 100);
 		});
 
 		_motionSensor.on('ONFF', function() {
