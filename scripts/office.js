@@ -54,7 +54,7 @@ var Module = module.exports = function() {
 
 				}, 2000);
 				console.log('Motion detected on RV-01.')
-				matrix.emit('emoji', {name:random(750) + 1});
+				matrix.emit('emoji', {id:random(750) + 1});
 
 			}
 		});
