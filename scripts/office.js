@@ -39,16 +39,8 @@ var Module = module.exports = function() {
 		});
 
 		_motionSensor.on('ON', function() {
-			if (!_motionSensor.disabled) {
-				_motionSensor.disabled = true;
-				setTimeout(function() {
-					_motionSensor.disabled = false;
-
-				}, 2000);
-				console.log('Motion detected on RV-01.')
-				matrix.emit('animation', {priority:'high', duration:30, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
-
-			}
+			console.log('Motion detected on RV-01.')
+			matrix.emit('animation', {priority:'low', duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
 		});
 
 
