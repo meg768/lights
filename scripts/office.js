@@ -29,12 +29,8 @@ var Module = module.exports = function() {
 		}
 
 		tellstick.getDevice('FK-01-03').on('ON', function() {
-			console.log('Clear!');
-			matrix.emit('clear', {});
-			setTimeout(function(){
-				matrix.emit('text', {text:'Cancel'});
-
-			}, 500);
+			console.log('Stop!');
+			matrix.emit('stop', {});
 		});
 
 		_motionSensor.on('ONFF', function() {
