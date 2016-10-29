@@ -28,6 +28,11 @@ var Module = module.exports = function() {
 			}, _delay);
 		}
 
+		tellstick.getDevice('FK-01-01').on('ON', function() {
+			console.log('Clear!');
+			matrix.emit('clear', {});
+		});
+
 		_motionSensor.on('ON', function() {
 			if (!_motionSensor.disabled) {
 				_motionSensor.disabled = true;
