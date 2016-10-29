@@ -1,9 +1,10 @@
 var Schedule = require('node-schedule');
 var sprintf  = require('yow').sprintf;
+var random  = require('yow').random;
 var suncalc  = require('suncalc');
 
 var tellstick  = require('./tellstick.js');
-
+var matrix = require('socket.io-client')('http://app-o.se:3000/matrix-display');
 
 var Module = module.exports = function() {
 
@@ -28,7 +29,16 @@ var Module = module.exports = function() {
 		}
 
 		_motionSensor.on('ON', function() {
-			console.log('Motion detected on RV-01.')
+			if (!_motionSensor.disabled) {
+				_motionSensor.disabled = true;
+				setTimeout(function() {
+					_motionSensor.disabled = false;
+
+				}, 60000);
+				console.log('Motion detected on RV-01.')
+				matrix.emit('animation', {duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
+
+			}
 		});
 
 		_lightSensor.on('ON', function() {
