@@ -46,7 +46,7 @@ var Module = module.exports = function() {
 
 				}, 10000);
 				console.log('Motion detected on RV-01.')
-				matrix.emit('animation', {duration:10, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
+				matrix.emit('animation', {priority:'high', duration:10, name:random(['tree','pacman','pong','boat','fireplace','reduction'])});
 
 			}
 		});
