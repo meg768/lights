@@ -134,8 +134,9 @@ var Module = module.exports = function() {
 		var options = {};
 		options.textColor   = sprintf('rgb(%d, %d, %d)', color.red, color.green, color.blue);
 		options.text        = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
+		options.fontSize    = 22;
+		options.speed       = 0.70;
 		options.priority    = priority;
-		options.iterations  = 3;
 
 		matrix.emit('text', options);
 
@@ -144,6 +145,7 @@ var Module = module.exports = function() {
 	function scheduleClock(callback) {
 		var rule = new Schedule.RecurrenceRule();
 		rule.minute = new Schedule.Range(0, 59, 1);
+		rule.second = [0, 30];
 
 		Schedule.scheduleJob(rule, function() {
 			displayClock('low');
@@ -154,18 +156,18 @@ var Module = module.exports = function() {
 		scheduleClock();
 
 		_newsSwitch.on('ON', function() {
-			_newsSwitch.pauseEvents(2000);
+			_newsSwitch.pauseEvents(1000);
 			fetchNews();
 		});
 
 		_animationSwitch.on('ON', function() {
-			_animationSwitch.pauseEvents(2000);
-			matrix.emit('animation', {priority:'high', duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+			_animationSwitch.pauseEvents(1000);
+			matrix.emit('animation', {priority:'high', duration:120});
 		});
 
 		_emojiSwitch.on('ON', function() {
-			_emojiSwitch.pauseEvents(2000);
-			matrix.emit('emoji', {priority:'high', id:random(1, 846)});
+			_emojiSwitch.pauseEvents(1000);
+			matrix.emit('emoji', {priority:'high', id:random(1, 846), pause:1});
 		});
 
 		_newsSwitch.on('OFF', function() {
