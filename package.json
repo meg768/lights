@@ -18,7 +18,9 @@
   "homepage": "https://github.com/meg768/lights#readme",
   "dependencies": {
     "commander": "^2.9.0",
+    "feedparser": "^1.1.5",
     "node-schedule": "^1.2.0",
+    "request": "^2.76.0",
     "socket.io-client": "^1.5.1",
     "suncalc": "^1.7.0",
     "yow": "^1.0.25"
