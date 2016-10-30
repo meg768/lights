@@ -132,9 +132,10 @@ var Module = module.exports = function() {
 		var color = hslToRgb(hue / 360.0, 1, 0.5);
 
 		var options = {};
-		options.textColor = sprintf('rgb(%d, %d, %d)', color.red, color.green, color.blue);
-		options.text      = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
-		options.priority  = priority;
+		options.textColor   = sprintf('rgb(%d, %d, %d)', color.red, color.green, color.blue);
+		options.text        = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
+		options.priority    = priority;
+		options.iterations  = 3;
 
 		matrix.emit('text', options);
 
