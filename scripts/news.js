@@ -11,42 +11,62 @@ var matrix     = require('socket.io-client')('http://app-o.se:3000/matrix-displa
 var Module = module.exports = function() {
 
 	var _lightSensor    = tellstick.getDevice('SR-01');
-	var _newsSwitch     = tellstick.getDevice('VS-02');
+	var _newsSwitch     = tellstick.getDevice('FK-00-01');
 	var _motionSensor   = tellstick.getDevice('RV-01');
+	var _newsFeed        = 0;
 
 	function debug(msg) {
 		console.log(msg);
 	}
-/*
-	{url: 'http://www.vafinans.se/rss/nyheter', name: 'Veckans Affärer'},
-	{url: 'http://www.di.se/rss', name: 'Dagens Industri'},
-	{url: 'http://www.sydsvenskan.se/rss.xml', name: 'Sydsvenskan'},
-	{url: 'http://www.svd.se/?service=rss&type=senastenytt', name: 'SvD'},
-	{url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', name: 'Google'}
-*/
-	function fetchNews() {
-		var feeds = {
-			'di': {
-				url: 'http://di.se/rss'
+
+
+	function fetchNews(feed) {
+
+		var newsFeeds = [
+			{
+				url: 'http://di.se/rss',
+				textColor: 'red',
 			},
-			'google': {
-				url: 'https://news.google.se/news?cf=all&pz=1&ned=sv_se&ict=ln&num=5&output=rss'
+			{
+				url: 'https://news.google.se/news?cf=all&pz=1&ned=sv_se&ict=ln&num=5&output=rss',
+				textColor: 'blue'
 			},
-			'sydsvenskan': {
-				url: 'http://www.sydsvenskan.se/rss.xml'
+			{
+				url: 'http://www.sydsvenskan.se/rss.xml',
+				textColor: 'rgb(255, 0, 255)'
+			},
+			{
+				url: 'http://www.vafinans.se/rss/nyheter',
+				textColor: 'green'
+
 			}
-		};
+
+		];
 
 
-		var request = Request(feeds['di'].url);
+		var provider = newsFeeds[(_newsFeed++) % newsFeeds.length];
+		var news = [];
+		var timer = undefined;
+		var request = Request(provider.url);
 		var parser  = new FeedParser();
 
-		matrix.emit('stop');
+
+		function displayNews() {
+			news = news.splice(0, 3);
+
+			news.forEach(function(newsItem) {
+				console.log(newsItem);
+				matrix.emit('text', {text:newsItem.title, textColor:provider.textColor});
+			});
+
+		};
+
+		matrix.emit('emoji', {id:123, priority:'high'});
 
 		request.on('response', function (result) {
 
 			if (result.statusCode != 200) {
-				console.log('error code', result.statusCode );
+				console.log('Request error code', result.statusCode);
 			}
 			else {
 				this.pipe(parser);
@@ -55,24 +75,20 @@ var Module = module.exports = function() {
 		});
 
 		parser.on('error', function(error) {
-			console.log(error);
+			console.log('Parser error', error);
 		});
 
 		parser.on('readable', function() {
 			var item = undefined;
-			var news = [];
 
 			while (item = this.read()) {
 				news.push({title:item.title, date:item.pubdate});
 			}
 
+			if (timer != undefined)
+				clearTimeout(timer);
 
-			news = news.slice(0, 1);
-
-			news.forEach(function(item) {
-				console.log('X', item);
-				//matrix.emit('text', {text:item.title});
-			});
+			timer = setTimeout(displayNews, 2000);
 
 		});
 
@@ -83,6 +99,7 @@ var Module = module.exports = function() {
 
 
 		_newsSwitch.on('ON', function() {
+			_newsSwitch.pauseEvents(2000);
 			console.log('Reading the news');
 			fetchNews();
 //			matrix.emit('animation', {priority:'high', duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
