@@ -9,6 +9,7 @@ var isObject = require('yow').isObject;
 var redirectLogs = require('yow').redirectLogs;
 var prefixLogs = require('yow').prefixLogs;
 var cmd = require('commander');
+var io = require('socket.io-client');
 
 var tellstick = require('./scripts/tellstick.js');
 
@@ -43,10 +44,9 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	function run() {
-		tellstick.connect(cmd.host, cmd.port);
 
 
+	function monitor() {
 		if (cmd.terrace || cmd.all) {
 			console.log('Activating terrace...');
 			var Module = require('./scripts/terrace.js');
@@ -78,6 +78,24 @@ var App = function() {
 		}
 
 	}
+
+	function run() {
+		var url = sprintf('http://%s:%d/%s', cmd.host, cmd.port, 'tellstick');
+
+		console.log('Connecting to %s...', url);
+
+		var socket = io.connect(url);
+
+		tellstick.connect(socket);
+
+		socket.on('hello', function(params) {
+			monitor();
+		});
+
+
+
+	}
+	
 	setTimeout(run, cmd.wait);
 };
 

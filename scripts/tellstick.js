@@ -10,7 +10,6 @@ var isString = require('yow').isString;
 var isDate = require('yow').isDate;
 var Schedule = require('node-schedule');
 var EventEmitter = require('events');
-var io = require('socket.io-client');
 
 function debug() {
 	console.log.apply(this, arguments);
@@ -21,20 +20,39 @@ var Device = function(socket, name) {
 
 	var _this = this;
 	var _triggers  = [];
+	var _timer = undefined;
 
 	_this.name = name;
 	_this.state = 'OFF';
 	_this.eventsDisabled = false;
 
-	_this.turnOn = function() {
-		_this.setState('ON');
+
+	_this.turnOn = function(pause) {
+		_this.setState('ON', pause);
 	}
 
-	_this.turnOff = function() {
-		_this.setState('OFF');
+	_this.turnOff = function(pause) {
+		_this.setState('OFF', pause);
 	}
 
-	_this.setState = function(state) {
+	_this.pauseEvents = function(delay) {
+
+		if (delay == undefined)
+			delay = 2000;
+
+		if (_timer != undefined)
+			clearTimeout(_timer);
+
+		// Turn off events
+		_this.eventsDisabled = true;
+
+		_timer = setTimeout(function() {
+			_this.eventsDisabled = false;
+			_timer = undefined;
+		}, delay);
+	}
+
+	_this.setState = function(state, pause) {
 
 		if (state == undefined)
 			state = 'ON';
@@ -44,20 +62,13 @@ var Device = function(socket, name) {
 
 		debug(sprintf('Setting device %s to state %s.', _this.name, state));
 
-		// Turn off events
-		_this.eventsDisabled = true;
+		// Turn off events for a while
+		_this.pauseEvents(pause);
 
 		if (state == 'ON')
 			socket.emit('turnOn', {name:_this.name});
 		else if (state == 'OFF')
 			socket.emit('turnOff', {name:_this.name});
-
-		// Activate again after a few seconds
-		setTimeout(function() {
-			_this.eventsDisabled = false;
-		}, 3000);
-
-
 	};
 
 	_this.setTimer = function(schedule) {
@@ -166,9 +177,6 @@ var Device = function(socket, name) {
 		setCurrentState();
 
 	}
-
-
-
 };
 
 util.inherits(Device, EventEmitter);
@@ -179,28 +187,19 @@ var Tellstick = function() {
 	var _devices = {};
 	var _socket = undefined;
 
-
-	this.connect = function(host, port) {
-
-		var url = sprintf('http://%s:%d/%s', host, port, 'tellstick');
-
-		console.log('Connecting to %s...', url);
-
-		//_socket = io.connect(url, {path:'/telldus'});
-		_socket = io.connect(url);
+	this.connect = function(socket) {
+		_socket = socket;
 
 		_socket.on('tellstick', function(params) {
 
 			var device = _devices[params.name];
 
 			if (device != undefined) {
-				console.log(JSON.stringify(params));
-				device.emit(params.status);
+				if (!device.eventsDisabled) {
+					device.state = params.status;
+					device.emit(params.status);
+				}
 			}
-		})
-
-		_socket.on('hello', function(params) {
-			console.log('hello!');
 		});
 	}
 

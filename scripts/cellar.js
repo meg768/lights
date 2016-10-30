@@ -33,6 +33,10 @@ var Module = module.exports = function() {
 		}
 
 		_motionSensor.on('ON', function() {
+
+			// Make sure we don't get too many events at once
+			_motionSensor.pauseEvents(10000);
+
 			if (_lightsActive) {
 				_masterSwitch.turnOn();
 
@@ -65,7 +69,7 @@ var Module = module.exports = function() {
 		_masterSwitch.setState('OFF');
 
 		// Start to listen after a while
-		setTimeout(listen, 20000);
+		setTimeout(listen, 0);
 
 	}
 
