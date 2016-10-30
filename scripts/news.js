@@ -10,9 +10,11 @@ var matrix     = require('socket.io-client')('http://app-o.se:3000/matrix-displa
 
 var Module = module.exports = function() {
 
-	var _lightSensor    = tellstick.getDevice('SR-01');
-	var _newsSwitch     = tellstick.getDevice('FK-00-01');
-	var _motionSensor   = tellstick.getDevice('RV-01');
+	var _lightSensor     = tellstick.getDevice('SR-01');
+	var _newsSwitch      = tellstick.getDevice('FK-00-01');
+	var _animationSwitch = tellstick.getDevice('FK-00-02');
+	var _emojiSwitch     = tellstick.getDevice('FK-00-03');
+	var _motionSensor    = tellstick.getDevice('RV-01');
 	var _newsFeed        = 0;
 
 	function debug(msg) {
@@ -100,9 +102,17 @@ var Module = module.exports = function() {
 
 		_newsSwitch.on('ON', function() {
 			_newsSwitch.pauseEvents(2000);
-			console.log('Reading the news');
 			fetchNews();
-//			matrix.emit('animation', {priority:'high', duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+		});
+
+		_animationSwitch.on('ON', function() {
+			_animationSwitch.pauseEvents(2000);
+			matrix.emit('animation', {priority:'high', duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+		});
+
+		_emojiSwitch.on('ON', function() {
+			_emojiSwitch.pauseEvents(2000);
+			matrix.emit('emoji', {priority:'high', id:random(1, 846)});
 		});
 
 		_newsSwitch.on('OFF', function() {
