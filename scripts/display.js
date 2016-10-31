@@ -231,7 +231,11 @@ var Module = module.exports = function() {
 
 		_motionSensor.on('ON', function() {
 			_motionSensor.pauseEvents(30000);
-			displayAnimation('high');
+
+			if (random() < 0.75)
+				displayAnimation('high');
+			else
+				displayNews('high');
 		});
 
 
