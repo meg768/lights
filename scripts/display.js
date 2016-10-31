@@ -1,16 +1,14 @@
-var Schedule   = require('node-schedule');
-var FeedParser = require('feedparser');
-var Request    = require('request');
-var Colors     = require('color-convert');
-
-var sprintf  = require('yow').sprintf;
-var random  = require('yow').random;
+var sprintf   = require('yow').sprintf;
+var random    = require('yow').random;
 
 var tellstick  = require('./tellstick.js');
 var matrix     = require('socket.io-client')('http://app-o.se:3000/matrix-display');
 
 
 var NewsFeed = function() {
+
+	var FeedParser = require('feedparser');
+	var Request    = require('request');
 
 	var _index = 0;
 
@@ -93,6 +91,9 @@ var AnimationFeed = function() {
 
 var Module = module.exports = function() {
 
+	var Colors = require('color-convert');
+	var Schedule = require('node-schedule');
+
 	var _lightSensor     = tellstick.getDevice('SR-01');
 	var _newsSwitch      = tellstick.getDevice('FK-00-01');
 	var _animationSwitch = tellstick.getDevice('FK-00-02');
@@ -159,6 +160,7 @@ var Module = module.exports = function() {
 
 	function scheduleAnimations() {
 		var rule = new Schedule.RecurrenceRule();
+
 		rule.hour   = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		rule.minute = new Schedule.Range(0, 59, 1);
 		rule.second = 15;
@@ -170,33 +172,6 @@ var Module = module.exports = function() {
 
 
 	function displayClock(priority) {
-
-		function hslToRgb(h, s, l) {
-
-			var r, g, b;
-
-			if (s == 0){
-				r = g = b = l; // achromatic
-			} else{
-				var hue2rgb = function hue2rgb(p, q, t){
-					if(t < 0) t += 1;
-					if(t > 1) t -= 1;
-					if(t < 1/6) return p + (q - p) * 6 * t;
-					if(t < 1/2) return q;
-					if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-					return p;
-				}
-
-				var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-				var p = 2 * l - q;
-				r = hue2rgb(p, q, h + 1/3);
-				g = hue2rgb(p, q, h);
-				b = hue2rgb(p, q, h - 1/3);
-			}
-
-			return {red:Math.round(r * 255), green:Math.round(g * 255), blue:Math.round(b * 255)};
-
-		}
 
 		var now   = new Date();
 		var hue   = ((now.getHours() % 12) * 60 + now.getMinutes()) / 2;
@@ -215,8 +190,6 @@ var Module = module.exports = function() {
 
 
 	function scheduleClock(callback) {
-
-
 		var rule = new Schedule.RecurrenceRule();
 		rule.minute = new Schedule.Range(0, 59, 1);
 		rule.second = [0, 30];
