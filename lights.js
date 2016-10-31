@@ -29,7 +29,7 @@ var App = function() {
 	cmd.option('-c --cellar', 'Control cellar lights');
 	cmd.option('-o --office', 'Control office lights');
 	cmd.option('-d --diningroom', 'Control dining room lights');
-	cmd.option('-n --news', 'Display news');
+	cmd.option('-n --display', 'Run animations on 32x32 LED Matrix');
 	cmd.option('-v --vacation', 'Control lights during vacation');
 	cmd.option('-a --all', 'Control lights everywhere');
 	cmd.option('-w --wait <wait>', 'wait a bit before starting to listen to port (30000)', 30000);
@@ -78,9 +78,9 @@ var App = function() {
 			new Module();
 		}
 
-		if (cmd.news  || cmd.all) {
+		if (cmd.display  || cmd.all) {
 			console.log('Activating news...');
-			var Module = require('./scripts/news.js');
+			var Module = require('./scripts/display.js');
 			new Module();
 		}
 
