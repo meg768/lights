@@ -231,7 +231,6 @@ var Module = module.exports = function() {
 		scheduleAnimations();
 
 		_motionSensor.on('ON', function() {
-			console.log('Motion detected. Displaying animation');
 			_motionSensor.pauseEvents(30000);
 			displayAnimation('high');
 		});
