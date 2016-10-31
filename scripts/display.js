@@ -175,7 +175,7 @@ var Module = module.exports = function() {
 
 		var now   = new Date();
 		var hue   = ((now.getHours() % 12) * 60 + now.getMinutes()) / 2;
-		var color = Colors.hsl.rgb([hue / 360.0, 1, 0.5]);
+		var color = Colors.hsl.rgb([hue, 100, 50]);
 
 		var options = {};
 		options.textColor   = sprintf('rgb(%d, %d, %d)', color[0], color[1], color[2]);
@@ -200,6 +200,8 @@ var Module = module.exports = function() {
 	}
 
 	function listen() {
+		displayClock('high');
+		return;
 		scheduleClock();
 		scheduleNews();
 		scheduleAnimations();
