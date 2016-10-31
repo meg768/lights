@@ -145,7 +145,7 @@ var Module = module.exports = function() {
 		};
 
 		function runRain() {
-			matrix.emit('rain', {priority:priority, duration:240});
+			matrix.emit('rain', {priority:priority, duration:180});
 		};
 
 		function runAnimation() {
