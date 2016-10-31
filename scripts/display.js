@@ -200,8 +200,6 @@ var Module = module.exports = function() {
 	}
 
 	function listen() {
-		displayClock('high');
-		return;
 		scheduleClock();
 		scheduleNews();
 		scheduleAnimations();
