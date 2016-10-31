@@ -1,6 +1,7 @@
-var Schedule = require('node-schedule');
+var Schedule   = require('node-schedule');
 var FeedParser = require('feedparser');
-var Request = require('request');
+var Request    = require('request');
+var Colors     = require('color-convert');
 
 var sprintf  = require('yow').sprintf;
 var random  = require('yow').random;
@@ -169,6 +170,7 @@ var Module = module.exports = function() {
 
 
 	function displayClock(priority) {
+
 		function hslToRgb(h, s, l) {
 
 			var r, g, b;
@@ -198,10 +200,10 @@ var Module = module.exports = function() {
 
 		var now   = new Date();
 		var hue   = ((now.getHours() % 12) * 60 + now.getMinutes()) / 2;
-		var color = hslToRgb(hue / 360.0, 1, 0.5);
+		var color = Colors.hsl.rgb([hue / 360.0, 1, 0.5]);
 
 		var options = {};
-		options.textColor   = sprintf('rgb(%d, %d, %d)', color.red, color.green, color.blue);
+		options.textColor   = sprintf('rgb(%d, %d, %d)', color[0], color[1], color[2]);
 		options.text        = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
 		options.fontSize    = 22;
 		options.speed       = 0.70;
