@@ -140,18 +140,16 @@ var Module = module.exports = function() {
 
 	function displayAnimation(priority) {
 
-		var duration = 120;
-
 		function runPerlin() {
-			matrix.emit('perlin', {mode:1, priority:priority, duration:duration});
+			matrix.emit('perlin', {mode:1, priority:priority, duration:60});
 		};
 
 		function runRain() {
-			matrix.emit('rain', {priority:priority, duration:duration});
+			matrix.emit('rain', {priority:priority, duration:240});
 		};
 
 		function runAnimation() {
-			matrix.emit('animation', {priority:priority, duration:duration, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+			matrix.emit('animation', {priority:priority, duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
 		}
 
 		var animation = random([runPerlin, runRain, runAnimation, runRain]);
