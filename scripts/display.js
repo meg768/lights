@@ -232,7 +232,7 @@ var Module = module.exports = function() {
 
 		_motionSensor.on('ON', function() {
 			console.log('Motion detected. Displaying animation');
-			_motionSensor.pauseEvents(2000);
+			_motionSensor.pauseEvents(30000);
 			displayAnimation('high');
 		});
 
@@ -243,7 +243,6 @@ var Module = module.exports = function() {
 		});
 
 		_animationSwitch.on('ON', function() {
-			console.log('asdfsadf');
 			_animationSwitch.pauseEvents(1000);
 			displayAnimation('high');
 		});
