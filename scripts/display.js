@@ -313,7 +313,7 @@ var Module = module.exports = function() {
 
 		rule.hour   = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		rule.minute = new Schedule.Range(0, 59, 1);
-		rule.second = 15;
+		rule.second = 10;
 
 		Schedule.scheduleJob(rule, function() {
 			displayAnimation('low');
