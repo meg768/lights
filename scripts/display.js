@@ -1,14 +1,186 @@
-var sprintf   = require('yow').sprintf;
-var random    = require('yow').random;
-
+var sprintf    = require('yow').sprintf;
+var random     = require('yow').random;
+var isArray    = require('yow').isArray;
+var isString   = require('yow').isString;
+var Promise    = require('bluebird');
 var tellstick  = require('./tellstick.js');
 var matrix     = require('socket.io-client')('http://app-o.se:3000/matrix-display');
 
 
-var NewsFeed = function() {
+function fetchQuotes(tickers) {
 
-	var FeedParser = require('feedparser');
-	var Request    = require('request');
+
+	return new Promise(function(resolve, reject) {
+		var RequestAPI = require('rest-request');
+		var yahoo      = new RequestAPI('https://query.yahooapis.com');
+
+		var symbols = tickers;
+
+		if (isString(symbols))
+			symbols = [symbols];
+
+		symbols = symbols.map(function(symbol) {
+			return '\'' + symbol + '\'';
+		});
+
+		var options = {};
+
+		options.q        = 'select * from yahoo.finance.quotes where symbol IN (' + symbols.join(',') + ')';
+		options.format   = 'json';
+		options.env      = 'store://datatables.org/alltableswithkeys';
+		options.callback = '';
+
+		yahoo.get('v1/public/yql', options).then(function(data) {
+			var items = data.query.results.quote;
+			var quotes = {};
+
+			if (!isArray(items))
+				items = [items];
+
+			items.forEach(function(item) {
+
+				var quote = {};
+				quote.price     = item.LastTradePriceOnly != null ? parseFloat(item.LastTradePriceOnly) : null;
+				quote.change    = item.PercentChange != null ? parseFloat(item.PercentChange) : null;
+				quote.volume    = item.Volume != null ? parseInt(item.Volume) : null;
+				quote.symbol    = item.symbol;
+				quote.name      = item.Name;
+
+				quotes[item.symbol] = quote;
+			});
+
+			resolve(quotes);
+
+		})
+
+		.catch (function(error) {
+			console.log('Error', error);
+
+		});
+
+	});
+
+}
+
+
+
+var QuoteFeed = function() {
+
+	var _feeds = [
+		{
+			symbol: '^OMXS30',
+			name: 'OMX'
+		},
+		{
+			symbol: '^GSPC',
+			name: 'S&P500'
+		},
+
+		{
+			symbol: 'HM-B.ST',
+			name: 'H&M'
+		},
+		{
+			symbol: 'ASSA-B.ST',
+			name: 'ASSA'
+		},
+		{
+			symbol: 'PHI.ST',
+			name: 'PHI'
+		},
+		{
+			symbol: 'AAPL',
+			name: 'Apple'
+		}
+	];
+
+	this.display = function(priority) {
+
+		if (!priority)
+			priority = 'normal';
+
+		matrix.emit('emoji', {id:769, priority:priority});
+
+		return new Promise(function(resolve, reject) {
+
+			var symbols = _feeds.map(function(item) {
+				return item.symbol;
+			})
+
+			fetchQuotes(symbols).then(function(quotes) {
+
+				_feeds.forEach(function(feed) {
+					var quote = quotes[feed.symbol];
+					var color = quote.change > 0 ? 'blue' : 'red';
+					matrix.emit('text', {text:feed.name, textColor:color});
+					matrix.emit('text', {text:sprintf('%s%s', quote.change > 0 ? '+' : '', quote.change), textColor:color});
+				});
+
+				resolve();
+			})
+			.catch(function(error) {
+				console.log('Error fetching quotes', error);
+				resolve();
+			});
+
+		});
+
+	};
+
+
+};
+
+function fetchNews(url, path, query) {
+
+	var FeedParser   = require('feedparser');
+	var Request      = require('request');
+	var URI          = require('urijs');
+
+	return new Promise(function(resolve, reject) {
+		var news = [];
+		var uri     = new URI(url);
+		var parser  = new FeedParser();
+
+		if (path)
+			uri.directory(path);
+
+		if (query)
+			uri.query(query);
+
+		var request = Request(uri.toString());
+
+		request.on('response', function (result) {
+
+			if (result.statusCode != 200) {
+				reject(new Error('Invalid status code'));
+			}
+			else {
+				this.pipe(parser);
+			}
+
+		});
+
+		parser.on('error', function(error) {
+			reject(error);
+		});
+
+		parser.on('end', function() {
+			resolve(news);
+		});
+
+		parser.on('readable', function() {
+			var item = undefined;
+
+			while (item = this.read()) {
+				news.push(item);
+			}
+		});
+
+	});
+};
+
+
+var NewsFeed = function() {
 
 	var _index = 0;
 
@@ -16,65 +188,50 @@ var NewsFeed = function() {
 		{
 			name: 'Dagens Industri',
 			url: 'http://di.se/rss',
-			textColor: 'red',
+			color: 'red',
 		},
 		{
 			name: 'Google',
 			url: 'https://news.google.se/news?cf=all&pz=1&ned=sv_se&ict=ln&num=5&output=rss',
-			textColor: 'blue'
+			color: 'blue'
 		},
 		{
 			name: 'Sydsvenskan',
 			url: 'http://www.sydsvenskan.se/rss.xml',
-			textColor: 'rgb(255, 0, 255)'
+			color: 'rgb(255, 0, 255)'
 		},
 		{
 			name: 'Veckans Affärer',
 			url: 'http://www.vafinans.se/rss/nyheter',
-			textColor: 'green'
+			color: 'green'
 
 		}
 	];
 
+	this.display = function(priority) {
 
-	this.fetch = function() {
+		if (!priority)
+			priority = 'normal';
+
+		matrix.emit('emoji', {id:123, priority:priority});
 
 		return new Promise(function(resolve, reject) {
-			var news = [];
-			var provider = _feeds[_index++ % _feeds.length];
-			var timer = undefined;
-			var request = Request(provider.url);
-			var parser  = new FeedParser();
 
-			request.on('response', function (result) {
+			var feed = _feeds[_index++ % _feeds.length];
 
-				if (result.statusCode != 200) {
-					reject(new Error('Invalid status code'));
-				}
-				else {
-					this.pipe(parser);
-				}
+			fetchNews(feed.url).then(function(news) {
 
-			});
+				news = news.splice(0, 3);
 
-			parser.on('error', function(error) {
-				reject(error);
-			});
+				news.forEach(function(item) {
+					matrix.emit('text', {text:item.title, textColor:feed.color});
+				});
 
-			parser.on('readable', function() {
-				var item = undefined;
-
-				while (item = this.read()) {
-					news.push({title:item.title, date:item.pubdate});
-				}
-
-				if (timer != undefined)
-					clearTimeout(timer);
-
-				timer = setTimeout(function() {
-					resolve({provider:provider, news:news.splice(0, 3)});
-				}, 2000);
-
+				resolve();
+			})
+			.catch(function(error) {
+				console.log('Error fetching news', error);
+				resolve();
 			});
 
 		});
@@ -101,34 +258,19 @@ var Module = module.exports = function() {
 	var _motionSensor    = tellstick.getDevice('RV-02');
 
 	var _newsFeed        = new NewsFeed();
+	var _quoteFeed       = new QuoteFeed();
 
 	function debug(msg) {
 		console.log(msg);
 	}
 
 	matrix.on('idle', function() {
-		console.log('IDLE!');
 	});
 
+
+
 	function displayNews(priority) {
-
-		if (!priority)
-			priority = 'normal';
-
-		_newsFeed.fetch().then(function(news) {
-
-			news.news.forEach(function(newsItem) {
-				console.log(newsItem);
-				matrix.emit('text', {text:newsItem.title, textColor:news.provider.textColor});
-			});
-
-		})
-		.catch(function(error) {
-			console.log('Failed fetching news.', error);
-
-		});
-
-		matrix.emit('emoji', {id:123, priority:priority});
+		_newsFeed.display(priority);
 	};
 
 	function scheduleNews() {
@@ -202,9 +344,10 @@ var Module = module.exports = function() {
 	}
 
 	function listen() {
-		scheduleClock();
-		scheduleNews();
-		scheduleAnimations();
+//		scheduleClock();
+//		scheduleNews();
+//		scheduleAnimations();
+		displayNews();
 
 		_motionSensor.on('ON', function() {
 			_motionSensor.pauseEvents(30000);
@@ -248,3 +391,7 @@ var Module = module.exports = function() {
 
 	run();
 }
+
+//var x = new QuoteFeed();
+//x.display();
+//fetchQuote(['PHI.ST']);
