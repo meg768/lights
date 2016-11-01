@@ -133,6 +133,7 @@ var Module = module.exports = function() {
 
 	function scheduleNews() {
 		var rule = new Schedule.RecurrenceRule();
+		rule.hour   = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		rule.minute = new Schedule.Range(3, 59, 5);
 
 		Schedule.scheduleJob(rule, function() {
