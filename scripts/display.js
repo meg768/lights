@@ -67,6 +67,7 @@ function fetchQuotes(tickers) {
 var QuoteFeed = function() {
 
 	var _feeds = [
+
 		{symbol: '^OMXS30',   name: 'OMX'},
 		{symbol: '^GSPC',     name: 'S&P'},
 		{symbol: '^GDAXI',    name: 'DAX'},
