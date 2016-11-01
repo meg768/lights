@@ -67,31 +67,15 @@ function fetchQuotes(tickers) {
 var QuoteFeed = function() {
 
 	var _feeds = [
-		{
-			symbol: '^OMXS30',
-			name: 'OMX'
-		},
-		{
-			symbol: '^GSPC',
-			name: 'S&P500'
-		},
+		{symbol: '^OMXS30',   name: 'OMX'},
+		{symbol: '^GSPC',     name: 'S&P'},
+		{symbol: '^HSI',      name: 'Hang Seng'},
+		{symbol: '^N225',     name: 'Nikkei'},
+		{symbol: '^GDAXI',    name: 'DAX'},
+		{symbol: '^FTSE',     name: 'FTSE'},
+		{symbol: 'GC=F',      name: 'Guld'},
+		{symbol: 'CL=F',      name: 'Olja'},
 
-		{
-			symbol: 'HM-B.ST',
-			name: 'H&M'
-		},
-		{
-			symbol: 'ASSA-B.ST',
-			name: 'ASSA'
-		},
-		{
-			symbol: 'PHI.ST',
-			name: 'PHI'
-		},
-		{
-			symbol: 'AAPL',
-			name: 'Apple'
-		}
 	];
 
 	this.display = function(priority) {
@@ -110,10 +94,13 @@ var QuoteFeed = function() {
 			fetchQuotes(symbols).then(function(quotes) {
 
 				_feeds.forEach(function(feed) {
-					var quote = quotes[feed.symbol];
-					var color = quote.change > 0 ? 'blue' : 'red';
-					matrix.emit('text', {text:feed.name, textColor:color});
-					matrix.emit('text', {text:sprintf('%s%s', quote.change > 0 ? '+' : '', quote.change), textColor:color});
+					var quote  = quotes[feed.symbol];
+					var name   = feed.name;
+					var change = sprintf('%s%.01f%%', quote.change > 0 ? '+' : '', quote.change);
+					var color  = quote.change >= 0 ? 'blue' : 'red';
+
+					matrix.emit('text', {text:name, textColor:color});
+					matrix.emit('text', {text:change, textColor:color});
 				});
 
 				resolve();
