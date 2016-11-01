@@ -69,10 +69,10 @@ var QuoteFeed = function() {
 	var _feeds = [
 		{symbol: '^OMXS30',   name: 'OMX'},
 		{symbol: '^GSPC',     name: 'S&P'},
-		{symbol: '^HSI',      name: 'Hang Seng'},
-		{symbol: '^N225',     name: 'Nikkei'},
 		{symbol: '^GDAXI',    name: 'DAX'},
 		{symbol: '^FTSE',     name: 'FTSE'},
+		{symbol: '^HSI',      name: 'Hang Seng'},
+		{symbol: '^N225',     name: 'Nikkei'},
 		{symbol: 'GC=F',      name: 'Guld'},
 		{symbol: 'CL=F',      name: 'Olja'},
 
@@ -343,7 +343,7 @@ var Module = module.exports = function() {
 		var rule = new Schedule.RecurrenceRule();
 		rule.hour   = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		rule.minute = new Schedule.Range(0, 59, 1);
-		rule.second = [0, 30];
+		rule.second = [0, 15, 30, 45];
 
 		Schedule.scheduleJob(rule, function() {
 			displayClock('low');
