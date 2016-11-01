@@ -241,8 +241,44 @@ var NewsFeed = function() {
 
 };
 
+var TextFeed = function() {
+
+	var _index = 0;
+	var _newsFeed  = new NewsFeed();
+	var _quoteFeed = new QuoteFeed();
+
+	this.display = function(priority) {
+
+		var feeds = [_newsFeed, _quoteFeed];
+		var feed  = feeds[_index++ % feeds.length];
+
+		feed.display(priority);
+	}
+};
+
 var AnimationFeed = function() {
 
+	var _index = 0;
+
+	function runPerlin(priority) {
+		matrix.emit('perlin', {mode:1, priority:priority, duration:60});
+	};
+
+	function runRain(priority) {
+		matrix.emit('rain', {priority:priority, duration:180});
+	};
+
+	function runAnimation(priority) {
+		matrix.emit('animation', {priority:priority, duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+	}
+
+	this.display = function(priority) {
+
+		var animations = [runPerlin, runRain, runAnimation, runRain, runAnimation, runRain];
+		var animation  = animations[_index++ % animations.length];
+
+		animation(priority);
+	}
 };
 
 
@@ -252,13 +288,13 @@ var Module = module.exports = function() {
 	var Schedule = require('node-schedule');
 
 	var _lightSensor     = tellstick.getDevice('SR-01');
-	var _newsSwitch      = tellstick.getDevice('FK-00-01');
+	var _textSwitch      = tellstick.getDevice('FK-00-01');
 	var _animationSwitch = tellstick.getDevice('FK-00-02');
 	var _emojiSwitch     = tellstick.getDevice('FK-00-03');
 	var _motionSensor    = tellstick.getDevice('RV-02');
 
-	var _newsFeed        = new NewsFeed();
-	var _quoteFeed       = new QuoteFeed();
+	var _textFeed        = new TextFeed();
+	var _animationFeed   = new AnimationFeed();
 
 	function debug(msg) {
 		console.log(msg);
@@ -267,38 +303,22 @@ var Module = module.exports = function() {
 	matrix.on('idle', function() {
 	});
 
-
-
-	function displayNews(priority) {
-		_newsFeed.display(priority);
+	function displayText(priority) {
+		_textFeed.display(priority);
 	};
 
-	function scheduleNews() {
+	function scheduleText() {
 		var rule = new Schedule.RecurrenceRule();
 		rule.hour   = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		rule.minute = new Schedule.Range(3, 59, 5);
 
 		Schedule.scheduleJob(rule, function() {
-			displayNews('high');
+			displayText('high');
 		});
 	};
 
 	function displayAnimation(priority) {
-
-		function runPerlin() {
-			matrix.emit('perlin', {mode:1, priority:priority, duration:60});
-		};
-
-		function runRain() {
-			matrix.emit('rain', {priority:priority, duration:180});
-		};
-
-		function runAnimation() {
-			matrix.emit('animation', {priority:priority, duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
-		}
-
-		var animation = random([runPerlin, runRain, runAnimation, runRain]);
-		animation();
+		_animationFeed.display(priority);
 	}
 
 	function scheduleAnimations() {
@@ -344,10 +364,10 @@ var Module = module.exports = function() {
 	}
 
 	function listen() {
-//		scheduleClock();
-//		scheduleNews();
-//		scheduleAnimations();
-		displayNews();
+		scheduleClock();
+		scheduleText();
+		scheduleAnimations();
+		displayText();
 
 		_motionSensor.on('ON', function() {
 			_motionSensor.pauseEvents(30000);
@@ -355,13 +375,13 @@ var Module = module.exports = function() {
 			if (random() < 0.75)
 				displayAnimation('high');
 			else
-				displayNews('high');
+				displayText('high');
 		});
 
 
-		_newsSwitch.on('ON', function() {
-			_newsSwitch.pauseEvents(1000);
-			displayNews('high');
+		_textSwitch.on('ON', function() {
+			_textSwitch.pauseEvents(1000);
+			displayText('high');
 		});
 
 		_animationSwitch.on('ON', function() {
@@ -374,8 +394,8 @@ var Module = module.exports = function() {
 			matrix.emit('emoji', {priority:'high', id:random(1, 846), pause:1});
 		});
 
-		_newsSwitch.on('OFF', function() {
-			_newsSwitch.pauseEvents(1000);
+		_textSwitch.on('OFF', function() {
+			_textSwitch.pauseEvents(1000);
 			displayClock('high');
 		});
 
