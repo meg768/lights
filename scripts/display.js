@@ -369,7 +369,7 @@ var Module = module.exports = function() {
 		scheduleAnimations();
 
 		_motionSensor.on('ON', function() {
-			_motionSensor.pauseEvents(30000);
+			this.pauseEvents(30000);
 
 			if (random() < 0.75)
 				displayAnimation('high');
@@ -379,22 +379,22 @@ var Module = module.exports = function() {
 
 
 		_textSwitch.on('ON', function() {
-			_textSwitch.pauseEvents(1000);
+			this.pauseEvents(1000);
 			displayText('high');
 		});
 
 		_animationSwitch.on('ON', function() {
-			_animationSwitch.pauseEvents(1000);
+			this.pauseEvents(1000);
 			displayAnimation('high');
 		});
 
 		_emojiSwitch.on('ON', function() {
-			_emojiSwitch.pauseEvents(1000);
+			this.pauseEvents(1000);
 			matrix.emit('emoji', {priority:'high', id:random(1, 846), pause:1});
 		});
 
 		_textSwitch.on('OFF', function() {
-			_textSwitch.pauseEvents(1000);
+			this.pauseEvents(1000);
 			displayClock('high');
 		});
 
