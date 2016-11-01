@@ -367,7 +367,6 @@ var Module = module.exports = function() {
 		scheduleClock();
 		scheduleText();
 		scheduleAnimations();
-		displayText();
 
 		_motionSensor.on('ON', function() {
 			_motionSensor.pauseEvents(30000);

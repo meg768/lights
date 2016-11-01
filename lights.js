@@ -79,7 +79,7 @@ var App = function() {
 		}
 
 		if (cmd.display  || cmd.all) {
-			console.log('Activating news...');
+			console.log('Activating display...');
 			var Module = require('./scripts/display.js');
 			new Module();
 		}
