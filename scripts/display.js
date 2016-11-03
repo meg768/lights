@@ -54,8 +54,7 @@ function fetchQuotes(tickers) {
 		})
 
 		.catch (function(error) {
-			console.log('Error', error);
-
+			reject(error);
 		});
 
 	});
@@ -218,8 +217,7 @@ var NewsFeed = function() {
 				resolve();
 			})
 			.catch(function(error) {
-				console.log('Error fetching news', error);
-				resolve();
+				reject(error);
 			});
 
 		});
@@ -240,7 +238,12 @@ var TextFeed = function() {
 		var feeds = [_newsFeed, _quoteFeed];
 		var feed  = feeds[_index++ % feeds.length];
 
-		feed.display(priority);
+		feed.display(priority).then(function() {
+
+		})
+		.catch(function() {
+
+		});
 	}
 };
 
@@ -351,15 +354,15 @@ var Module = module.exports = function() {
 		});
 	}
 
-	function listen() {
+	function run() {
 		scheduleClock();
 		scheduleText();
 		scheduleAnimations();
 
 		_motionSensor.on('ON', function() {
-			this.pauseEvents(30000);
+			this.pauseEvents(60000);
 
-			if (random() < 0.75)
+			if (random() < 0.5)
 				displayAnimation('high');
 			else
 				displayText('high');
@@ -391,14 +394,17 @@ var Module = module.exports = function() {
 
 	}
 
-	function run() {
-
-		listen();
-	}
-
 	run();
 }
 
-//var x = new QuoteFeed();
-//x.display();
-//fetchQuote(['PHI.ST']);
+
+
+/*
+fetchQuotes('AAPL').then(function(quotes) {
+	console.log(quotes);
+})
+
+.catch(function(error) {
+	console.log('An error', error);
+});
+*/
