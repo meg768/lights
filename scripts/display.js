@@ -4,7 +4,7 @@ var isArray    = require('yow').isArray;
 var isString   = require('yow').isString;
 var Promise    = require('bluebird');
 var tellstick  = require('./tellstick.js');
-var matrix     = require('socket.io-client')('http://app-o.se:3000/matrix-display');
+var matrix     = require('socket.io-client')('http://85.24.190.138:3003/hzeller-matrix');
 
 
 function fetchQuotes(tickers) {

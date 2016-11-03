@@ -66,9 +66,9 @@ var Device = function(socket, name) {
 		_this.pauseEvents(pause);
 
 		if (state == 'ON')
-			socket.emit('turnOn', {name:_this.name});
+			socket.emit('turnOn', _this.name);
 		else if (state == 'OFF')
-			socket.emit('turnOff', {name:_this.name});
+			socket.emit('turnOff', _this.name);
 	};
 
 	_this.setTimer = function(schedule) {
@@ -190,15 +190,18 @@ var Tellstick = function() {
 	this.connect = function(socket) {
 		_socket = socket;
 
-		_socket.on('tellstick', function(params) {
+		_socket.on('status', function(params) {
 
 			var device = _devices[params.name];
 
 			if (device != undefined) {
 				if (!device.eventsDisabled) {
-					device.state = params.status;
-					device.emit(params.status);
+					device.state = params.state;
+					device.emit(params.state);
 				}
+			}
+			else {
+				console.log('Device', params.name, 'undefined, no action.');
 			}
 		});
 	}
@@ -206,8 +209,10 @@ var Tellstick = function() {
 	this.getDevice = function(name) {
 		var device = _devices[name];
 
-		if (_devices[name] == undefined)
+		if (_devices[name] == undefined) {
 			_devices[name] = new Device(_socket, name);
+
+		};
 
 		return _devices[name];
 	}

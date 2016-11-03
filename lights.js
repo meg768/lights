@@ -87,15 +87,14 @@ var App = function() {
 	}
 
 	function run() {
-		var url = sprintf('http://%s:%d/%s', cmd.host, cmd.port, 'tellstick');
-
+		var url = sprintf('http://%s:%d/%s', '85.24.190.138', '3002', 'tellstick');
 		console.log('Connecting to %s...', url);
 
 		var socket = io.connect(url);
 
 		tellstick.connect(socket);
 
-		socket.on('hello', function(params) {
+		socket.on('connect', function(params) {
 			monitor();
 		});
 
