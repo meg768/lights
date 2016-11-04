@@ -82,6 +82,9 @@ var App = function() {
 			console.log('Activating display...');
 			var Module = require('./scripts/display.js');
 			new Module();
+
+			Module = require('./scripts/display-64x32.js');
+			new Module();
 		}
 
 	}
