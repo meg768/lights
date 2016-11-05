@@ -19,7 +19,7 @@ var GifAnimation = module.exports = function(matrix) {
 	};
 
 	function runGif(priority) {
-		matrix.emit('animation', {priority:priority, duration:60, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+		matrix.emit('animation', {priority:priority, duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
 	}
 
 	this.run = function(priority) {
