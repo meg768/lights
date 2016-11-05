@@ -78,7 +78,7 @@ var Module = module.exports = function(name) {
 	function schedule() {
 		var rule    = new Schedule.RecurrenceRule();
 		rule.hour   = new Schedule.Range(0, 23, 1);
-		rule.minute = Schedule.Range(0, 59, 5);
+		//rule.minute = Schedule.Range(0, 59, 5);
 
 		Schedule.scheduleJob(rule, function() {
 			_animations = getCurrentAnimations();
