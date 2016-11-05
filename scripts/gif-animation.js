@@ -10,6 +10,7 @@ var GifAnimation = module.exports = function(matrix) {
 
 	var _index = 0;
 
+	console.log('New GIF ANIMATION');
 	function runPerlin(priority) {
 		matrix.emit('perlin', {mode:1, priority:priority, duration:60});
 	};
