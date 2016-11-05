@@ -79,12 +79,10 @@ var App = function() {
 		}
 
 		if (cmd.display  || cmd.all) {
-			console.log('Activating display...');
-			var Module = require('./scripts/display.js');
-			new Module();
+			var Display = require('./scripts/display.js');
 
-			Module = require('./scripts/display-64x32.js');
-			new Module();
+			new Display('32x32');
+			new Display('64x32');
 		}
 
 	}
