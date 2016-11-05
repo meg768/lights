@@ -1,3 +1,5 @@
+var Schedule   = require('node-schedule');
+
 var sprintf    = require('yow').sprintf;
 var random     = require('yow').random;
 var isArray    = require('yow').isArray;
@@ -25,31 +27,63 @@ var Module = module.exports = function(name) {
 
 		if (name == '32x32') {
 			_matrix = require('socket.io-client')('http://85.24.190.138:3003/hzeller-matrix');
-
-			_animations.push(new ClockAnimation(_matrix));
-			_animations.push(new GifAnimation(_matrix));
-			_animations.push(new ClockAnimation(_matrix));
-			_animations.push(new NewsAnimation(_matrix));
-			_animations.push(new ClockAnimation(_matrix));
-			_animations.push(new QuotesAnimation(_matrix));
 		}
 
 		if (name == '64x32') {
 			_matrix = require('socket.io-client')('http://85.24.190.138:3004/hzeller-matrix');
-
-			_animations.push(new ClockAnimation(_matrix));
-			_animations.push(new NewsAnimation(_matrix));
-			_animations.push(new ClockAnimation(_matrix));
-			_animations.push(new QuotesAnimation(_matrix));
 		}
 
 		_matrix.on('idle', function() {
 			runNextAnimation();
 		});
 
+		_animations = getCurrentAnimations();
+		_index = 0;
+
 		runNextAnimation();
+		schedule();
 	};
 
+	function getCurrentAnimations() {
+
+		var animations = [];
+		var now  = new Date();
+		var time = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
+
+		if (name == '32x32') {
+
+			if (time >= '08:00' && time <= '23:59') {
+				animations.push(new ClockAnimation(_matrix));
+				animations.push(new GifAnimation(_matrix));
+				animations.push(new ClockAnimation(_matrix));
+				animations.push(new NewsAnimation(_matrix));
+				animations.push(new ClockAnimation(_matrix));
+				animations.push(new QuotesAnimation(_matrix));
+			}
+		}
+
+		if (name == '64x32') {
+			if (time >= '08:00' && time <= '23:59') {
+				animations.push(new ClockAnimation(_matrix));
+				animations.push(new NewsAnimation(_matrix));
+				animations.push(new ClockAnimation(_matrix));
+				animations.push(new QuotesAnimation(_matrix));
+			}
+		}
+
+		return animations;
+	}
+
+
+	function schedule() {
+		var rule    = new Schedule.RecurrenceRule();
+		rule.hour   = new Schedule.Range(0, 23, 1);
+		rule.minute = Schedule.Range(0, 59, 5);
+
+		Schedule.scheduleJob(rule, function() {
+			_animations = getCurrentAnimations();
+		});
+	};
 
 	function runAnimation(animation, priority) {
 		animation.run(priority).then(function() {
@@ -61,6 +95,12 @@ var Module = module.exports = function(name) {
 	function runNextAnimation(priority) {
 		if (_animations.length > 0)
 			runAnimation(_animations[_index++ % _animations.length], priority);
+		else {
+			// If nothing to do, call again in 60 seconds...
+			setTimeout(function() {
+				runNextAnimation(priority);
+			}, 60000);
+		}
 	}
 
 	_motionSensor.on('ON', function() {
