@@ -76,6 +76,15 @@ var App = function() {
 
 	}
 
+	tellstick.socket.on('connect', function() {
+		tellstick.socket.emit('getDevices', 'gotDevices');
+		
+		tellstick.socket.on('gotDevices', function(devices) {
+			console.log(devices);
+		});
+
+	});
+
 	setTimeout(run, cmd.wait);
 };
 
