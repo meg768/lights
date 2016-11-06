@@ -1,23 +1,25 @@
 var Schedule = require('node-schedule');
 var sprintf  = require('yow').sprintf;
+var random   = require('yow').random;
 var suncalc  = require('suncalc');
 
 var tellstick  = require('./tellstick.js');
 
 
-var Module = module.exports = function() {
+var Module = function() {
 
 	var _motionSensor   = tellstick.getDevice('RV-02');
 	var _masterSwitch   = tellstick.getDevice('FK-02-01');
+	var _frontLights    = tellstick.getDevice('FK-02-02');
+	var _backLights     = tellstick.getDevice('FK-02-03');
+
 	var _delay          = 1000 * 60 * 30;
 	var _timer          = null;
 	var _lightsActive   = true;
 
-
 	function debug(msg) {
 		console.log(msg);
 	}
-
 
 	function listen() {
 		debug('Listening for events in cellar...');
@@ -63,15 +65,37 @@ var Module = module.exports = function() {
 
 	}
 
+	function enableTimer() {
+		var timer = [];
+
+		timer.push({time:random(['17:34', '18:27', '18:55', '19:22']), state:'ON'});
+		timer.push({time:random(['01:34', '01:55', '02:22', '02:55']), state:'OFF'});
+
+		console.log(sprintf('Cellar timer set to ON at %s and OFF at %s.', timer[0].time, timer[1].time));
+
+		_frontLights.setTimer(timer);
+		_backLights.setTimer(timer);
+	}
+
+
 	function run() {
 
-		// Turn off lights
-		_masterSwitch.setState('OFF');
+		console.log('Cellar active.');
 
-		// Start to listen after a while
-		setTimeout(listen, 0);
+		tellstick.socket.on('connect', function() {
+
+			// Enable timer
+			enableTimer();
+
+			// Start monitoring
+			listen();
+
+		});
 
 	}
 
-	run();
+	setTimeout(run, 0);
+
 }
+
+module.exports = new Module();

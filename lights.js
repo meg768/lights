@@ -9,7 +9,6 @@ var isObject = require('yow').isObject;
 var redirectLogs = require('yow').redirectLogs;
 var prefixLogs = require('yow').prefixLogs;
 var cmd = require('commander');
-var io = require('socket.io-client');
 
 var tellstick = require('./scripts/tellstick.js');
 
@@ -47,65 +46,32 @@ var App = function() {
 	}
 
 
+	function run() {
 
-	function monitor() {
 		if (cmd.terrace || cmd.all) {
-			console.log('Activating terrace...');
-			var Module = require('./scripts/terrace.js');
-			new Module();
+			require('./scripts/terrace.js');
 		}
 
 		if (cmd.cellar || cmd.all) {
-			console.log('Activating cellar...');
-			var Module = require('./scripts/cellar.js');
-			new Module();
+			require('./scripts/cellar.js');
 		}
 
 		if (cmd.diningroom || cmd.all) {
-			console.log('Activating dining room...');
-			var Module = require('./scripts/dining-room.js');
-			new Module();
+			require('./scripts/dining-room.js');
 		}
 
 		if (cmd.livingroom || cmd.all) {
-			console.log('Activating living room...');
-			var Module = require('./scripts/living-room.js');
-			new Module();
-		}
-
-		if (cmd.vacation) {
-			console.log('Activating vacation lightning...');
-			var Module = require('./scripts/vacation.js');
-			new Module();
+			require('./scripts/living-room.js');
 		}
 
 		if (cmd.office || cmd.all) {
-			console.log('Activating office lightning...');
-			var Module = require('./scripts/office.js');
-			new Module();
+			require('./scripts/office.js');
 		}
 
 		if (cmd.display  || cmd.all) {
-			var Display = require('./scripts/display.js');
-
-			new Display('32x32');
-			new Display('64x32');
+			require('./scripts/display32x32.js');
+			require('./scripts/display64x32.js');
 		}
-
-	}
-
-	function run() {
-		var url = sprintf('http://%s:%d/%s', '85.24.190.138', '3002', 'tellstick');
-		console.log('Connecting to %s...', url);
-
-		var socket = io.connect(url);
-
-		tellstick.connect(socket);
-
-		socket.on('connect', function(params) {
-			monitor();
-		});
-
 
 
 	}

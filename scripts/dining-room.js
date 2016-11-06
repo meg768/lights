@@ -3,20 +3,12 @@ var sprintf     = require('yow').sprintf;
 var suncalc     = require('suncalc');
 var tellstick   = require('./tellstick.js');
 
-var Module = module.exports = function() {
+var Module = function() {
 
 	var _switch = tellstick.getDevice('VS-03');
 
 	function today() {
-
 		return new Date();
-
-		// Winter
-		return new Date(2001,12,31,1,1,1);
-
-		// Summer
-		return new Date(2001,6,22,1,1,1);
-
 	}
 
 	function turnOnTime() {
@@ -50,22 +42,30 @@ var Module = module.exports = function() {
 
 	function run() {
 
-		function setupTimer() {
-			_switch.setTimer(getOnOffTimes());
-		}
+		console.log('Dining room active.');
 
-		var rule    = new Schedule.RecurrenceRule();
-		rule.hour   = 0;
-		rule.minute = 0;
+		tellstick.socket.on('connect', function() {
 
-		Schedule.scheduleJob(rule, function() {
+			function setupTimer() {
+				_switch.setTimer(getOnOffTimes());
+			}
+
+			var rule    = new Schedule.RecurrenceRule();
+			rule.hour   = 0;
+			rule.minute = 0;
+
+			Schedule.scheduleJob(rule, function() {
+				setupTimer();
+			});
+
 			setupTimer();
-		});
 
-		setupTimer();
+		});
 
 
 	}
 
 	run();
 }
+
+module.exports = new Module();

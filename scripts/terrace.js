@@ -6,7 +6,7 @@ var suncalc    = require('suncalc');
 
 var tellstick  = require('./tellstick.js');
 
-var Module = module.exports = function() {
+var Module = function() {
 
 	var _terraceLights = tellstick.getDevice('VS-01');
 
@@ -60,20 +60,25 @@ var Module = module.exports = function() {
 
 	function run() {
 
-		function setupTimer() {
-			_terraceLights.setTimer(getOnOffTimes());
-		}
+		console.log('Terrace lights active.');
+
+		tellstick.socket.on('connect', function() {
+			function setupTimer() {
+				_terraceLights.setTimer(getOnOffTimes());
+			}
 
 
-		var rule    = new Schedule.RecurrenceRule();
-		rule.hour   = 0;
-		rule.minute = 0;
+			var rule    = new Schedule.RecurrenceRule();
+			rule.hour   = 0;
+			rule.minute = 0;
 
-		Schedule.scheduleJob(rule, function() {
+			Schedule.scheduleJob(rule, function() {
+				setupTimer();
+			});
+
 			setupTimer();
-		});
 
-		setupTimer();
+		});
 
 
 	}
@@ -81,3 +86,5 @@ var Module = module.exports = function() {
 	run();
 
 }
+
+module.exports = new Module();

@@ -184,27 +184,25 @@ util.inherits(Device, EventEmitter);
 
 var Tellstick = function() {
 
+	this.socket = require('socket.io-client')('http://85.24.190.138:3002/tellstick');
+
 	var _devices = {};
-	var _socket = undefined;
+	var _socket = this.socket;
 
-	this.connect = function(socket) {
-		_socket = socket;
+	_socket.on('status', function(params) {
 
-		_socket.on('status', function(params) {
+		var device = _devices[params.name];
 
-			var device = _devices[params.name];
-
-			if (device != undefined) {
-				if (!device.eventsDisabled) {
-					device.state = params.state;
-					device.emit(params.state);
-				}
+		if (device != undefined) {
+			if (!device.eventsDisabled) {
+				device.state = params.state;
+				device.emit(params.state);
 			}
-			else {
-				console.log('Device', params.name, 'undefined, no action.');
-			}
-		});
-	}
+		}
+		else {
+			console.log('Device', params.name, 'undefined, no action.');
+		}
+	});
 
 	this.getDevice = function(name) {
 		var device = _devices[name];

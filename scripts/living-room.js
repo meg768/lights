@@ -1,6 +1,7 @@
 var Schedule    = require('node-schedule');
 var sprintf     = require('yow').sprintf;
 var suncalc     = require('suncalc');
+var random      = require('yow').random;
 var tellstick   = require('./tellstick.js');
 
 var Module = module.exports = function() {
@@ -16,12 +17,12 @@ var Module = module.exports = function() {
 		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
 		var sunset   = suntimes['sunset'];
 
-		return new Date(sunset.getTime() - 1000 * 60 * 60 * 3);
+		return new Date(sunset.getTime() - 1000 * 60 * 60 * 1);
 	}
 
 	function turnOffTime() {
 
-		return '01:00';
+		return random(['01:03', '00:35', '00:43', '01:17']);
 
 		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
 		var sunrise  = suntimes['sunrise'];
