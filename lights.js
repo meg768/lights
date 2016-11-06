@@ -69,8 +69,8 @@ var App = function() {
 		}
 
 		if (cmd.display  || cmd.all) {
-			require('./scripts/display32x32.js');
-			require('./scripts/display64x32.js');
+			require('./scripts/display-32x32.js');
+			require('./scripts/display-64x32.js');
 		}
 
 
