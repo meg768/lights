@@ -66,3 +66,6 @@ var Module = module.exports = function() {
 
 	run();
 }
+
+
+module.exports = new Module();
