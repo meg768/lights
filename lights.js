@@ -29,6 +29,7 @@ var App = function() {
 	cmd.option('-c --cellar', 'Control cellar lights');
 	cmd.option('-o --office', 'Control office lights');
 	cmd.option('-d --diningroom', 'Control dining room lights');
+	cmd.option('-d --livingroom', 'Control living room lights');
 	cmd.option('-n --display', 'Run animations on 32x32 LED Matrix');
 	cmd.option('-v --vacation', 'Control lights during vacation');
 	cmd.option('-a --all', 'Control lights everywhere');
@@ -63,6 +64,12 @@ var App = function() {
 		if (cmd.diningroom || cmd.all) {
 			console.log('Activating dining room...');
 			var Module = require('./scripts/dining-room.js');
+			new Module();
+		}
+
+		if (cmd.livingroom || cmd.all) {
+			console.log('Activating living room...');
+			var Module = require('./scripts/living-room.js');
 			new Module();
 		}
 
