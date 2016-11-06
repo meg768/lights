@@ -91,7 +91,7 @@ var Module = module.exports = function(name) {
 
 	_motionSensor.on('ON', function() {
 		_motionSensor.pauseEvents(2000);
-		_matrix.emit('text', {text:'!!!', priority:'high'});
+		//_matrix.emit('text', {text:'!!!', priority:'high'});
 
 	});
 
