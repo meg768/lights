@@ -36,7 +36,7 @@ var Module = module.exports = function(animations) {
 		else {
 			// If nothing to do, call again in 60 seconds...
 			setTimeout(function() {
-				runNextAnimation(priority);
+				this.runNextAnimation(priority);
 			}, 60000);
 		}
 	}
