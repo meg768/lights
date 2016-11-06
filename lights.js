@@ -75,7 +75,7 @@ var App = function() {
 
 
 	}
-
+/*
 	tellstick.socket.on('connect', function() {
 		tellstick.socket.emit('getDevices', 'gotDevices');
 
@@ -84,7 +84,7 @@ var App = function() {
 		});
 
 	});
-
+*/
 	setTimeout(run, cmd.wait);
 };
 
