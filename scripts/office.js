@@ -50,7 +50,7 @@ var Module = function() {
 
 	function run() {
 
-		console.log('Office active.')
+		console.log('Office active.');
 
 		tellstick.socket.on('connect', function() {
 
