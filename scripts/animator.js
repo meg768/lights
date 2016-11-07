@@ -11,6 +11,7 @@ var Module = module.exports = function(animations) {
 
 	var _animations      = animations;
 	var _index           = 0;
+	var _this            = this;
 
 	this.setAnimations = function(animations) {
 		_animations = animations;
@@ -36,7 +37,7 @@ var Module = module.exports = function(animations) {
 		else {
 			// If nothing to do, call again in 60 seconds...
 			setTimeout(function() {
-				this.runNextAnimation(priority);
+				_this.runNextAnimation(priority);
 			}, 60000);
 		}
 	}
