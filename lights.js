@@ -37,7 +37,7 @@ var App = function() {
 	cmd.option('-n --display', 'Run animations on 32x32 LED Matrix');
 	cmd.option('-v --vacation', 'Control lights during vacation');
 	cmd.option('-a --all', 'Control lights everywhere');
-	cmd.option('-w --wait <wait>', 'wait a bit before starting to listen to port (30000)', 30000);
+	cmd.option('-w --wait <wait>', 'wait a bit before starting to listen to port', 0);
 
 	cmd.parse(process.argv);
 
