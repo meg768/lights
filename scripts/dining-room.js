@@ -33,9 +33,7 @@ var Module = function() {
 			{state:'OFF', time:turnOffTime()}
 		];
 
-		console.log('Turning on dining-room lights at', times[0].time, '...');
-		console.log('Turning off dining-room lights at', times[1].time, '...');
-
+		console.log(sprintf('Turning on dining-room lights at %02d:%02d and off at %02d:%02d...', times[0].time.getHours(), times[0].time.getMinutes(), times[1].time.getHours(), times[1].time.getMinutes()));
 
 		return times;
 	}
