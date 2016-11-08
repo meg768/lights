@@ -38,7 +38,7 @@ var Module = module.exports = function() {
 			{state:'OFF', time:turnOffTime()}
 		];
 
-		console.log(sprintf('Turning on living-room lights at %02d:%02d and off at %02d:%02d...', times[0].time.getHour(), times[0].time.getMinute(), times[1].time.getHour(), times[1].time.getMinute()));
+		console.log(sprintf('Turning on living-room lights at %02d:%02d and off at %02d:%02d...', times[0].time.getHours(), times[0].time.getMinutes(), times[1].time.getHours(), times[1].time.getMinutes()));
 
 		return times;
 	}
