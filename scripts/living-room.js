@@ -17,7 +17,7 @@ var Module = module.exports = function() {
 		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
 		var sunset   = suntimes['sunset'];
 
-		return new Date(sunset.getTime() - 1000 * 60 * 60 * 0.5);
+		return new Date(sunset.getTime() - 1000 * 60 * 60 * 0.0);
 	}
 
 	function turnOffTime() {
@@ -38,9 +38,7 @@ var Module = module.exports = function() {
 			{state:'OFF', time:turnOffTime()}
 		];
 
-		console.log('Turning on living-room lights at', times[0].time, '...');
-		console.log('Turning off living-room lights at', times[1].time, '...');
-
+		console.log(sprintf('Turning on living-room lights at %02d:%02d and off at %02d:%02d...', times[0].time.getHours(), times[0].time.getMinutes(), times[1].time.getHours(), times[1].time.getMinutes());
 
 		return times;
 	}
