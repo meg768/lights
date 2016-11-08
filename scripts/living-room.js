@@ -22,12 +22,12 @@ var Module = module.exports = function() {
 
 	function turnOffTime() {
 
-		return random(['01:03', '00:35', '00:43', '01:17']);
+		var date = new Date();
 
-		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
-		var sunrise  = suntimes['sunrise'];
+		date.setHours(0);
+		date.setMinutes(30 + random(30));
 
-		return new Date(sunrise.getTime() + 1000 * 60 * 60 * 2);
+		return date;
 	}
 
 	function getOnOffTimes() {
