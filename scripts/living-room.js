@@ -47,19 +47,23 @@ var Module = module.exports = function() {
 
 	function run() {
 
-		function setupTimer() {
-			_switch.setTimer(getOnOffTimes());
-		}
+		tellstick.socket.once('connect', function() {
+			function setupTimer() {
+				_switch.setTimer(getOnOffTimes());
+			}
 
-		var rule    = new Schedule.RecurrenceRule();
-		rule.hour   = 0;
-		rule.minute = 0;
+			var rule    = new Schedule.RecurrenceRule();
+			rule.hour   = 0;
+			rule.minute = 0;
 
-		Schedule.scheduleJob(rule, function() {
+			Schedule.scheduleJob(rule, function() {
+				setupTimer();
+			});
+
 			setupTimer();
-		});
 
-		setupTimer();
+			
+		});
 
 
 	}

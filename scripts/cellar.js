@@ -82,7 +82,7 @@ var Module = function() {
 
 		console.log('Cellar active.');
 
-		tellstick.socket.on('connect', function() {
+		tellstick.socket.once('connect', function() {
 
 			// Enable timer
 			enableTimer();

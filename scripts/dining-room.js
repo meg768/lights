@@ -44,7 +44,7 @@ var Module = function() {
 
 		console.log('Dining room active.');
 
-		tellstick.socket.on('connect', function() {
+		tellstick.socket.once('connect', function() {
 
 			function setupTimer() {
 				_switch.setTimer(getOnOffTimes());

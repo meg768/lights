@@ -62,7 +62,7 @@ var Module = function() {
 
 		console.log('Terrace lights active.');
 
-		tellstick.socket.on('connect', function() {
+		tellstick.socket.once('connect', function() {
 			function setupTimer() {
 				_terraceLights.setTimer(getOnOffTimes());
 			}

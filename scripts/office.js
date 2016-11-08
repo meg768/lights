@@ -52,7 +52,7 @@ var Module = function() {
 
 		console.log('Office active.');
 
-		tellstick.socket.on('connect', function() {
+		tellstick.socket.once('connect', function() {
 
 			_lightSensor.on('ON', function() {
 				debug('Getting darker, turning on lights...');
