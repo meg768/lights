@@ -13,10 +13,6 @@ var cmd = require('commander');
 var tellstick = require('./scripts/tellstick.js');
 
 
-/*
-sudo forever-service install lights --script lights.js --scriptOptions " --all" --foreverOptions " -w"
-*/
-
 function debug() {
 	console.log.apply(this, arguments);
 }
