@@ -15,7 +15,7 @@ var Module = function() {
 		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
 		var sunset   = suntimes['sunset'];
 
-		return new Date(sunset.getTime() - 1000 * 60 * 60 * 4);
+		return new Date(sunset.getTime() - 1000 * 60 * 60 * 3);
 	}
 
 	function turnOffTime() {
