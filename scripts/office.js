@@ -6,11 +6,16 @@ var tellstick  = require('./tellstick.js');
 
 var Module = function() {
 
-	var _lightSensor    = tellstick.getDevice('SR-01');
-	var _lightSwitch    = tellstick.getDevice('FK-01-01');
+	var _lightSwitch = tellstick.getDevice('FK-01-01');
+
 
 	function debug(msg) {
 		console.log(msg);
+	}
+
+	function getSunTime(name) {
+		var suntimes = suncalc.getTimes(new Date(), 55.7, 13.1833333);
+		return new Date(suntimes[name]);
 	}
 
 	function today() {
@@ -19,17 +24,11 @@ var Module = function() {
 	}
 
 	function turnOnTime() {
-		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
-
-		return new Date(suntimes.sunset.getTime() - 1000 * 60 * 60 * 2);
+		return new Date(getSunTime('sunset').getTime() - 1000 * 60 * 60 * 1);
 	}
 
 	function turnOffTime() {
-
 		return random(['01:07', '00:30', '00:50', '01:10']);
-
-		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
-		return new Date(suntimes.sunrise.getTime() + 1000 * 60 * 60 * 2);
 	}
 
 	function getOnOffTimes() {
@@ -54,20 +53,9 @@ var Module = function() {
 
 		tellstick.socket.once('connect', function() {
 
-			_lightSensor.on('ON', function() {
-				debug('Getting darker, turning on lights...');
-				_lightSwitch.turnOn();
-			});
-
-			_lightSensor.on('OFF', function() {
-				debug('Getting brighter, turning off lights...');
-				_lightSwitch.turnOff();
-			});
-
 			function setupTimer() {
 				_lightSwitch.setTimer(getOnOffTimes());
 			}
-
 
 			var rule    = new Schedule.RecurrenceRule();
 			rule.hour   = 0;

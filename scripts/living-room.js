@@ -8,30 +8,33 @@ var Module = module.exports = function() {
 
 	var _switch = tellstick.getDevice('VS-04');
 
-	function today() {
-
-		return new Date();
+	function getSunTime(name) {
+		var suntimes = suncalc.getTimes(new Date(), 55.7, 13.1833333);
+		return new Date(suntimes[name]);
 	}
 
 	function turnOnTime() {
-		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
-		var sunset   = suntimes['sunset'];
-
-		return new Date(sunset.getTime() - 1000 * 60 * 60 * 0.0);
+		var sunset = getSunTime('sunset');
+		return new Date(sunset.valueOf() - 1000 * 60 * 60 * 0.5);
 	}
 
 	function turnOffTime() {
-
 		var date = new Date();
 
+		// Midnight
 		date.setHours(0);
-		date.setMinutes(30 + random(30));
+		date.setMinutes(0);
+		date.setSeconds(0);
+		date.setMilliseconds(0);
 
-		return date;
+		// Next midnight
+		date.setDate(date.getDate() + 1);
+
+		// Switch off between 1 and 2 AM
+		return new Date(date.valueOf() + (1 + random()) * (1000 * 60 * 60));
 	}
 
 	function getOnOffTimes() {
-
 
 		var times = [
 			{state:'ON',  time:turnOnTime()},

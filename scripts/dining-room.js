@@ -7,22 +7,21 @@ var Module = function() {
 
 	var _switch = tellstick.getDevice('VS-03');
 
-	function today() {
-		return new Date();
+	function getSunTime(name) {
+		var suntimes = suncalc.getTimes(new Date(), 55.7, 13.1833333);
+		return new Date(suntimes[name]);
 	}
 
 	function turnOnTime() {
-		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
-		var sunset   = suntimes['sunset'];
+		var sunset = getSunTime('sunset');
 
-		return new Date(sunset.getTime() - 1000 * 60 * 60 * 3);
+		return new Date(sunset.valueOf() - 1000 * 60 * 60 * 3);
 	}
 
 	function turnOffTime() {
-		var suntimes = suncalc.getTimes(today(), 55.7, 13.1833333);
-		var sunrise  = suntimes['sunrise'];
+		var sunrise = getSunTime('sunrise');
 
-		return new Date(sunrise.getTime() + 1000 * 60 * 60 * 2);
+		return new Date(sunrise.valueOf() + 1000 * 60 * 60 * 2);
 	}
 
 	function getOnOffTimes() {

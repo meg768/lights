@@ -10,36 +10,40 @@ var Module = function() {
 
 	var _terraceLights = tellstick.getDevice('VS-01');
 
-	function getOnOffTimes(date) {
+	function getSunTime(name) {
+		var suntimes = suncalc.getTimes(new Date(), 55.7, 13.1833333);
+		return new Date(suntimes[name]);
+	}
 
-		if (isDate(date))
-			date = new Date(date);
+	function getOnOffTimes() {
 
-		if (date == undefined)
-			date = new Date();
+		var midnight = new Date();
+		midnight.setHours(0);
+		midnight.setMinutes(0);
+		midnight.setSeconds(0);
+		midnight.setMilliseconds(0);
 
-		date.setHours(0);
-		date.setMinutes(0);
-		date.setSeconds(0);
-		date.setMilliseconds(0);
+		var sunrise = getSunTime('sunrise');
+		var sunset  = getSunTime('sunset');
+		var dusk    = getSunTime('dusk');
+		var dawn    = getSunTime('dawn');
 
-		var suntimes = suncalc.getTimes(new Date(date.valueOf() + 12 * 60 * 60 * 1000), 55.7, 13.1833333);
-		var morningOffset = suntimes.sunrise - suntimes.dawn;
-		var eveningOffset = suntimes.sunset - suntimes.dusk;
+		var morningOffset = sunrise - dawn;
+		var eveningOffset = sunset - dusk;
 
-		var morningOn  = suntimes.dawn;
-		var morningOff = new Date(suntimes.sunrise.valueOf() + morningOffset);
-		var eveningOn  = new Date(suntimes.sunset.valueOf() + eveningOffset);
-		var eveningOff = suntimes.dusk;
+		var morningOn  = dawn;
+		var morningOff = new Date(sunrise.valueOf() + morningOffset);
+		var eveningOn  = new Date(sunset.valueOf() + eveningOffset);
+		var eveningOff = dusk;
 
-		var startOfDay  = new Date(date.valueOf() + 7 * 60 * 60 * 1000);
+		var startOfDay  = new Date(midnight.valueOf() + 7 * 60 * 60 * 1000);
 		var endOfDay    = new Date(startOfDay.valueOf() + 18 * 60 * 60 * 1000);
 
 		// Light up in the morning (even if it isn't dawn yet)
 		morningOn = new Date(Math.min(startOfDay.valueOf(), morningOn.valueOf()));
 
 		// Keep lights on until at least end of day
-		eveningOff = new Date(Math.max(endOfDay, eveningOff));
+		eveningOff = new Date(Math.max(endOfDay.valueOf(), eveningOff.valueOf()));
 
 		console.log('Turning on terrace lights at', morningOn, '...');
 		console.log('Turning off terrace lights at', morningOff, '...');
@@ -66,7 +70,6 @@ var Module = function() {
 			function setupTimer() {
 				_terraceLights.setTimer(getOnOffTimes());
 			}
-
 
 			var rule    = new Schedule.RecurrenceRule();
 			rule.hour   = 0;
