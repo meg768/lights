@@ -33,9 +33,16 @@ var Display = function(url) {
 			console.log('Connected to display', url);
 		});
 
+		_matrix.on('disconnect', function() {
+			console.log('Disconnected from display', url);
+		});
+
 		_matrix.on('idle', function() {
-			if (_matrix.connected)
+			if (_matrix.connected) {
+				console.log(sprintf('Running next animation for %s.', url));
 				animator.runNextAnimation();
+
+			}
 			else {
 				console.log(sprintf('Ignoring animation for %s since it is disconnected.', url));
 			}
