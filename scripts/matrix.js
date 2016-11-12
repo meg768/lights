@@ -13,9 +13,9 @@ var Matrix = module.exports = function(url) {
 	_this.socket = require('socket.io-client')(url);
 	_this.connected = false;
 
-	_this.emit = function() {
+	_this.emit = function(name, options) {
 		console.log('emitting matrix', arguments);
-		return _this.socket.emit.apply(this, arguments);
+		return _this.socket.emit(name, options);
 	};
 
 	_this.runAnimations = function(animations) {
