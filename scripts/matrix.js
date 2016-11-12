@@ -17,7 +17,7 @@ var Matrix = module.exports = function(url) {
 		return _this.socket.emit.apply(this, arguments);
 	};
 
-	_this.runAnimations = function(animation) {
+	_this.runAnimations = function(animations) {
 		_animator = new Animator(animations);
 	};
 
