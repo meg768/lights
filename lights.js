@@ -103,6 +103,7 @@ var App = function(argv) {
 			animations.push(new QuotesAnimation(matrix));
 
 			matrix.runAnimations(animations);
+			console.log('Animation stated for big');
 		}
 		/*
 		if (argv.all || argv.display) {
