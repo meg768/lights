@@ -18,6 +18,7 @@ var Matrix = module.exports = function(url) {
 	};
 
 	_this.runAnimations = function(animations) {
+		console.log('sdfgsdfgjkhsgflksdhfg');
 		_animator = new Animator(animations);
 	};
 
