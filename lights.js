@@ -8,6 +8,11 @@ var sprintf = require('yow').sprintf;
 var isObject = require('yow').isObject;
 var prefixLogs = require('yow').prefixLogs;
 
+var ClockAnimation  = require('./clock-animation.js');
+var QuotesAnimation = require('./quotes-animation.js');
+var NewsAnimation   = require('./news-animation.js');
+var GifAnimation    = require('./gif-animation.js');
+
 function debug() {
 	console.log.apply(this, arguments);
 }
@@ -71,10 +76,41 @@ var App = function(argv) {
 			require('./scripts/office.js');
 		}
 
+		if (true) {
+			var matrix = new Matrix('http://85.24.190.138:3003/hzeller-matrix');
+
+			var animations = [];
+
+			animations.push(new ClockAnimation(matrix));
+			animations.push(new GifAnimation(matrix));
+			animations.push(new ClockAnimation(matrix));
+			animations.push(new NewsAnimation(matrix));
+			animations.push(new ClockAnimation(matrix));
+			animations.push(new QuotesAnimation(matrix));
+
+			matrix.runAnimations(animations);
+		}
+
+		if (true) {
+			var matrix = new Matrix('http://85.24.190.138:3004/hzeller-matrix');
+
+			var animations = [];
+
+			animations.push(new ClockAnimation(matrix));
+			animations.push(new NewsAnimation(matrix));
+			animations.push(new ClockAnimation(matrix));
+			animations.push(new QuotesAnimation(matrix));
+
+			matrix.runAnimations(animations);
+		}
+		/*
 		if (argv.all || argv.display) {
+
+
 			require('./scripts/display-32x32.js');
 			require('./scripts/display-64x32.js');
 		}
+		*/
 	}
 
 
