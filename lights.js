@@ -37,6 +37,7 @@ var App = function(argv) {
 		args.option('a', {alias:'all',         describe:'Control all lights', default:true});
 		args.option('L', {alias:'listen',      describe:'Start socket service', default:false});
 		args.option('p', {alias:'port',        describe:'Listen to specified port', default:3010});
+		args.option('m', {alias:'matrix',      describe:'Control matrix displays', default:false});
 
 		args.wrap(null);
 
@@ -77,7 +78,7 @@ var App = function(argv) {
 			require('./scripts/office.js');
 		}
 
-		if (true) {
+		if (argv.all || argv.matrix) {
 			var matrix = new Matrix('http://85.24.190.138:3003/hzeller-matrix');
 
 			var animations = [];
@@ -92,7 +93,7 @@ var App = function(argv) {
 			matrix.runAnimations(animations);
 		}
 
-		if (true) {
+		if (argv.all || argv.matrix) {
 			var matrix = new Matrix('http://85.24.190.138:3004/hzeller-matrix');
 
 			var animations = [];
@@ -104,14 +105,7 @@ var App = function(argv) {
 
 			matrix.runAnimations(animations);
 		}
-		/*
-		if (argv.all || argv.display) {
 
-
-			require('./scripts/display-32x32.js');
-			require('./scripts/display-64x32.js');
-		}
-		*/
 	}
 
 

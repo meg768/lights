@@ -14,12 +14,10 @@ var Matrix = module.exports = function(url) {
 	_this.connected = false;
 
 	_this.emit = function(name, options) {
-		console.log('emitting matrix', arguments);
 		return _this.socket.emit(name, options);
 	};
 
 	_this.runAnimations = function(animations) {
-		console.log('sdfgsdfgjkhsgflksdhfg');
 		_animator = new Animator(animations);
 	};
 
@@ -37,7 +35,6 @@ var Matrix = module.exports = function(url) {
 		});
 
 		_this.socket.on('idle', function() {
-			console.log('Idle...');
 			if (_animator != undefined) {
 				console.log(sprintf('Running next animation for %s.', url));
 				_animator.runNextAnimation();
