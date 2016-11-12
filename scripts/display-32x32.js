@@ -38,15 +38,10 @@ var Display = function(url) {
 		});
 
 		_matrix.on('idle', function() {
-			if (_matrix.connected) {
-				console.log(sprintf('Running next animation for %s.', url));
-				animator.runNextAnimation();
-
-			}
-			else {
-				console.log(sprintf('Ignoring animation for %s since it is disconnected.', url));
-			}
+			console.log(sprintf('Running next animation for %s.', url));
+			animator.runNextAnimation();
 		});
+
 
 
 	};
