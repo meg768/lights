@@ -93,7 +93,9 @@ var App = function(argv) {
 		}
 
 		if (true) {
+			console.log('vafan!');
 			var matrix = new Matrix('http://85.24.190.138:3004/hzeller-matrix');
+			console.log('vafan2!');
 
 			var animations = [];
 
@@ -101,6 +103,7 @@ var App = function(argv) {
 			animations.push(new NewsAnimation(matrix));
 			animations.push(new ClockAnimation(matrix));
 			animations.push(new QuotesAnimation(matrix));
+			console.log('vafan3!');
 
 			matrix.runAnimations(animations);
 			console.log('Animation stated for big');
