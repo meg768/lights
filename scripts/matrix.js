@@ -8,32 +8,33 @@ var Animator   = require('./animator.js');
 var Matrix = module.exports = function(url) {
 
 	var _animator = undefined;
+	var _this = this;
 
-	this.socket = require('socket.io-client')(url);
-	this.connected = false;
+	_this.socket = require('socket.io-client')(url);
+	_this.connected = false;
 
-	this.emit = function() {
-		return this.socket.emit.apply(this, arguments);
+	_this.emit = function() {
+		return _this.socket.emit.apply(this, arguments);
 	};
 
-	this.runAnimations = function(animation) {
+	_this.runAnimations = function(animation) {
 		_animator = new Animator(animations);
 	};
 
 	function run() {
 		console.log(sprintf('Matrix display %s active.', url));
 
-		this.socket.on('connect', function() {
-			this.connected = true;
+		_this.socket.on('connect', function() {
+			_this.connected = true;
 			console.log('Connected to display', url);
 		});
 
-		this.socket.on('disconnect', function() {
-			this.connected = false;
+		_this.socket.on('disconnect', function() {
+			_this.connected = false;
 			console.log('Disconnected from display', url);
 		});
 
-		this.socket.on('idle', function() {
+		_this.socket.on('idle', function() {
 			if (_animator != undefined) {
 				console.log(sprintf('Running next animation for %s.', url));
 				_animator.runNextAnimation();
