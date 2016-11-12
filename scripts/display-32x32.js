@@ -18,7 +18,6 @@ var Display = function(url) {
 	function run() {
 		console.log('Display active:', url);
 
-		var connected = false;
 		var animations = [];
 
 		animations.push(new ClockAnimation(_matrix));
@@ -32,17 +31,14 @@ var Display = function(url) {
 
 		_matrix.on('connect', function() {
 			console.log('Connected to display', url);
-			connected = true;
-		});
-
-		_matrix.on('disconnect', function() {
-			console.log('Disconnected from display', url);
-			connected = false;
 		});
 
 		_matrix.on('idle', function() {
-			if (connected)
+			if (_matrix.connected)
 				animator.runNextAnimation();
+			else {
+				console.log(sprintf('Ignoring animation for %s since it is disconnected.', url));
+			}
 		});
 
 
