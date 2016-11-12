@@ -92,6 +92,8 @@ var NewsAnimation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
+			console.log('Displaying news...');
+
 			var feed = _feeds[_index++ % _feeds.length];
 
 			matrix.emit('emoji', {id:123, priority:priority});

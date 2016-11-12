@@ -25,6 +25,7 @@ var GifAnimation = module.exports = function(matrix) {
 	this.run = function(priority) {
 
 		return new Promise(function(resolve, reject) {
+			console.log('Running animation...');
 			var animations = [runRain, runPerlin, runRain, runGif, runRain, runGif, runRain, runGif];
 			var animation  = animations[_index++ % animations.length];
 

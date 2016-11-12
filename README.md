@@ -6,7 +6,7 @@
 
 ## Install with **forever-service**
 
-	$ sudo forever-service install lights --script lights.js --scriptOptions " --all" --foreverOptions " -w"
+	$ sudo forever-service install lights --script lights.js --scriptOptions " --all" --foreverOptions " "
 
 ## Controlling the service
 

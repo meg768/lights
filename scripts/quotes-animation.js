@@ -89,6 +89,8 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 			fetchQuotes(symbols).then(function(quotes) {
 
+				console.log('Displaying stock quotes...');
+
 				matrix.emit('emoji', {id:769, priority:priority});
 
 				_feeds.forEach(function(feed) {
