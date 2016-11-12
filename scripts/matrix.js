@@ -25,13 +25,18 @@ var Matrix = module.exports = function(url) {
 		console.log(sprintf('Matrix display %s active.', url));
 
 		_this.socket.on('connect', function() {
-			_this.connected = true;
 			console.log('Connected to display', url);
+
+			_this.connected = true;
+
+			// Make a kick-start
+			if (_animator != undefined)
+				_animator.runNextAnimation('low');
 		});
 
 		_this.socket.on('disconnect', function() {
-			_this.connected = false;
 			console.log('Disconnected from display', url);
+			_this.connected = false;
 		});
 
 		_this.socket.on('idle', function() {
