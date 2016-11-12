@@ -12,6 +12,7 @@ var ClockAnimation  = require('./scripts/clock-animation.js');
 var QuotesAnimation = require('./scripts/quotes-animation.js');
 var NewsAnimation   = require('./scripts/news-animation.js');
 var GifAnimation    = require('./scripts/gif-animation.js');
+var Matrix          = require('./scripts/matrix.js');
 
 function debug() {
 	console.log.apply(this, arguments);
