@@ -8,10 +8,10 @@ var sprintf = require('yow').sprintf;
 var isObject = require('yow').isObject;
 var prefixLogs = require('yow').prefixLogs;
 
-var ClockAnimation  = require('./clock-animation.js');
-var QuotesAnimation = require('./quotes-animation.js');
-var NewsAnimation   = require('./news-animation.js');
-var GifAnimation    = require('./gif-animation.js');
+var ClockAnimation  = require('./scripts/clock-animation.js');
+var QuotesAnimation = require('./scripts/quotes-animation.js');
+var NewsAnimation   = require('./scripts/news-animation.js');
+var GifAnimation    = require('./scripts/gif-animation.js');
 
 function debug() {
 	console.log.apply(this, arguments);
