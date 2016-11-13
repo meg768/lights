@@ -68,8 +68,8 @@ var Module = function() {
 	function enableTimer() {
 		var timer = [];
 
-		timer.push({time:random(['17:34', '18:27', '18:55', '19:22']), state:'ON'});
-		timer.push({time:random(['01:34', '01:55', '02:22', '02:55']), state:'OFF'});
+		timer.push({time:sprintf('%02d:%02d', random(17, 19), random(0, 59)), state:'ON'});
+		timer.push({time:sprintf('%02d:%02d', random(0, 1),   random(0, 59)), state:'OFF'});
 
 		console.log(sprintf('Cellar timer set to ON at %s and OFF at %s.', timer[0].time, timer[1].time));
 
