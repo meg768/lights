@@ -85,8 +85,13 @@ var App = function(argv) {
 
 			animations.push(new ClockAnimation(matrix));
 			animations.push(new GifAnimation(matrix));
+
 			animations.push(new ClockAnimation(matrix));
 			animations.push(new NewsAnimation(matrix));
+
+			animations.push(new ClockAnimation(matrix));
+			animations.push(new GifAnimation(matrix));
+
 			animations.push(new ClockAnimation(matrix));
 			animations.push(new QuotesAnimation(matrix));
 
