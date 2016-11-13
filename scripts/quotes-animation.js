@@ -35,6 +35,8 @@ var QuotesAnimation = module.exports = function(matrix) {
 				return '\'' + symbol + '\'';
 			});
 
+			throw new Error('Uppa!');
+			
 			var options = {};
 
 			options.q        = 'select * from yahoo.finance.quotes where symbol IN (' + symbols.join(',') + ')';
