@@ -35,8 +35,6 @@ var QuotesAnimation = module.exports = function(matrix) {
 				return '\'' + symbol + '\'';
 			});
 
-			throw new Error('Uppa!');
-			
 			var options = {};
 
 			options.q        = 'select * from yahoo.finance.quotes where symbol IN (' + symbols.join(',') + ')';
@@ -106,9 +104,9 @@ var QuotesAnimation = module.exports = function(matrix) {
 				resolve();
 			})
 			.catch(function(error) {
-				//matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
+				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
 				console.log('Error fetching quotes.', error);
-				reject(error);
+				resolve();
 			});
 
 		});
