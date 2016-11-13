@@ -59,6 +59,11 @@ var Module = function() {
 
 		_masterSwitch.on('OFF', function() {
 			_lightsActive = false;
+
+			setTimeout(function() {
+				_lightsActive = true;
+			}, 1000 * 60 * 5);
+
 			debug('Motion sensor lights deactivated in cellar.');
 		});
 
