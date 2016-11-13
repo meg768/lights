@@ -87,10 +87,10 @@ var NewsAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
 
-		if (!priority)
-			priority = 'normal';
-
 		return new Promise(function(resolve, reject) {
+
+			if (!priority)
+				priority = 'normal';
 
 			console.log('Displaying news...');
 
@@ -109,7 +109,9 @@ var NewsAnimation = module.exports = function(matrix) {
 				resolve();
 			})
 			.catch(function(error) {
-				reject(error);
+				matrix.emit('text', {text:'Inga nyheter tillgängliga'});
+				console.log('Error fetching news.', error);
+				resolve();
 			});
 
 		});

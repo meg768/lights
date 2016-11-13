@@ -22,12 +22,9 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 	function fetchQuotes(tickers) {
 
-
 		return new Promise(function(resolve, reject) {
 			var RequestAPI = require('rest-request');
 			var yahoo      = new RequestAPI('https://query.yahooapis.com');
-
-			throw new Error('upps');
 
 			var symbols = tickers;
 
@@ -79,11 +76,11 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
 
-		if (!priority)
-			priority = 'normal';
-
 
 		return new Promise(function(resolve, reject) {
+
+			if (!priority)
+				priority = 'normal';
 
 			var symbols = _feeds.map(function(item) {
 				return item.symbol;
@@ -108,7 +105,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
-				console.log('Error fetching quotes.', error.message);
+				console.log('Error fetching quotes.', error);
 				resolve();
 			});
 
