@@ -63,8 +63,10 @@ var Module = function() {
 
 			// Activate automaticallly again after a while
 			setTimeout(function() {
-				_lightsActive = true;
-				debug('Motion sensor reactivated in cellar.');
+				if (!_lightsActive) {
+					_lightsActive = true;
+					debug('Motion sensor reactivated in cellar.');
+				};
 			}, 1000 * 60 * 5);
 
 		});
