@@ -10,35 +10,36 @@ var isString   = require('yow').isString;
 var Module = module.exports = function(animations) {
 
 	var _animations      = animations;
-	var _index           = 0;
+	var _index           = -1;
 	var _this            = this;
 
-	this.setAnimations = function(animations) {
-		_animations = animations;
-		_index = 0;
-	};
-
 	this.runNextAnimation = function(priority) {
+
+		function runLater() {
+			setTimeout(function() {
+				_this.runNextAnimation(priority);
+			}, 60000);
+		}
 
 		function runAnimation(animation, priority) {
 			animation.run(priority).then(function() {
 			})
 			.catch(function(error) {
+				console.log('Animation failed.', error);
+
+				runLater();
 			});
 		};
-
 
 		var now  = new Date();
 		var time = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
 
 		if (_animations.length > 0 && time >= '08:00' && time <= '23:59') {
-			runAnimation(_animations[_index++ % _animations.length], priority);
+			_index = (_index + 1) % _animations.length;
+			runAnimation(_animations[_index], priority);
 		}
 		else {
-			// If nothing to do, call again in 60 seconds...
-			setTimeout(function() {
-				_this.runNextAnimation(priority);
-			}, 60000);
+			runLater();
 		}
 	}
 
