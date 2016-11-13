@@ -60,19 +60,24 @@ var Module = function() {
 		_masterSwitch.on('OFF', function() {
 			_lightsActive = false;
 			debug('Motion sensor deactivated in cellar.');
-
-			// Activate automaticallly again after a while
-			setTimeout(function() {
-				if (!_lightsActive) {
-					_lightsActive = true;
-					debug('Motion sensor reactivated in cellar.');
-				};
-			}, 1000 * 60 * 5);
-
 		});
 
 
 	}
+
+	function enableAutoActivation() {
+		var rule    = new Schedule.RecurrenceRule();
+		rule.hour   = 8;
+		rule.minute = 0;
+
+		Schedule.scheduleJob(rule, function() {
+			if (!_lightsActive) {
+				_lightsActive = true;
+				debug('Motion sensor reactivated in cellar.');
+			};
+		});
+
+	};
 
 	function enableTimer() {
 		var timer = [];
@@ -95,6 +100,9 @@ var Module = function() {
 
 			// Enable timer
 			enableTimer();
+
+			// Make sure motion sensor is activated after it is deactivated
+			enableAutoActivation();
 
 			// Start monitoring
 			listen();
