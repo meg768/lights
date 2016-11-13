@@ -23,7 +23,7 @@ var Module = module.exports = function(animations) {
 		function runAnimation(animation, priority) {
 			animation.run(priority).then(function() {
 			})
-			.catch(function() {
+			.catch(function(error) {
 			});
 		};
 

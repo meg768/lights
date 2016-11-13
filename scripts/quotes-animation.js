@@ -28,7 +28,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 			var yahoo      = new RequestAPI('https://query.yahooapis.com');
 
 			throw new Error('upps');
-			
+
 			var symbols = tickers;
 
 			if (isString(symbols))
@@ -107,7 +107,8 @@ var QuotesAnimation = module.exports = function(matrix) {
 				resolve();
 			})
 			.catch(function(error) {
-				console.log('Error fetching quotes', error);
+				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
+				console.log('Error fetching quotes.', error.message);
 				resolve();
 			});
 
