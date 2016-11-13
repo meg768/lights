@@ -37,14 +37,14 @@ var Module = function() {
 		_motionSensor.on('ON', function() {
 
 			// Make sure we don't get too many events at once
-			_motionSensor.pauseEvents(2000);
+			_motionSensor.pauseEvents(10000);
 
 			if (_lightsActive) {
 				_masterSwitch.turnOn();
 
 				setTimer();
 
-				debug('Timer started in cellar. Lights should now be on. Turning off cellar light in 30 minutes.');
+				debug('Timer started in cellar. Lights should now be on.');
 			}
 			else {
 				debug('Movement detected in cellar but ignoring.');
@@ -54,17 +54,19 @@ var Module = function() {
 
 		_masterSwitch.on('ON', function() {
 			_lightsActive = true;
-			debug('Motion sensor lights active in cellar.');
+			debug('Motion sensor active in cellar.');
 		});
 
 		_masterSwitch.on('OFF', function() {
 			_lightsActive = false;
+			debug('Motion sensor deactivated in cellar.');
 
+			// Activate automaticallly again after a while
 			setTimeout(function() {
 				_lightsActive = true;
+				debug('Motion sensor reactivated in cellar.');
 			}, 1000 * 60 * 5);
 
-			debug('Motion sensor lights deactivated in cellar.');
 		});
 
 
