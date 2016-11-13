@@ -27,6 +27,8 @@ var QuotesAnimation = module.exports = function(matrix) {
 			var RequestAPI = require('rest-request');
 			var yahoo      = new RequestAPI('https://query.yahooapis.com');
 
+			throw new Error('upps');
+			
 			var symbols = tickers;
 
 			if (isString(symbols))
