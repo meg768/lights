@@ -164,7 +164,7 @@ var Device = function(socket, name) {
 				if (rule != undefined) {
 					var time = '????';
 
-					if (isInteger(rule.hour) && isInteger(rule.minute) {
+					if (isInteger(rule.hour) && isInteger(rule.minute)) {
 						time = sprintf('%02d-%02d', rule.hour, rule.minute);
 					}
 
