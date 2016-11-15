@@ -39,10 +39,6 @@ var Module = function() {
 			{state:'OFF', time:turnOffTime()}
 		];
 
-		console.log('Turning on office-room lights at', times[0].time, '...');
-		console.log('Turning off office-room lights at', times[1].time, '...');
-
-
 		return times;
 	}
 

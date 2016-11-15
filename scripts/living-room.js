@@ -55,11 +55,6 @@ var Module = module.exports = function() {
 		];
 		*/
 
-		times.forEach(function(time) {
-			console.log(sprintf('Turning %s living-room lights at %s.', time.state, time.time));
-
-		});
-
 		return times;
 	}
 

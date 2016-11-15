@@ -45,11 +45,6 @@ var Module = function() {
 		// Keep lights on until at least end of day
 		eveningOff = new Date(Math.max(endOfDay.valueOf(), eveningOff.valueOf()));
 
-		console.log('Turning on terrace lights at', morningOn, '...');
-		console.log('Turning off terrace lights at', morningOff, '...');
-		console.log('Turning on terrace lights at', eveningOn, '...');
-		console.log('Turning off terrace lights at', eveningOff, '...');
-
 		var onoff = [
 			{time:morningOn,   state:'ON'},
 			{time:morningOff,  state:'OFF'},

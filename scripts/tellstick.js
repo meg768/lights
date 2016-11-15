@@ -165,7 +165,7 @@ var Device = function(socket, name) {
 					var time = '????';
 
 					if (isInteger(rule.hour) && isInteger(rule.minute)) {
-						time = sprintf('%02d-%02d', rule.hour, rule.minute);
+						time = sprintf('%02d:%02d', rule.hour, rule.minute);
 					}
 
 					console.log('Scheduling device %s to turn %s at %s.', _this.name, item.state, time);
