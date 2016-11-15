@@ -7,6 +7,7 @@ var mkpath = require('yow').mkpath;
 var sprintf = require('yow').sprintf;
 var isObject = require('yow').isObject;
 var isString = require('yow').isString;
+var isInteger = require('yow').isInteger;
 var isDate = require('yow').isDate;
 var Schedule = require('node-schedule');
 var EventEmitter = require('events');
@@ -161,6 +162,14 @@ var Device = function(socket, name) {
 				}
 
 				if (rule != undefined) {
+					var time = '????';
+
+					if (isInteger(rule.hour) && isInteger(rule.minute) {
+						time = sprintf('%02d-%02d', rule.hour, rule.minute);
+					}
+
+					console.log('Scheduling device %s to turn %s at %s.', _this.name, item.state, time);
+
 					var job = Schedule.scheduleJob(rule, function() {
 						_this.setState(item.state);
 					});
