@@ -4,6 +4,12 @@ var suncalc     = require('suncalc');
 var random      = require('yow').random;
 var tellstick   = require('./tellstick.js');
 
+// 07:00 ON
+// 10:00 OFF
+// 15:30 ON
+// 01:00 OFF
+
+
 var Module = module.exports = function() {
 
 	var _switch = tellstick.getDevice('VS-04');
@@ -37,11 +43,19 @@ var Module = module.exports = function() {
 	function getOnOffTimes() {
 
 		var times = [
+			{state:'ON',   time:'07:00'},
+			{state:'OFF',  time:'10:00'},
+			{state:'ON',   time:'15:30'},
+			{state:'OFF',  time:'01:00'}
+		];
+/*
+		var times = [
 			{state:'ON',  time:turnOnTime()},
 			{state:'OFF', time:turnOffTime()}
 		];
 
 		console.log(sprintf('Turning on living-room lights at %02d:%02d and off at %02d:%02d...', times[0].time.getHours(), times[0].time.getMinutes(), times[1].time.getHours(), times[1].time.getMinutes()));
+*/
 
 		return times;
 	}
