@@ -44,6 +44,8 @@ var Module = function() {
 	var _turnOffTimer        = new Timer();
 	var _autoActivationTimer = new Timer();
 
+	var _lightsActive = true;
+
 
 	function listen() {
 		console.log('Listening for events in cellar...');
