@@ -52,7 +52,7 @@ var Module = function() {
 
 			var matrix = require('./matrix-64x32.js');
 
-			matrix.emit('text', {text:'Movement', priority:'high'});
+			matrix.emit('text', {text:'Movement'});
 
 		});
 
