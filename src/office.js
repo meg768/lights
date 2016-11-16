@@ -78,6 +78,8 @@ var Module = function() {
 
 			setupTimer();
 
+			listen();
+
 		});
 
 	}
