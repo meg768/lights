@@ -51,9 +51,9 @@ var Module = function() {
 			// Make sure we don't get too many events at once
 			_motionSensor.pauseEvents(10000);
 
-			var matrix = require('./matrix-64x32.js');
+			var matrix = require('./matrix-32x32.js');
 
-			matrix.emit('emoji', {id:729});
+			matrix.emit('emoji', {id:729, priority:'normal'});
 
 		});
 
