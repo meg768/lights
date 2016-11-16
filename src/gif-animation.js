@@ -12,15 +12,15 @@ var GifAnimation = module.exports = function(matrix) {
 	var _animations = [runRain, runPerlin, runRain, runGif, runRain, runGif, runRain, runGif];
 
 	function runPerlin(priority) {
-		matrix.emit('perlin', {mode:3, priority:priority, duration:30});
+		matrix.emit('perlin', {mode:3, priority:priority, duration:60});
 	};
 
 	function runRain(priority) {
-		matrix.emit('rain', {priority:priority, duration:30});
+		matrix.emit('rain', {priority:priority, duration:180});
 	};
 
 	function runGif(priority) {
-		matrix.emit('animation', {priority:priority, duration:30, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
+		matrix.emit('animation', {priority:priority, duration:120, name:random(['tree','pacman','pong','boat','fireplace','reduction', 'bubbles', 'crystal', 'dancer', 'haze', 'orbit', 'robot-factory'])});
 	}
 
 	function runAnimation(animation, priority) {
