@@ -48,7 +48,7 @@ var Module = function() {
 			console.log('Movement in the office...')
 
 			// Make sure we don't get too many events at once
-			_motionSensor.pauseEvents(10000);
+			_motionSensor.pauseEvents(2000);
 
 			var matrix = require('./matrix-32x32.js');
 
