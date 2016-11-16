@@ -14,6 +14,7 @@ var Matrix = module.exports = function(url) {
 	_this.connected = false;
 
 	_this.emit = function(name, options) {
+		console.log('emit', name, options);
 		return _this.socket.emit(name, options);
 	};
 

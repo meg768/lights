@@ -50,9 +50,9 @@ var Module = function() {
 			// Make sure we don't get too many events at once
 			_motionSensor.pauseEvents(3000);
 
-			var matrix = require('./matrix-32x32.js');
+			var matrix = require('./matrix-64x32.js');
 
-			matrix.socket.emit('text', {text:'Movement'});
+			matrix.emit('text', {text:'Movement'});
 
 		});
 
