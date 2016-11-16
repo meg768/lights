@@ -76,7 +76,7 @@ var Module = function() {
 
 		_masterSwitch.on('OFF', function() {
 			_lightsActive = false;
-			console.log('Motion sensor deactivated in cellar.');
+			console.log('Motion sensor deactivated in cellar. Activating again in 8 hours.');
 
 			_autoActivationTimer.setTimer(1000 * 60 * 60 * 8, function() {
 
@@ -90,19 +90,6 @@ var Module = function() {
 
 	}
 
-	function enableAutoActivation() {
-		var rule    = new Schedule.RecurrenceRule();
-		rule.hour   = 8;
-		rule.minute = 0;
-
-		Schedule.scheduleJob(rule, function() {
-			if (!_lightsActive) {
-				_lightsActive = true;
-				console.log('Motion sensor reactivated in cellar.');
-			};
-		});
-
-	};
 
 	function enableTimer() {
 		var timer = [];
@@ -123,9 +110,6 @@ var Module = function() {
 
 			// Enable timer
 			enableTimer();
-
-			// Make sure motion sensor is activated after it is deactivated
-			enableAutoActivation();
 
 			// Start monitoring
 			listen();
