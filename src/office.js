@@ -34,7 +34,6 @@ var Module = function() {
 
 	function getOnOffTimes() {
 
-
 		var times = [
 			{state:'ON',  time:turnOnTime()},
 			{state:'OFF', time:turnOffTime()}
@@ -53,7 +52,7 @@ var Module = function() {
 
 			var matrix = require('./matrix-32x32.js');
 
-			matrix.emit('emoji', {id:729, priority:'!'});
+			matrix.emit('emoji', {priority:'!'});
 
 		});
 
