@@ -1,9 +1,37 @@
-var Schedule = require('node-schedule');
-var sprintf  = require('yow').sprintf;
-var random   = require('yow').random;
-var suncalc  = require('suncalc');
+var util         = require('util');
+var EventEmitter = require('events').EventEmitter;
+var Schedule     = require('node-schedule');
+var sprintf      = require('yow').sprintf;
+var random       = require('yow').random;
+var isFunction   = require('yow').isFunction;
+var suncalc      = require('suncalc');
 
 var tellstick  = require('./tellstick.js');
+
+var Timer = function() {
+
+	var _this = this;
+	var _timer = undefined;
+
+	_this.cancel = function() {
+		if (_timer != undefined)
+			clearTimeout(_timer);
+
+		_timer = undefined;
+	};
+
+	_this.setTimer = function(delay, fn) {
+		if (delay == undefined)
+			delay = 3000;
+
+		if (_timer != undefined)
+			clearTimeout(_timer);
+
+		_timer = setTimeout(fn, delay);
+
+	};
+
+};
 
 
 var Module = function() {
@@ -13,26 +41,12 @@ var Module = function() {
 	var _frontLights    = tellstick.getDevice('FK-02-02');
 	var _backLights     = tellstick.getDevice('FK-02-03');
 
-	var _delay          = 1000 * 60 * 30;
-	var _timer          = null;
-	var _lightsActive   = true;
+	var _turnOffTimer        = new Timer();
+	var _autoActivationTimer = new Timer();
 
-	function debug(msg) {
-		console.log(msg);
-	}
 
 	function listen() {
-		debug('Listening for events in cellar...');
-
-		function setTimer() {
-
-			if (_timer != null)
-				clearTimeout(_timer);
-
-			_timer = setTimeout(function() {
-				_masterSwitch.setState('OFF');
-			}, _delay);
-		}
+		console.log('Listening for events in cellar...');
 
 		_motionSensor.on('ON', function() {
 
@@ -42,24 +56,33 @@ var Module = function() {
 			if (_lightsActive) {
 				_masterSwitch.turnOn();
 
-				setTimer();
+				// Turn off in 30 minutes
+				_turnOffTimer.setTimer(1000 * 60 * 30, function() {
+					console.log('Turning off lights in cellar.');
+					_masterSwitch.turnOff();
+				});
 
-				debug('Timer started in cellar. Lights should now be on.');
-			}
-			else {
-				debug('Movement detected in cellar but ignoring.');
+				console.log('Timer started in cellar. Lights should now be on.');
 			};
 		});
 
 
 		_masterSwitch.on('ON', function() {
 			_lightsActive = true;
-			debug('Motion sensor active in cellar.');
+			console.log('Motion sensor active in cellar.');
 		});
 
 		_masterSwitch.on('OFF', function() {
 			_lightsActive = false;
-			debug('Motion sensor deactivated in cellar.');
+			console.log('Motion sensor deactivated in cellar.');
+
+			_autoActivationTimer.setTimer(1000 * 60 * 60 * 8, function() {
+
+				if (!_lightsActive) {
+					console.log('Motion sensor in cellar is active again');
+					_lightsActive = true;
+				}
+			});
 		});
 
 
@@ -73,7 +96,7 @@ var Module = function() {
 		Schedule.scheduleJob(rule, function() {
 			if (!_lightsActive) {
 				_lightsActive = true;
-				debug('Motion sensor reactivated in cellar.');
+				console.log('Motion sensor reactivated in cellar.');
 			};
 		});
 

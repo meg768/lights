@@ -8,11 +8,11 @@ var sprintf = require('yow').sprintf;
 var isObject = require('yow').isObject;
 var prefixLogs = require('yow').prefixLogs;
 
-var ClockAnimation  = require('./scripts/clock-animation.js');
-var QuotesAnimation = require('./scripts/quotes-animation.js');
-var NewsAnimation   = require('./scripts/news-animation.js');
-var GifAnimation    = require('./scripts/gif-animation.js');
-var Matrix          = require('./scripts/matrix.js');
+var ClockAnimation  = require('./src/clock-animation.js');
+var QuotesAnimation = require('./src/quotes-animation.js');
+var NewsAnimation   = require('./src/news-animation.js');
+var GifAnimation    = require('./src/gif-animation.js');
+var Matrix          = require('./src/matrix.js');
 
 function debug() {
 	console.log.apply(this, arguments);
@@ -55,27 +55,27 @@ var App = function(argv) {
 		prefixLogs();
 
 		if (argv.listen) {
-			require('./scripts/socket-server.js')(argv);
+			require('./src/socket-server.js')(argv);
 		}
 
 		if (argv.all || argv.terrace) {
-			require('./scripts/terrace.js');
+			require('./src/terrace.js');
 		}
 
 		if (argv.all || argv.cellar) {
-			require('./scripts/cellar.js');
+			require('./src/cellar.js');
 		}
 
 		if (argv.all || argv.diningRoom) {
-			require('./scripts/dining-room.js');
+			require('./src/dining-room.js');
 		}
 
 		if (argv.all || argv.livingRoom) {
-			require('./scripts/living-room.js');
+			require('./src/living-room.js');
 		}
 
 		if (argv.all || argv.office) {
-			require('./scripts/office.js');
+			require('./src/office.js');
 		}
 
 		if (argv.all || argv.matrix) {
