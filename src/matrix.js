@@ -41,7 +41,6 @@ var Matrix = module.exports = function(url) {
 
 		_this.socket.on('idle', function() {
 			if (_animator != undefined) {
-				//console.log(sprintf('Running next animation for %s.', url));
 				_animator.runNextAnimation();
 			};
 		});

@@ -7,6 +7,7 @@ var tellstick  = require('./tellstick.js');
 var Module = function() {
 
 	var _lightSwitch = tellstick.getDevice('FK-01-01');
+	var _motionSensor = tellstick.getDevice('RV-01');
 
 
 	function debug(msg) {
@@ -40,6 +41,20 @@ var Module = function() {
 		];
 
 		return times;
+	}
+
+	function listen() {
+		_motionSensor.on('ON', function() {
+
+			// Make sure we don't get too many events at once
+			_motionSensor.pauseEvents(3000);
+
+			var matrix = require('./matrix-32x32.js');
+
+			matrix.emit('text', {text:'Movement'});
+
+		});
+
 	}
 
 
