@@ -53,8 +53,8 @@ var Module = function() {
 
 			var matrix = require('./matrix-32x32.js');
 
-		//	matrix.emit('stop', {id:729, priority:'normal'});
-			matrix.emit('emoji', {id:729, priority:'high'});
+			matrix.emit('stop');
+			matrix.emit('emoji', {id:729, priority:'!'});
 
 		});
 
