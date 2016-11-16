@@ -47,12 +47,13 @@ var Module = function() {
 		_motionSensor.on('ON', function() {
 
 			console.log('Movement in the office...')
+
 			// Make sure we don't get too many events at once
-			_motionSensor.pauseEvents(3000);
+			_motionSensor.pauseEvents(10000);
 
 			var matrix = require('./matrix-64x32.js');
 
-			matrix.emit('text', {text:'Movement'});
+			matrix.emit('emoji', {id:750});
 
 		});
 
