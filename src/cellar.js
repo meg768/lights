@@ -5,33 +5,10 @@ var sprintf      = require('yow').sprintf;
 var random       = require('yow').random;
 var isFunction   = require('yow').isFunction;
 var suncalc      = require('suncalc');
+var Timer        = require('yow/timer');
 
 var tellstick  = require('./tellstick.js');
 
-var Timer = function() {
-
-	var _this = this;
-	var _timer = undefined;
-
-	_this.cancel = function() {
-		if (_timer != undefined)
-			clearTimeout(_timer);
-
-		_timer = undefined;
-	};
-
-	_this.setTimer = function(delay, fn) {
-		if (delay == undefined)
-			delay = 3000;
-
-		if (_timer != undefined)
-			clearTimeout(_timer);
-
-		_timer = setTimeout(fn, delay);
-
-	};
-
-};
 
 
 var Module = function() {
