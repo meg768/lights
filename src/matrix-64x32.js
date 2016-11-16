@@ -16,4 +16,4 @@ animations.push(new NewsAnimation(matrix));
 animations.push(new ClockAnimation(matrix));
 animations.push(new QuotesAnimation(matrix));
 
-matrix.runAnimations(animations);
+//matrix.runAnimations(animations);
