@@ -1,7 +1,7 @@
-var sprintf    = require('yow').sprintf;
-var extend     = require('yow').extend;
-var isArray    = require('yow').isArray;
-var isString   = require('yow').isString;
+var sprintf    = require('yow/sprintf');
+var extend     = require('yow/extend');
+var isArray    = require('yow/is').isArray;
+var isString   = require('yow/is').isString;
 
 var Animator   = require('./animator.js');
 

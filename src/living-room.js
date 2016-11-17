@@ -1,7 +1,8 @@
 var Schedule    = require('node-schedule');
-var sprintf     = require('yow').sprintf;
+var sprintf     = require('yow/sprintf');
+var random      = require('yow/random');
+
 var suncalc     = require('suncalc');
-var random      = require('yow').random;
 var tellstick   = require('./tellstick.js');
 
 // 07:00 ON

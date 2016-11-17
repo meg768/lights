@@ -1,11 +1,11 @@
 var util         = require('util');
 var EventEmitter = require('events').EventEmitter;
 var Schedule     = require('node-schedule');
-var sprintf      = require('yow').sprintf;
-var random       = require('yow').random;
-var isFunction   = require('yow').isFunction;
-var suncalc      = require('suncalc');
+var sprintf      = require('yow/sprintf');
+var random       = require('yow/random');
 var Timer        = require('yow/timer');
+var isFunction   = require('yow/is').isFunction;
+var suncalc      = require('suncalc');
 
 var tellstick  = require('./tellstick.js');
 

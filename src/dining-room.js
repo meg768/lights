@@ -1,5 +1,5 @@
 var Schedule    = require('node-schedule');
-var sprintf     = require('yow').sprintf;
+var sprintf     = require('yow/sprintf');
 var suncalc     = require('suncalc');
 var tellstick   = require('./tellstick.js');
 

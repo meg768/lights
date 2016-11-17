@@ -1,9 +1,9 @@
 var Schedule   = require('node-schedule');
 
-var sprintf    = require('yow').sprintf;
-var random     = require('yow').random;
-var isArray    = require('yow').isArray;
-var isString   = require('yow').isString;
+var sprintf    = require('yow/sprintf');
+var random     = require('yow/random');
+var isArray    = require('yow/is').isArray;
+var isString   = require('yow/is').isString;
 
 
 

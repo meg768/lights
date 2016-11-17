@@ -3,10 +3,10 @@
 var fs = require('fs');
 var util = require('util');
 var Path = require('path');
-var mkpath = require('yow').mkpath;
-var sprintf = require('yow').sprintf;
-var isObject = require('yow').isObject;
-var prefixLogs = require('yow').prefixLogs;
+var sprintf = require('yow/sprintf');
+var mkpath = require('yow/fs').mkpath;
+var isObject = require('yow/is').isObject;
+var prefixLogs = require('yow/logs').prefix;
 
 
 function debug() {

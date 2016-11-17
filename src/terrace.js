@@ -1,7 +1,7 @@
 var Schedule   = require('node-schedule');
-var sprintf    = require('yow').sprintf;
-var isDate     = require('yow').isDate;
-var isString   = require('yow').isString;
+var sprintf    = require('yow/sprintf');
+var isDate     = require('yow/is').isDate;
+var isString   = require('yow/is').isString;
 var suncalc    = require('suncalc');
 
 var tellstick  = require('./tellstick.js');
