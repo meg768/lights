@@ -5,7 +5,7 @@ var isString   = require('yow/is').isString;
 
 var Animator   = require('./animator.js');
 
-var Matrix = module.exports = function(url, animations) {
+var Matrix = module.exports = function(url, animators) {
 
 	var _animator = undefined;
 	var _this = this;
@@ -28,8 +28,13 @@ var Matrix = module.exports = function(url, animations) {
 		_this.socket.emit('emoji', {id:435, pause:1, priority:'!'});
 	};
 
+
 	function run() {
 		console.log(sprintf('Matrix display %s active.', url));
+
+		var animations = animators.map(function(animator) {
+			return new animator(_this);
+		});
 
 		_animator = new Animator(animations);
 		_running = true;

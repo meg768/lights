@@ -8,18 +8,19 @@ var GifAnimation    = require('./gif-animation.js');
 var Matrix          = require('./matrix.js');
 
 
+
 var animations = [];
 
-animations.push(new ClockAnimation(matrix));
-animations.push(new GifAnimation(matrix));
+animations.push(ClockAnimation);
+animations.push(GifAnimation);
 
-animations.push(new ClockAnimation(matrix));
-animations.push(new NewsAnimation(matrix));
+animations.push(ClockAnimation);
+animations.push(NewsAnimation);
 
-animations.push(new ClockAnimation(matrix));
-animations.push(new GifAnimation(matrix));
+animations.push(ClockAnimation);
+animations.push(GifAnimation);
 
-animations.push(new ClockAnimation(matrix));
-animations.push(new QuotesAnimation(matrix));
+animations.push(ClockAnimation);
+animations.push(QuotesAnimation);
 
 var matrix = module.exports = new Matrix('http://85.24.190.138:3003/hzeller-matrix', animations);
