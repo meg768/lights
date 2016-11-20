@@ -217,7 +217,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 	function fetchWeather() {
 
 		return new Promise(function(resolve, reject) {
-			console.log('fetching w');
+
 			var Gopher = require('yow/gopher');
 			var yahoo      = new Gopher('https://query.yahooapis.com');
 
