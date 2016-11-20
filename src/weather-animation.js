@@ -4,7 +4,7 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var matrix = require('./matrix-64x32.js');
+var matrix = require('./matrix-32x32.js');
 
 //var tellstick  = require('./tellstick.js');
 
@@ -228,11 +228,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 			query.callback = '';
 
 			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
-				var channel = data.query.results.channel;
-				var condition = channel.item.condition;
-				var forecast = channel.item.forecast;
-				console.log(forecast[1]);
-				resolve(channel);
+				resolve(data.query.results.channel.item);
 
 			})
 
@@ -258,10 +254,15 @@ var WeatherAnimation = module.exports = function(matrix) {
 		icon += '\uf009' + ' ';
 		icon += '\uf03c' + ' ';
 //		icon = "\f0b9";
-		matrix.emit('text', {text:icon, textColor:'blue', fontSize:22, fontName:'Weather'});
+//		matrix.emit('text', {text:icon, textColor:'blue', fontSize:22, fontName:'Weather'});
+//		matrix.emit('emoji', {id:43, pause:1});
 	});
-	fetchWeather().then(function() {
 
+	fetchWeather().then(function(weather) {
+		matrix.emit('emoji', {id:78, priority:'!'});
+		matrix.emit('text', {text:sprintf('Idag %s°', weather.condition.temp), textColor:'blue'});
+		matrix.emit('text', {text:sprintf('I morgon %s°/%s°', weather.forecast[1].low, weather.forecast[1].high), textColor:'blue'});
+		console.log(weather);
 	})
 	.catch(function(error){
 		console.log(error);

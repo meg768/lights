@@ -33,7 +33,7 @@ var Module = function() {
 
 		}
 		else {
-			console.log('Motion sensor active in cellar.');
+			console.log('Motion sensor in cellar is deactivated.');
 
 			_lightsActive = false;
 			_matrix.stopAnimations();
