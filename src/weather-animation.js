@@ -260,15 +260,23 @@ var WeatherAnimation = module.exports = function(matrix) {
 */
 
 	this.run = function() {
-		fetchWeather().then(function(weather) {
-			matrix.emit('emoji', {id:78, priority:'!'});
-			matrix.emit('text', {text:sprintf('Idag %s°', weather.condition.temp), textColor:'blue'});
-			matrix.emit('text', {text:sprintf('I morgon %s°/%s°', weather.forecast[1].low, weather.forecast[1].high), textColor:'blue'});
+
+		return new Promise(function(resolve, reject) {
+			fetchWeather().then(function(weather) {
+				matrix.emit('emoji', {id:78, priority:'!'});
+				matrix.emit('text', {text:sprintf('Idag %s°', weather.condition.temp), textColor:'blue'});
+				matrix.emit('text', {text:sprintf('I morgon %s°/%s°', weather.forecast[1].low, weather.forecast[1].high), textColor:'blue'});
+
+				resolve();
+			})
+			.catch(function(error){
+				reject(error);
+			});
 		})
-		.catch(function(error){
-			console.log(error);
+		.catch(function(error) {
+			reject(error);
 		});
 
-		
+
 	};
 };
