@@ -270,5 +270,3 @@ var WeatherAnimation = module.exports = function(matrix) {
 	});
 
 };
-
-new WeatherAnimation(matrix);
