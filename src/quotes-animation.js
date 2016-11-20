@@ -4,8 +4,6 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var tellstick  = require('./tellstick.js');
-
 var QuotesAnimation = module.exports = function(matrix) {
 
 	var _feeds = [
@@ -24,8 +22,8 @@ var QuotesAnimation = module.exports = function(matrix) {
 	function fetchQuotes(tickers) {
 
 		return new Promise(function(resolve, reject) {
-			var RequestAPI = require('rest-request');
-			var yahoo      = new RequestAPI('https://query.yahooapis.com');
+			var Gopher = require('yow/gopher');
+			var yahoo  = new Gopher('https://query.yahooapis.com');
 
 			var symbols = tickers;
 
@@ -36,14 +34,14 @@ var QuotesAnimation = module.exports = function(matrix) {
 				return '\'' + symbol + '\'';
 			});
 
-			var options = {};
+			var query = {};
 
-			options.q        = 'select * from yahoo.finance.quotes where symbol IN (' + symbols.join(',') + ')';
-			options.format   = 'json';
-			options.env      = 'store://datatables.org/alltableswithkeys';
-			options.callback = '';
+			query.q        = 'select * from yahoo.finance.quotes where symbol IN (' + symbols.join(',') + ')';
+			query.format   = 'json';
+			query.env      = 'store://datatables.org/alltableswithkeys';
+			query.callback = '';
 
-			yahoo.get('v1/public/yql', options).then(function(data) {
+			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
 				var items = data.query.results.quote;
 				var quotes = {};
 
