@@ -245,7 +245,20 @@ var WeatherAnimation = module.exports = function(matrix) {
 	}
 
 	matrix.socket.on('connect', function() {
-		matrix.emit('text', {text:'HEJ-'});
+		var icon = '\uf002';
+		icon += '\uf000' + ' ';
+		icon += '\uf001' + ' ';
+		icon += '\uf002' + ' ';
+		icon += '\uf003' + ' ';
+		icon += '\uf004' + ' ';
+		icon += '\uf005' + ' ';
+		icon += '\uf006' + ' ';
+		icon += '\uf007' + ' ';
+		icon += '\uf008' + ' ';
+		icon += '\uf009' + ' ';
+		icon += '\uf03c' + ' ';
+//		icon = "\f0b9";
+		matrix.emit('text', {text:icon, textColor:'blue', fontSize:22, fontName:'Weather'});
 	});
 	fetchWeather().then(function() {
 
@@ -256,4 +269,4 @@ var WeatherAnimation = module.exports = function(matrix) {
 
 };
 
-new WeatherAnimation();
+new WeatherAnimation(matrix);
