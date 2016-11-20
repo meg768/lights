@@ -39,7 +39,7 @@ var Module = function() {
 			_matrix.stopAnimations();
 
 			// Activate automatically after a time
-			_autoActivationTimer.setTimer(1000 * 60 * 60 * 0.05, function() {
+			_autoActivationTimer.setTimer(1000 * 60 * 60 * 8, function() {
 				setLightsActive(true);
 			});
 
