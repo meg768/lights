@@ -10,7 +10,6 @@ var suncalc      = require('suncalc');
 var tellstick  = require('./tellstick.js');
 
 
-
 var Module = function() {
 
 	var _motionSensor   = tellstick.getDevice('RV-02');
@@ -20,6 +19,7 @@ var Module = function() {
 
 	var _turnOffTimer        = new Timer();
 	var _autoActivationTimer = new Timer();
+	var _matrix              = require('./matrix-32x32.js');
 
 	var _lightsActive = true;
 
@@ -48,6 +48,7 @@ var Module = function() {
 
 		_masterSwitch.on('ON', function() {
 			_lightsActive = true;
+			_matrix.startAnimations();
 			console.log('Motion sensor active in cellar.');
 		});
 
@@ -55,7 +56,10 @@ var Module = function() {
 			_lightsActive = false;
 			console.log('Motion sensor deactivated in cellar. Activating again in 8 hours.');
 
-			_autoActivationTimer.setTimer(1000 * 60 * 60 * 8, function() {
+			_matrix.stopAnimations();
+
+			_autoActivationTimer.setTimer(1000 * 60 * 60 * 0.1, function() {
+				_matrix.startAnimations();
 
 				if (!_lightsActive) {
 					console.log('Motion sensor in cellar is active again');

@@ -5,10 +5,11 @@ var isString   = require('yow/is').isString;
 
 var Animator   = require('./animator.js');
 
-var Matrix = module.exports = function(url) {
+var Matrix = module.exports = function(url, animations) {
 
 	var _animator = undefined;
 	var _this = this;
+	var _running = false;
 
 	_this.socket = require('socket.io-client')(url);
 	_this.connected = false;
@@ -17,12 +18,21 @@ var Matrix = module.exports = function(url) {
 		return _this.socket.emit(name, options);
 	};
 
-	_this.runAnimations = function(animations) {
-		_animator = new Animator(animations);
+	_this.startAnimations = function() {
+		_running = true;
+		_this.socket.emit('emoji', {id:435, pause:1, priority:'low'});
+	};
+
+	_this.stopAnimations = function() {
+		_running = false;
+		_this.socket.emit('emoji', {id:435, pause:1, priority:'!'});
 	};
 
 	function run() {
 		console.log(sprintf('Matrix display %s active.', url));
+
+		_animator = new Animator(animations);
+		_running = true;
 
 		_this.socket.on('connect', function() {
 			console.log('Connected to display', url);
@@ -30,8 +40,7 @@ var Matrix = module.exports = function(url) {
 			_this.connected = true;
 
 			// Make a kick-start
-			if (_animator != undefined)
-				_animator.runNextAnimation('low');
+			_animator.runNextAnimation('low');
 		});
 
 		_this.socket.on('disconnect', function() {
@@ -40,8 +49,8 @@ var Matrix = module.exports = function(url) {
 		});
 
 		_this.socket.on('idle', function() {
-			if (_animator != undefined) {
-				_animator.runNextAnimation();
+			if (_running) {
+				_animator.runNextAnimation('low');
 			};
 		});
 
