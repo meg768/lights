@@ -23,6 +23,29 @@ var Module = function() {
 
 	var _lightsActive = true;
 
+	function setLightsActive(active) {
+
+		if (active) {
+			console.log('Motion sensor in cellar is active.');
+
+			_lightsActive = true;
+			_matrix.startAnimations();
+
+		}
+		else {
+			console.log('Motion sensor active in cellar.');
+
+			_lightsActive = false;
+			_matrix.stopAnimations();
+
+			// Activate automatically after a time
+			_autoActivationTimer.setTimer(1000 * 60 * 60 * 0.1, function() {
+				setLightsActive(true);
+			});
+
+		};
+
+	};
 
 	function listen() {
 		console.log('Listening for events in cellar...');
@@ -47,30 +70,14 @@ var Module = function() {
 
 
 		_masterSwitch.on('ON', function() {
-			_lightsActive = true;
-			_matrix.startAnimations();
-			console.log('Motion sensor active in cellar.');
+			setLightsActive(true);
 		});
 
 		_masterSwitch.on('OFF', function() {
-			_lightsActive = false;
-			console.log('Motion sensor deactivated in cellar. Activating again in 8 hours.');
-
-			_matrix.stopAnimations();
-
-			_autoActivationTimer.setTimer(1000 * 60 * 60 * 0.1, function() {
-				_matrix.startAnimations();
-
-				if (!_lightsActive) {
-					console.log('Motion sensor in cellar is active again');
-					_lightsActive = true;
-				}
-			});
+			setLightsActive(false);
 		});
 
-
 	}
-
 
 	function enableTimer() {
 		var timer = [];
