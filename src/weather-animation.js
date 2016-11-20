@@ -4,7 +4,7 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var matrix = require('./matrix-32x32.js');
+//var matrix = require('./matrix-32x32.js');
 
 //var tellstick  = require('./tellstick.js');
 
@@ -239,7 +239,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 		});
 
 	}
-
+/*
 	matrix.socket.on('connect', function() {
 		var icon = '\uf002';
 		icon += '\uf000' + ' ';
@@ -257,6 +257,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 //		matrix.emit('text', {text:icon, textColor:'blue', fontSize:22, fontName:'Weather'});
 //		matrix.emit('emoji', {id:43, pause:1});
 	});
+*/
 
 	fetchWeather().then(function(weather) {
 		matrix.emit('emoji', {id:78, priority:'!'});
