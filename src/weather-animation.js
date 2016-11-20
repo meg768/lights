@@ -4,7 +4,7 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var matrix = requiure('./matrix-64x32.js');
+var matrix = require('./matrix-64x32.js');
 
 //var tellstick  = require('./tellstick.js');
 
@@ -245,7 +245,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 	}
 
 	matrix.socket.on('connect', function() {
-		matrix.emit('text', {text:'HEJ'});
+		matrix.emit('text', {text:'HEJ-'});
 	});
 	fetchWeather().then(function() {
 
