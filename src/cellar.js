@@ -16,12 +16,12 @@ var Module = function() {
 	var _masterSwitch   = tellstick.getDevice('FK-02-01');
 	var _frontLights    = tellstick.getDevice('FK-02-02');
 	var _backLights     = tellstick.getDevice('FK-02-03');
+	var _lightsActive   = true;
 
 	var _turnOffTimer        = new Timer();
 	var _autoActivationTimer = new Timer();
 	var _matrix              = require('./matrix-32x32.js');
 
-	var _lightsActive = true;
 
 	function setLightsActive(active) {
 
