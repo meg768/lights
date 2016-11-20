@@ -259,14 +259,16 @@ var WeatherAnimation = module.exports = function(matrix) {
 	});
 */
 
-	fetchWeather().then(function(weather) {
-		matrix.emit('emoji', {id:78, priority:'!'});
-		matrix.emit('text', {text:sprintf('Idag %s°', weather.condition.temp), textColor:'blue'});
-		matrix.emit('text', {text:sprintf('I morgon %s°/%s°', weather.forecast[1].low, weather.forecast[1].high), textColor:'blue'});
-		console.log(weather);
-	})
-	.catch(function(error){
-		console.log(error);
-	});
+	this.run = function() {
+		fetchWeather().then(function(weather) {
+			matrix.emit('emoji', {id:78, priority:'!'});
+			matrix.emit('text', {text:sprintf('Idag %s°', weather.condition.temp), textColor:'blue'});
+			matrix.emit('text', {text:sprintf('I morgon %s°/%s°', weather.forecast[1].low, weather.forecast[1].high), textColor:'blue'});
+		})
+		.catch(function(error){
+			console.log(error);
+		});
 
+		
+	};
 };
