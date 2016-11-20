@@ -83,7 +83,7 @@ var Module = function() {
 		var timer = [];
 
 		timer.push({time:sprintf('%02d:%02d', random(20, 21), random(0, 59)), state:'ON'});
-		timer.push({time:sprintf('%02d:%02d', random(2, 3),   random(0, 59)), state:'OFF'});
+		timer.push({time:sprintf('%02d:%02d', random(1, 2),   random(0, 59)), state:'OFF'});
 
 		_frontLights.setTimer(timer);
 		_backLights.setTimer(timer);
