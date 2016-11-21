@@ -36,7 +36,6 @@ var Matrix = module.exports = function(url, animators) {
 			console.log('Animation failed.', error);
 
 			setTimeout(function() {
-				console.log('retrying');
 				runNextAnimation('low');
 			}, 0);
 

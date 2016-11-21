@@ -219,7 +219,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			var Gopher = require('yow/gopher');
-			var yahoo      = new Gopher('https://query.yahooapis.com');
+			var yahoo = new Gopher('https://query.yahooapis.com');
 
 			var query = {};
 
@@ -269,8 +269,10 @@ var WeatherAnimation = module.exports = function(matrix) {
 
 				resolve();
 			})
-			.catch(function(error){
-				reject(error);
+			.catch(function(error) {
+				matrix.emit('text', {text:'Inget väder tillgängligt'});
+				console.log('Error fetching weather.', error);
+				resolve();
 			});
 		});
 
