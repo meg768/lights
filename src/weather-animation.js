@@ -272,9 +272,6 @@ var WeatherAnimation = module.exports = function(matrix) {
 			.catch(function(error){
 				reject(error);
 			});
-		})
-		.catch(function(error) {
-			reject(error);
 		});
 
 
