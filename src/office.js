@@ -72,11 +72,11 @@ var Module = function() {
 
 				var position = suncalc.getPosition(new Date(),  55.7, 13.1833333);
 
-				if (position.altitude < 999.1) {
+				if (position.altitude < 0.1) {
 
 					_lightSwitch.turnOn();
 
-					_lightSwitchTimer.setTimer(1000 * 60 , function() {
+					_lightSwitchTimer.setTimer(1000 * 60 * 60 * 0.5, function() {
 						_lightSwitch.turnOff();
 					});
 
