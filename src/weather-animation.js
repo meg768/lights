@@ -228,7 +228,12 @@ var WeatherAnimation = module.exports = function(matrix) {
 			query.callback = '';
 
 			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
-				resolve(data.query.results.channel.item);
+				var results = data.query.results;
+
+				results = null;
+				var channel = results.channel;
+
+				resolve(channel.item);
 
 			})
 
