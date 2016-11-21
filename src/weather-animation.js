@@ -229,8 +229,6 @@ var WeatherAnimation = module.exports = function(matrix) {
 
 			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
 				var results = data.query.results;
-
-				results = null;
 				var channel = results.channel;
 
 				resolve(channel.item);
