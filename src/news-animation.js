@@ -89,6 +89,7 @@ var NewsAnimation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
+
 			if (!priority)
 				priority = 'normal';
 

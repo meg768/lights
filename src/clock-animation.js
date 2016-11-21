@@ -10,10 +10,11 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
 
-		if (!priority)
-			priority = 'normal';
-
 		return new Promise(function(resolve, reject) {
+
+			if (!priority)
+				priority = 'normal';
+
 
 			var now   = new Date();
 			var hue   = ((now.getHours() % 12) * 60 + now.getMinutes()) / 2;
