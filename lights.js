@@ -32,7 +32,6 @@ var App = function(argv) {
 		args.option('a', {alias:'all',         describe:'Control all lights', default:true});
 		args.option('L', {alias:'listen',      describe:'Start socket service', default:false});
 		args.option('p', {alias:'port',        describe:'Listen to specified port', default:3010});
-		args.option('m', {alias:'matrix',      describe:'Control matrix displays', default:false});
 
 		args.wrap(null);
 
@@ -73,10 +72,6 @@ var App = function(argv) {
 			require('./src/office.js');
 		}
 
-		if (argv.all || argv.matrix) {
-			require('./src/matrix-32x32.js');
-			require('./src/matrix-64x32.js');
-		}
 
 	}
 
