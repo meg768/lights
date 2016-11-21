@@ -99,7 +99,7 @@ var Device = function(socket, name) {
 					currentState = item.state;
 			});
 
-			_this.setState(currentState);
+			_this.setState(currentState, 5000);
 		}
 
 
