@@ -26,7 +26,8 @@ var Module = function() {
 		timer.push({time:sprintf('%02d:%02d', random(20, 21), random(0, 59)), state:'ON'});
 		timer.push({time:sprintf('%02d:%02d', random(0, 1),   random(0, 59)), state:'OFF'});
 
-		_lightSwitch.setTimer(timer);
+		tellstick.getDevice('FK-01-02').setTimer(timer);
+		tellstick.getDevice('FK-01-03').setTimer(timer);
 	}
 
 	function setActive(value) {

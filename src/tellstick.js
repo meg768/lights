@@ -39,7 +39,7 @@ var Device = function(socket, name) {
 	_this.pauseEvents = function(delay) {
 
 		if (delay == undefined)
-			delay = 4000;
+			delay = 3000;
 
 		if (_timer != undefined)
 			clearTimeout(_timer);
