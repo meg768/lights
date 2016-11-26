@@ -33,7 +33,7 @@ var NewsAnimation = module.exports = function(matrix) {
 
 		}
 	];
-
+/*
 
 	function fetchNews(url, path, query) {
 
@@ -84,11 +84,13 @@ var NewsAnimation = module.exports = function(matrix) {
 		});
 	};
 
-
+*/
 	this.run = function(priority) {
 
 		return new Promise(function(resolve, reject) {
 
+			var News = require('./news.js');
+			var news = new News();
 
 			if (!priority)
 				priority = 'normal';
@@ -99,7 +101,7 @@ var NewsAnimation = module.exports = function(matrix) {
 
 			matrix.emit('emoji', {id:123, priority:priority});
 
-			fetchNews(feed.url).then(function(news) {
+			news.fetch(feed.url).then(function(news) {
 
 				news = news.splice(0, 5);
 
