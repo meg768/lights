@@ -4,6 +4,8 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
+var YahooQuotes = require('./yahoo/quotes.js');
+
 var QuotesAnimation = module.exports = function(matrix) {
 
 	var _feeds = [
@@ -19,7 +21,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 		{symbol: 'CL=F',      name: 'Olja'},
 
 	];
-
+/*
 	function fetchQuotes(tickers) {
 
 		return new Promise(function(resolve, reject) {
@@ -73,11 +75,13 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 	}
 
-
+*/
 	this.run = function(priority) {
 
 
 		return new Promise(function(resolve, reject) {
+
+			var quotes = new YahooQuotes();
 
 			if (!priority)
 				priority = 'normal';
@@ -86,7 +90,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 				return item.symbol;
 			})
 
-			fetchQuotes(symbols).then(function(quotes) {
+			quotes.fetch(symbols).then(function(quotes) {
 
 				console.log('Displaying stock quotes...');
 
