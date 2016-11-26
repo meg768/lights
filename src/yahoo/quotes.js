@@ -8,7 +8,7 @@ var Quotes = module.exports = function() {
 
 	var _this = this;
 
-	_this.fetch(symbols) {
+	_this.fetch = function(symbols) {
 
 		return new Promise(function(resolve, reject) {
 			var Gopher = require('yow/gopher');
