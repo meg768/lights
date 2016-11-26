@@ -14,6 +14,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 		{symbol: '^FTSE',     name: 'FTSE'},
 		{symbol: '^HSI',      name: 'Hang Seng'},
 		{symbol: '^N225',     name: 'Nikkei'},
+		{symbol: 'PHI.ST',    name: 'PHI'},
 		{symbol: 'GC=F',      name: 'Guld'},
 		{symbol: 'CL=F',      name: 'Olja'},
 
