@@ -4,7 +4,7 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var YahooQuotes = require('./yahoo/quotes.js');
+var YahooQuotes = require('yow/yahoo-quotes');
 
 var QuotesAnimation = module.exports = function(matrix) {
 
