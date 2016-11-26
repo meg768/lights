@@ -30,17 +30,26 @@ var Quotes = module.exports = function() {
 
 			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
 				var items = data.query.results.quote;
+				var quotes = {};
 
 				if (!isArray(items))
 					items = [items];
 
+				items.forEach(function(item) {
+
+					var quote = {};
+					quote.price     = item.LastTradePriceOnly != null ? parseFloat(item.LastTradePriceOnly) : null;
+					quote.change    = item.PercentChange != null ? parseFloat(item.PercentChange) : null;
+					quote.volume    = item.Volume != null ? parseInt(item.Volume) : null;
+					quote.symbol    = item.symbol;
+					quote.name      = item.Name;
+
+					quotes[item.symbol] = quote;
+				});
+
 				resolve(quotes);
 
 			})
-
-			.catch (function(error) {
-				reject(error);
-			});
 
 		});
 
