@@ -105,17 +105,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 				return runQuery(db, 'SELECT * FROM stocks order by `order`');
 			})
 			.then(function(stocks) {
-				try {
-					displayStocks(stocks);
-
-				}
-				catch(error) {
-					console.log(error.stack);
-				}
-
-			})
-			.then(function() {
-				console.log('---------------------------------------------');
+				return displayStocks(stocks);
 			})
 			.catch(function(error) {
 				try {
