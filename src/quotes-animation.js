@@ -69,7 +69,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 				try {
 
-					//matrix.emit('emoji', {id:769, priority:priority});
+					matrix.emit('emoji', {id:769, priority:priority});
 
 					symbols.forEach(function(symbol) {
 
@@ -78,8 +78,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 						var change = sprintf('%s%.01f%%', quote.change > 0 ? '+' : '', quote.change);
 						var color  = quote.change >= 0 ? 'blue' : 'red';
 
-						//matrix.emit('text', {text:name + '   ' + change, textColor:color});
-						console.log('text', {text:name + ' ' + change, textColor:color});
+						matrix.emit('text', {text:name + '   ' + change, textColor:color});
 					});
 
 					resolve();
