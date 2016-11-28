@@ -8,104 +8,86 @@ var YahooQuotes = require('yow/yahoo-quotes');
 
 var QuotesAnimation = module.exports = function(matrix) {
 
-	var _feeds = [
-
-		{symbol: '^OMXS30',   name: 'OMX'},
-		{symbol: '^GSPC',     name: 'S&P500'},
-		{symbol: '^GDAXI',    name: 'DAX'},
-		{symbol: '^FTSE',     name: 'FTSE'},
-		{symbol: '^HSI',      name: 'Hang Seng'},
-		{symbol: '^N225',     name: 'Nikkei'},
-		{symbol: 'PHI.ST',    name: 'PHI'},
-		{symbol: 'GC=F',      name: 'Guld'},
-		{symbol: 'CL=F',      name: 'Olja'},
-
-	];
-/*
-	function fetchQuotes(tickers) {
+	function connectToMySQL() {
 
 		return new Promise(function(resolve, reject) {
-			var Gopher = require('yow/gopher');
-			var yahoo  = new Gopher('https://query.yahooapis.com');
+			var MySQL = require('mysql');
 
-			var symbols = tickers;
-
-			if (isString(symbols))
-				symbols = [symbols];
-
-			symbols = symbols.map(function(symbol) {
-				return '\'' + symbol + '\'';
+			var connection = MySQL.createConnection({
+				host     : 'app-o.se',
+				user     : 'root',
+				password : 'potatismos',
+				database : 'ljuset'
 			});
 
-			var query = {};
-
-			query.q        = 'select * from yahoo.finance.quotes where symbol IN (' + symbols.join(',') + ')';
-			query.format   = 'json';
-			query.env      = 'store://datatables.org/alltableswithkeys';
-			query.callback = '';
-
-			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
-				var items = data.query.results.quote;
-				var quotes = {};
-
-				if (!isArray(items))
-					items = [items];
-
-				items.forEach(function(item) {
-
-					var quote = {};
-					quote.price     = item.LastTradePriceOnly != null ? parseFloat(item.LastTradePriceOnly) : null;
-					quote.change    = item.PercentChange != null ? parseFloat(item.PercentChange) : null;
-					quote.volume    = item.Volume != null ? parseInt(item.Volume) : null;
-					quote.symbol    = item.symbol;
-					quote.name      = item.Name;
-
-					quotes[item.symbol] = quote;
-				});
-
-				resolve(quotes);
-
-			})
-
-			.catch (function(error) {
-				reject(error);
+			connection.connect(function(error) {
+				if (error)
+					reject(error);
+				else
+					resolve(connection);
 			});
 
 		});
 
 	}
 
-*/
-	this.run = function(priority) {
-
+	// Gör om en mysql-fråga till en promise för att slippa callbacks/results/errors
+	function runQuery(db, sql, options) {
 
 		return new Promise(function(resolve, reject) {
 
-			var quotes = new YahooQuotes();
+			var query = db.query(sql, options, function(error, result) {
+				if (error)
+					reject(error);
+				else
+					resolve(result);
+			});
 
-			if (!priority)
-				priority = 'normal';
+			// Skriver ut frågan helt enkelt i klartext
+			console.log(query.sql);
 
-			var symbols = _feeds.map(function(item) {
-				return item.symbol;
-			})
+		});
 
-			quotes.fetch(symbols).then(function(quotes) {
+	}
 
-				console.log('Displaying stock quotes...');
+	function displayStocks(stocks) {
 
-				matrix.emit('emoji', {id:769, priority:priority});
+		return new Promise(function(resolve, reject) {
 
-				_feeds.forEach(function(feed) {
-					var quote  = quotes[feed.symbol];
-					var name   = feed.name;
-					var change = sprintf('%s%.01f%%', quote.change > 0 ? '+' : '', quote.change);
-					var color  = quote.change >= 0 ? 'blue' : 'red';
+			var yahooQuotes = new YahooQuotes();
+			var stockNames = {};
 
-					matrix.emit('text', {text:name + '   ' + change, textColor:color});
-				});
+			var symbols = stocks.map(function(stock) {
+				return stock.symbol;
+			});
 
-				resolve();
+			stocks.forEach(function(stock) {
+				stockNames[stock.symbol] = stock.name;
+			});
+
+			yahooQuotes.fetch(symbols).then(function(quotes) {
+
+				try {
+
+					//matrix.emit('emoji', {id:769, priority:priority});
+
+					symbols.forEach(function(symbol) {
+
+						var quote  = quotes[symbol];
+						var name   = stockNames[symbol];
+						var change = sprintf('%s%.01f%%', quote.change > 0 ? '+' : '', quote.change);
+						var color  = quote.change >= 0 ? 'blue' : 'red';
+
+						//matrix.emit('text', {text:name + '   ' + change, textColor:color});
+						console.log('text', {text:name + ' ' + change, textColor:color});
+					});
+
+					resolve();
+
+				}
+				catch(error) {
+					console.log(error.stack);
+				}
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
@@ -116,5 +98,40 @@ var QuotesAnimation = module.exports = function(matrix) {
 		});
 
 	};
+
+	this.run = function(priority) {
+		return new Promise(function(resolve, reject) {
+			connectToMySQL().then(function(db) {
+				return runQuery(db, 'SELECT * FROM stocks order by `order`');
+			})
+			.then(function(stocks) {
+				try {
+					displayStocks(stocks);
+
+				}
+				catch(error) {
+					console.log(error.stack);
+				}
+
+			})
+			.then(function() {
+				console.log('---------------------------------------------');
+			})
+			.catch(function(error) {
+				try {
+					console.log('Error fetching quotes.', error);
+					resolve();
+					matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
+
+				}
+				catch(error) {
+					console.log('Error fetching quotes.', error.stack);
+					resolve();
+				}
+			});
+
+		});
+	}
+
 
 };
