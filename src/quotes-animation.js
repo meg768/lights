@@ -50,7 +50,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 	}
 
-	function displayStocks(stocks) {
+	function displayStocks(priority, stocks) {
 
 		return new Promise(function(resolve, reject) {
 
@@ -104,7 +104,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 				return runQuery(db, 'SELECT * FROM stocks order by `order`');
 			})
 			.then(function(stocks) {
-				return displayStocks(stocks);
+				return displayStocks(priority, stocks);
 			})
 			.catch(function(error) {
 				try {
