@@ -4,6 +4,8 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
+var Gopher     = require('yow/gopher');
+
 var Quotes = module.exports = function() {
 
 	var _this = this;
@@ -11,7 +13,6 @@ var Quotes = module.exports = function() {
 	_this.fetch = function(symbols) {
 
 		return new Promise(function(resolve, reject) {
-			var Gopher = require('yow/gopher');
 			var yahoo  = new Gopher('https://query.yahooapis.com');
 
 			if (isString(symbols))

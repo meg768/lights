@@ -4,51 +4,29 @@ var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var YahooQuotes = require('yow/yahoo-quotes');
+var YahooQuotes = require('./yahoo-quotes.js');
+var MongoDB     = require('mongodb');
 
-var QuotesAnimation = module.exports = function(matrix) {
+var Animation = module.exports = function(matrix) {
 
-	function connectToMySQL() {
 
+	function getStocks() {
 		return new Promise(function(resolve, reject) {
-			var MySQL = require('mysql');
 
-			var connection = MySQL.createConnection({
-				host     : 'app-o.se',
-				user     : 'root',
-				password : 'potatismos',
-				database : 'ljuset'
+			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
+				return db.collection('config').findOne({type:'quotes'});
+			})
+			.then(function(item) {
+				resolve(item.stocks);
+			})
+			.catch(function (error) {
+				reject(error);
 			});
-
-			connection.connect(function(error) {
-				if (error)
-					reject(error);
-				else
-					resolve(connection);
-			});
-
 		});
 
 	}
 
-	// Gör om en mysql-fråga till en promise för att slippa callbacks/results/errors
-	function runQuery(db, sql, options) {
 
-		return new Promise(function(resolve, reject) {
-
-			var query = db.query(sql, options, function(error, result) {
-				if (error)
-					reject(error);
-				else
-					resolve(result);
-			});
-
-			// Skriver ut frågan helt enkelt i klartext
-			console.log(query.sql);
-
-		});
-
-	}
 
 	function displayStocks(priority, stocks) {
 
@@ -100,10 +78,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
 		return new Promise(function(resolve, reject) {
-			connectToMySQL().then(function(db) {
-				return runQuery(db, 'SELECT * FROM stocks order by `order`');
-			})
-			.then(function(stocks) {
+			getStocks().then(function(stocks) {
 				return displayStocks(priority, stocks);
 			})
 			.catch(function(error) {

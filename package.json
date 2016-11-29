@@ -21,6 +21,7 @@
     "client-request": "^1.1.0",
     "color-convert": "^1.5.0",
     "feedparser": "^1.1.5",
+    "mongodb": "^2.2.12",
     "mysql": "^2.12.0",
     "node-schedule": "^1.2.0",
     "request": "^2.76.0",
