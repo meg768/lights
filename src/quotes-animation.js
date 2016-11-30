@@ -3,6 +3,7 @@ var random     = require('yow/random');
 
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
+var Timer      = require('yow/timer');
 
 var YahooQuotes = require('./yahoo-quotes.js');
 var MongoDB     = require('mongodb');
@@ -10,6 +11,7 @@ var MongoDB     = require('mongodb');
 var Animation = module.exports = function(matrix) {
 
 	var _stocks = [];
+	var _timer = new Timer();
 
 	function getStocks() {
 
@@ -23,6 +25,12 @@ var Animation = module.exports = function(matrix) {
 				return db.collection('config').findOne({type:'quotes'});
 			})
 			.then(function(item) {
+
+				// Invalidate after a while
+				_timer.setTimer(1000*60*60, function() {
+					_stocks = [];
+				});
+
 				resolve(_stocks = item.stocks);
 			})
 			.catch(function (error) {
@@ -82,8 +90,10 @@ var Animation = module.exports = function(matrix) {
 
 	};
 
+
 	this.run = function(priority) {
 		return new Promise(function(resolve, reject) {
+
 			getStocks().then(function(stocks) {
 				return displayStocks(priority, stocks);
 			})

@@ -2,6 +2,7 @@ var sprintf    = require('yow/sprintf');
 var random     = require('yow/random');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
+var Timer      = require('yow/timer');
 
 var MongoDB    = require('mongodb');
 
@@ -10,7 +11,7 @@ var NewsAnimation = module.exports = function(matrix) {
 
 	var _index = 0;
 	var _feeds = [];
-
+	var _timer = new Timer();
 
 	function getNewsFeeds() {
 
@@ -24,6 +25,12 @@ var NewsAnimation = module.exports = function(matrix) {
 				return db.collection('config').findOne({type:'news'});
 			})
 			.then(function(item) {
+
+				// Invalidate after a while
+				_timer.setTimer(1000*60*60, function() {
+					_feeds = [];
+				});
+
 				resolve(_feeds = item.feeds);
 			})
 			.catch(function (error) {
