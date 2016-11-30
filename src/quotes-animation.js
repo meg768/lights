@@ -9,15 +9,21 @@ var MongoDB     = require('mongodb');
 
 var Animation = module.exports = function(matrix) {
 
+	var _stocks = [];
 
 	function getStocks() {
+
+		if (_stocks.length > 0)
+			return Promise.resolve(_stocks);
+
 		return new Promise(function(resolve, reject) {
 
 			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
+				console.log('Fetching stock symbols...');
 				return db.collection('config').findOne({type:'quotes'});
 			})
 			.then(function(item) {
-				resolve(item.stocks);
+				resolve(_stocks = item.stocks);
 			})
 			.catch(function (error) {
 				reject(error);

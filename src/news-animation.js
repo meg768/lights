@@ -9,16 +9,22 @@ var MongoDB    = require('mongodb');
 var NewsAnimation = module.exports = function(matrix) {
 
 	var _index = 0;
+	var _feeds = [];
 
 
 	function getNewsFeeds() {
+
+		if (_feeds.length > 0)
+			return Promise.resolve(_feeds);
+
 		return new Promise(function(resolve, reject) {
 
 			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
+				console.log('Fetching RSS feeds...');
 				return db.collection('config').findOne({type:'news'});
 			})
 			.then(function(item) {
-				resolve(item.feeds);
+				resolve(_feeds = item.feeds);
 			})
 			.catch(function (error) {
 				reject(error);
