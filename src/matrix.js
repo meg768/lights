@@ -8,8 +8,9 @@ var Matrix = module.exports = function(url, animators) {
 	var _this = this;
 
 	var _animations = [];
-	var _index = -1;
+	var _index = 0;
 	var _running = false;
+	var _busy = false;
 
 	_this.socket = require('socket.io-client')(url);
 	_this.connected = false;
@@ -28,25 +29,29 @@ var Matrix = module.exports = function(url, animators) {
 		_this.socket.emit('emoji', {id:435, pause:1, priority:'!'});
 	};
 
-	function runAnimation(animation, priority) {
-		animation.run(priority).then(function() {
+	function getNextAnimation() {
+		var index = (_index + 1) % _animations.length;
+		var animation = _animations[_index];
 
-		})
-		.catch(function(error) {
-			console.log('Animation failed.', error);
+		return animation;
+	}
 
-			setTimeout(function() {
-				runNextAnimation('low');
-			}, 0);
-
-		});
-	};
 
 	function runNextAnimation(priority) {
 
-		if (_running && _animations.length > 0) {
+		if (_running && _animations.length > 0 && !_busy) {
+			var animation = _animations[_index % _animations.length];
+
+			_busy = true;
 			_index = (_index + 1) % _animations.length;
-			runAnimation(_animations[_index], priority);
+
+			animation.run(priority).then(function() {
+				_busy = false;
+			})
+			.catch(function(error) {
+				console.log('Animation failed.', error.stack);
+				_busy = false;
+			});
 		}
 	}
 
@@ -75,7 +80,7 @@ var Matrix = module.exports = function(url, animators) {
 		});
 
 		_this.socket.on('idle', function() {
-			runNextAnimation('low');
+			runNextAnimation();
 		});
 
 	};

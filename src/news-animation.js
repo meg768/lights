@@ -21,17 +21,21 @@ var NewsAnimation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-				console.log('Fetching RSS feeds...');
-				return db.collection('config').findOne({type:'news'});
-			})
-			.then(function(item) {
 
-				// Invalidate after a while
-				_timer.setTimer(1000*60*60, function() {
-					_feeds = [];
+				db.collection('config').findOne({type:'news'}).then(function(item) {
+
+					db.close();
+
+					// Invalidate after a while
+					_timer.setTimer(1000*60*60, function() {
+						_feeds = [];
+					});
+
+					resolve(_feeds = item.feeds);
+				})
+				.catch(function (error) {
+					throw error;
 				});
-
-				resolve(_feeds = item.feeds);
 			})
 			.catch(function (error) {
 				reject(error);
@@ -83,7 +87,13 @@ var NewsAnimation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			getNewsFeeds().then(function(feeds) {
-				return displayFeed(priority, feeds);
+				displayFeed(priority, feeds).then(function() {
+					resolve();
+				})
+				.catch(function(error) {
+					throw error;
+				});
+
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inga nyheter tillgängliga'});

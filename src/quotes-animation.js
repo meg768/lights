@@ -21,17 +21,22 @@ var Animation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-				console.log('Fetching stock symbols...');
-				return db.collection('config').findOne({type:'quotes'});
-			})
-			.then(function(item) {
 
-				// Invalidate after a while
-				_timer.setTimer(1000*60*60, function() {
-					_stocks = [];
-				});
+				db.collection('config').findOne({type:'quotes'}).then(function(item) {
 
-				resolve(_stocks = item.stocks);
+					db.close();
+
+					// Invalidate after a while
+					_timer.setTimer(1000*60*60, function() {
+						_stocks = [];
+					});
+
+					resolve(_stocks = item.stocks);
+				})
+				.catch(function(error) {
+					throw error;
+				})
+
 			})
 			.catch(function (error) {
 				reject(error);
@@ -70,7 +75,7 @@ var Animation = module.exports = function(matrix) {
 						var change = sprintf('%s%.01f%%', quote.change > 0 ? '+' : '', quote.change);
 						var color  = quote.change >= 0 ? 'blue' : 'red';
 
-						matrix.emit('text', {text:name + '   ' + change, textColor:color});
+						matrix.emit('text', {text:name + '  ' + change, textColor:color});
 					});
 
 					resolve();
@@ -95,19 +100,17 @@ var Animation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			getStocks().then(function(stocks) {
-				return displayStocks(priority, stocks);
+				displayStocks(priority, stocks).then(function() {
+					resolve();
+				})
+				.catch(function(error) {
+					throw error;
+				});
 			})
 			.catch(function(error) {
-				try {
-					console.log('Error fetching quotes.', error);
-					resolve();
-					matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
-
-				}
-				catch(error) {
-					console.log('Error fetching quotes.', error.stack);
-					resolve();
-				}
+				console.log('Error fetching quotes.', error);
+				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
+				resolve();
 			});
 
 		});

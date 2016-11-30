@@ -4,8 +4,6 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Colors     = require('color-convert');
 
-var tellstick  = require('./tellstick.js');
-
 var QuotesAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
@@ -29,6 +27,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 			options.iterations  = 2;
 
 			matrix.emit('text', options);
+
 			resolve();
 		});
 	};
