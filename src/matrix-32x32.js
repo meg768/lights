@@ -14,7 +14,7 @@ var Matrix            = require('./matrix.js');
 
 
 var animations = [];
-/*
+
 animations.push(ClockAnimation);
 animations.push(WeatherAnimation);
 
@@ -35,6 +35,6 @@ animations.push(GifAnimation);
 
 animations.push(ClockAnimation);
 animations.push(ExchangeAnimation);
-*/
+
 
 var matrix = module.exports = new Matrix('http://85.24.190.138:3003/hzeller-matrix', animations);
