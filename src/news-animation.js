@@ -55,8 +55,6 @@ var NewsAnimation = module.exports = function(matrix) {
 			if (!priority)
 				priority = 'normal';
 
-			console.log('Displaying news...');
-
 			var feed = feeds[_index++ % feeds.length];
 
 			matrix.emit('emoji', {id:123, priority:priority});
@@ -66,7 +64,6 @@ var NewsAnimation = module.exports = function(matrix) {
 				news = news.splice(0, 5);
 
 				news.forEach(function(item) {
-					console.log(item.title);
 					matrix.emit('text', {text:item.title, textColor:feed.color});
 				});
 

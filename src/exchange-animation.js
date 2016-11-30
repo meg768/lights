@@ -49,8 +49,6 @@ var Animation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
-			console.log('Running exchange animation');
-
 			getSymbols().then(function(symbols) {
 				var yahoo = new YahooExchange();
 
@@ -77,14 +75,14 @@ var Animation = module.exports = function(matrix) {
 				})
 
 				.catch(function(error) {
-					console.log('redirecing error', error.stack);
 					throw error;
 				});
 
 			})
 			.catch(function(error) {
-				//matrix.emit('text', {text:'Inget väder tillgängligt'});
-				console.log('Error fetching exchange.', error);
+				matrix.emit('text', {text:'Inget valutor tillgängliga'});
+				console.log('Error fetching exchange.');
+				console.log(error.stack);
 				resolve();
 			});
 		});
