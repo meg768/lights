@@ -21,7 +21,6 @@ var Animation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-				console.log('Fetching stock rates...');
 
 				db.collection('config').findOne({type:'exchange'}).then(function(item) {
 					db.close();
@@ -82,7 +81,7 @@ var Animation = module.exports = function(matrix) {
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inget valutor tillgängliga'});
 				console.log('Error fetching exchange.');
-				console.log(error.stack);
+				console.log(error);
 				resolve();
 			});
 		});

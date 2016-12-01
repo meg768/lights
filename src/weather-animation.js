@@ -27,7 +27,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inget väder tillgängligt'});
 				console.log('Error fetching weather.');
-				console.log(error.stack);
+				console.log(error);
 				resolve();
 			});
 		});

@@ -30,7 +30,6 @@ var GifAnimation = module.exports = function(matrix) {
 	this.run = function(priority) {
 
 		return new Promise(function(resolve, reject) {
-			console.log('Running GIF-animation...');
 
 			// Move on to next
 			_index = (_index + 1)  % _animations.length;

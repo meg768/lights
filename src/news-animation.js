@@ -70,9 +70,7 @@ var NewsAnimation = module.exports = function(matrix) {
 				resolve();
 			})
 			.catch(function(error) {
-				matrix.emit('text', {text:'Inga nyheter tillgängliga'});
-				console.log('Error fetching news.', error);
-				resolve();
+				reject(error);
 			});
 
 		});
@@ -94,7 +92,8 @@ var NewsAnimation = module.exports = function(matrix) {
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inga nyheter tillgängliga'});
-				console.log('Error fetching news.', error);
+				console.log('Error fetching news.');
+				console.log(error);
 				resolve();
 			});
 
