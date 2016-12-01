@@ -76,7 +76,7 @@ var Module = function() {
 
 					_lightSwitch.turnOn();
 
-					_lightSwitchTimer.setTimer(1000 * 60 * 60 * 0.5, function() {
+					_lightSwitchTimer.setTimer(1000 * 60 * 60 * 1, function() {
 						_lightSwitch.turnOff();
 					});
 
