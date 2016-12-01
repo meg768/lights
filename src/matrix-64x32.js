@@ -25,7 +25,4 @@ animations.push(WeatherAnimation);
 animations.push(ClockAnimation);
 animations.push(ExchangeAnimation);
 
-animations = [WeatherAnimation];
-
-
 var matrix = module.exports = new Matrix('http://85.24.190.138:3004/hzeller-matrix', animations);
