@@ -81,7 +81,7 @@ var Animation = module.exports = function(matrix) {
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inget valutor tillgängliga'});
 				console.log('Error fetching exchange.');
-				console.log(error);
+				console.log(error.stack);
 				resolve();
 			});
 		});

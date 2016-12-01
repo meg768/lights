@@ -122,7 +122,8 @@ var Animation = module.exports = function(matrix) {
 				});
 			})
 			.catch(function(error) {
-				console.log('Error fetching quotes.', error);
+				console.log('Error fetching quotes.');
+				console.log(error.stack);
 				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
 				resolve();
 			});
