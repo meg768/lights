@@ -5,7 +5,6 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Timer      = require('yow/timer');
 
-var YahooQuotes = require('./yahoo-quotes.js');
 var MongoDB     = require('mongodb');
 
 var Animation = module.exports = function(matrix) {
@@ -45,13 +44,24 @@ var Animation = module.exports = function(matrix) {
 
 	}
 
+	function fetchQuotes(symbols) {
+		var yahoo = require('yahoo-finance');
+
+		return new Promise(function(resolve, reject) {
+			yahoo.snapshot({symbols: symbols, fields: ['s', 'n', 'l1', 'p2']}, function(error, snapshot) {
+				if (error)
+					reject(error);
+				else
+					resolve(snapshot);
+			});
+		});
+	}
 
 
 	function displayStocks(priority, stocks) {
 
 		return new Promise(function(resolve, reject) {
 
-			var yahooQuotes = new YahooQuotes();
 			var stockNames = {};
 
 			var symbols = stocks.map(function(stock) {
@@ -62,20 +72,25 @@ var Animation = module.exports = function(matrix) {
 				stockNames[stock.symbol] = stock.name;
 			});
 
-			yahooQuotes.fetch(symbols).then(function(quotes) {
+			fetchQuotes(symbols).then(function(quotes) {
 
 				try {
+					var snapshot = {};
+
+					quotes.forEach(function(quote) {
+						snapshot[quote.symbol] = quote;
+					});
 
 					matrix.emit('emoji', {id:769, priority:priority});
 
-					symbols.forEach(function(symbol) {
+					stocks.forEach(function(stock) {
+						var quote  = snapshot[stock.symbol];
+						var name   = stockNames[stock.symbol];
+						var change = parseFloat(quote.changeInPercent) * 100;
+						var text   = sprintf('%s%.01f%%', change > 0 ? '+' : '', change);
+						var color  = change >= 0 ? 'blue' : 'red';
 
-						var quote  = quotes[symbol];
-						var name   = stockNames[symbol];
-						var change = sprintf('%s%.01f%%', quote.change > 0 ? '+' : '', quote.change);
-						var color  = quote.change >= 0 ? 'blue' : 'red';
-
-						matrix.emit('text', {text:name + '  ' + change, textColor:color});
+						matrix.emit('text', {text:name + '  ' + text, textColor:color});
 					});
 
 					resolve();
@@ -94,7 +109,6 @@ var Animation = module.exports = function(matrix) {
 		});
 
 	};
-
 
 	this.run = function(priority) {
 		return new Promise(function(resolve, reject) {
