@@ -69,8 +69,6 @@ var WeatherAnimation = module.exports = function(matrix) {
 				if (isArray(weather))
 					weather = weather[0];
 
-				console.log(weather);
-
 				var current  = weather.current;
 				var forecast = undefined;
 				var today    = new Date(current.date);
