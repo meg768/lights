@@ -62,7 +62,7 @@ var Animation = module.exports = function(matrix) {
 						map[row.symbol] = row;
 					});
 
-					matrix.emit('emoji', {id:543, priority:priority});
+					matrix.emit('emoji', {id:534, priority:priority});
 
 					symbols.forEach(function(symbol) {
 						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbol].price);

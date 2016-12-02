@@ -49,7 +49,8 @@ var Matrix = module.exports = function(url, animators) {
 				_busy = false;
 			})
 			.catch(function(error) {
-				console.log('Animation failed.', error.stack);
+				console.log('Animation failed.');
+				console.log(error.stack);
 				_busy = false;
 			});
 		}

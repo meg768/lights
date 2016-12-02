@@ -1,21 +1,61 @@
 var sprintf    = require('yow/sprintf');
 var random     = require('yow/random');
+var Timer      = require('yow/timer');
 
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
+
+var MongoDB    = require('mongodb');
 
 
 
 var WeatherAnimation = module.exports = function(matrix) {
 
-	function fetchWeather() {
+	var _locations = [];
+	var _timer = new Timer();
+
+
+
+	function getLocations() {
+
+		if (_locations.length > 0)
+			return Promise.resolve(_locations);
+
+		return new Promise(function(resolve, reject) {
+
+			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
+
+				db.collection('config').findOne({type:'weather'}).then(function(item) {
+
+					db.close();
+
+					// Invalidate after a while
+					_timer.setTimer(1000*60*60, function() {
+						_locations = [];
+					});
+
+					resolve(_locations = item.locations);
+				})
+				.catch(function (error) {
+					throw error;
+				});
+			})
+			.catch(function (error) {
+				reject(error);
+			});
+		});
+
+	}
+
+	function fetchWeather(location) {
 
 		return new Promise(function(resolve, reject) {
 
 			try {
 				var weather = require('weather-js');
 
-				weather.find({search: 'Lund', degreeType: 'C'}, function(error, result) {
+				weather.find({search: location, degreeType: 'C'}, function(error, result) {
+
 					if (error)
 						reject(error);
 					else
@@ -30,41 +70,41 @@ var WeatherAnimation = module.exports = function(matrix) {
 		});
 	}
 
-	function translateSkyText(text) {
-		var skyText = {
-			'Cloudy'        : 'Molnigt',
-			'Mostly Cloudy' : 'Mestadels molnigt',
-			'Partly Cloudy' : 'Delvis molnigt',
 
-			'Rain'          : 'Regnigt',
-			'Light Rain'    : 'Lätt regn',
-			'Rain Showers'  : 'Regnskurar',
+	function displayWeather(location) {
 
-			'Sunny'         : 'Soligt',
-			'Partly Sunny'  : 'Delvis soligt',
-			'Mostly Sunny'  : 'Mestadels sol',
+		function translateSkyText(text) {
+			var skyText = {
+				'Cloudy'        : 'Molnigt',
+				'Mostly Cloudy' : 'Mestadels molnigt',
+				'Partly Cloudy' : 'Delvis molnigt',
 
-			'Snow'          : 'Snöigt',
-			'Light Snow'    : 'Lätt snöfall',
-			'T-Storms'      : 'Åska',
+				'Rain'          : 'Regnigt',
+				'Light Rain'    : 'Lätt regn',
+				'Rain Showers'  : 'Regnskurar',
 
-			'Clear'         : 'Klart',
-			'Mostly Clear'  : 'Mestadels klart'
-		};
+				'Sunny'         : 'Soligt',
+				'Partly Sunny'  : 'Delvis soligt',
+				'Mostly Sunny'  : 'Mestadels sol',
 
-		if (!skyText[text])
-			console.log(sprintf('Weather condition \'%s\' not defined in swedish.', text));
+				'Snow'          : 'Snöigt',
+				'Light Snow'    : 'Lätt snöfall',
+				'T-Storms'      : 'Åska',
 
-		return skyText[text] ? skyText[text] : text;
-	}
+				'Clear'         : 'Klart',
+				'Mostly Clear'  : 'Mestadels klart'
+			};
 
-	this.run = function(priority) {
+			if (!skyText[text])
+				console.log(sprintf('Weather condition \'%s\' not defined in swedish.', text));
+
+			return skyText[text] ? skyText[text] : text;
+		}
+
 
 		return new Promise(function(resolve, reject) {
 
-			matrix.emit('text', {text:'Väder', textColor:'blue'});
-
-			fetchWeather().then(function(weather) {
+			fetchWeather(location.key).then(function(weather) {
 
 				if (isArray(weather))
 					weather = weather[0];
@@ -88,7 +128,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 				});
 
 				var text = '';
-				text += sprintf('Nu %s, %s°', translateSkyText(current.skytext).toLowerCase(), current.temperature);
+				text += sprintf('%s - %s, %s°', location.name, translateSkyText(current.skytext).toLowerCase(), current.temperature);
 
 				if (forecast)
 					text += sprintf(' - i morgon %s, %s° (%s°)', translateSkyText(forecast.skytextday).toLowerCase(), forecast.high, forecast.low);
@@ -98,13 +138,42 @@ var WeatherAnimation = module.exports = function(matrix) {
 				resolve();
 			})
 			.catch(function(error) {
-				matrix.emit('text', {text:'Inget väder tillgängligt'});
-				console.log('Error fetching weather.');
-				console.log(error.stack);
-				resolve();
+				reject(error);
 			});
 		});
+	};
 
+
+	this.run = function(priority) {
+
+		return new Promise(function(resolve, reject) {
+
+			getLocations().then(function(locations) {
+
+				matrix.emit('emoji', {id:616, priority:priority});
+
+				var promise = Promise.resolve();
+
+				locations.forEach(function(location) {
+					promise = promise.then(function() {
+						return displayWeather(location);
+					})
+				});
+
+				promise.then(function() {
+					resolve();
+				})
+
+				.catch(function(error) {
+					reject(error);
+				});
+
+			})
+			.catch(function(error) {
+				matrix.emit('text', {text:'Inget väder tillgängligt'});
+				reject(error);
+			});
+		});
 
 	};
 
