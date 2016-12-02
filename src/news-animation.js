@@ -51,42 +51,50 @@ var NewsAnimation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
-			var news = [];
-			var parser  = new FeedParser();
-			var request = Request(url);
+			try {
+				var news = [];
+				var parser  = new FeedParser();
+				var request = Request(url);
 
-			request.on('response', function (result) {
+				request.on('response', function (result) {
 
-				try {
-					if (result.statusCode != 200) {
-						reject(new Error('Invalid status code'));
+					try {
+						if (result.statusCode != 200) {
+							reject(new Error('Invalid status code'));
+						}
+						else {
+							this.pipe(parser);
+						}
+
 					}
-					else {
-						this.pipe(parser);
+					catch(error) {
+						reject(error);
 					}
 
-				}
-				catch(error) {
+				});
+
+				parser.on('error', function(error) {
 					reject(error);
-				}
+				});
 
-			});
+				parser.on('end', function() {
+					resolve(news);
+				});
 
-			parser.on('error', function(error) {
-				reject(error);
-			});
+				parser.on('readable', function() {
+					var item = undefined;
 
-			parser.on('end', function() {
-				resolve(news);
-			});
+					while (item = this.read()) {
+						news.push(item);
+					}
+				});
 
-			parser.on('readable', function() {
-				var item = undefined;
+			}
+			catch(error) {
+				console.log('Something wrong with Request...');
+				resolve(error);
 
-				while (item = this.read()) {
-					news.push(item);
-				}
-			});
+			}
 
 		});
 	};
