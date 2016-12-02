@@ -9,27 +9,13 @@ var isObject = require('yow/is').isObject;
 var prefixLogs = require('yow/logs').prefix;
 
 
-var App = function() {
+class App  {
 
-	function foo() {
-		return new Promise(function(resolve, reject) {
-			console.log('Waiting');
-			setTimeout(function() {
-				resolve('KALLE');
-			}, 2000);
-		});
+	foo() {
+		console.log('asdgf');
 	}
-	function run() {
-
-		var x = await(foo());
-		console.log('Done');
-
-
-
-	};
-
-	run();
 
 };
 
-module.exports = new App();
+var x = new App();
+x.foo();
