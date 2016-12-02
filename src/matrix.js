@@ -48,10 +48,15 @@ var Matrix = module.exports = function(url, animators) {
 			animation.run(priority).then(function() {
 				_busy = false;
 			})
+
 			.catch(function(error) {
+				_busy = false;
+
 				console.log('Animation failed.');
 				console.log(error.stack);
-				_busy = false;
+				console.log('Restarting...');
+				
+				setTimeout(runNextAnimation, 5000);
 			});
 		}
 	}

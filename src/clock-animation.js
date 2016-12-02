@@ -4,6 +4,7 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Colors     = require('color-convert');
 
+
 var QuotesAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
@@ -12,7 +13,6 @@ var QuotesAnimation = module.exports = function(matrix) {
 
 			if (!priority)
 				priority = 'normal';
-
 
 			var now   = new Date();
 			var hue   = ((now.getHours() % 12) * 60 + now.getMinutes()) / 2;
