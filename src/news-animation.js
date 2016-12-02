@@ -92,8 +92,7 @@ var NewsAnimation = module.exports = function(matrix) {
 			}
 			catch(error) {
 				console.log('Something wrong with Request...');
-				resolve(error);
-
+				reject(error);
 			}
 
 		});
