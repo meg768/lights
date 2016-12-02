@@ -36,5 +36,6 @@ animations.push(GifAnimation);
 animations.push(ClockAnimation);
 animations.push(ExchangeAnimation);
 
+animations = [NewsAnimation];
 
 var matrix = module.exports = new Matrix('http://85.24.190.138:3003/hzeller-matrix', animations);

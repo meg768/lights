@@ -34,7 +34,7 @@ var NewsAnimation = module.exports = function(matrix) {
 					resolve(_feeds = item.feeds);
 				})
 				.catch(function (error) {
-					throw error;
+					reject(error);
 				});
 			})
 			.catch(function (error) {
@@ -44,13 +44,56 @@ var NewsAnimation = module.exports = function(matrix) {
 
 	}
 
+	function fetchNews(url) {
+
+		var FeedParser   = require('feedparser');
+		var Request      = require('request');
+
+		return new Promise(function(resolve, reject) {
+
+			var news = [];
+			var parser  = new FeedParser();
+			var request = Request(url);
+
+			request.on('response', function (result) {
+
+				try {
+					if (result.statusCode != 200) {
+						reject(new Error('Invalid status code'));
+					}
+					else {
+						this.pipe(parser);
+					}
+
+				}
+				catch(error) {
+					reject(error);
+				}
+
+			});
+
+			parser.on('error', function(error) {
+				reject(error);
+			});
+
+			parser.on('end', function() {
+				resolve(news);
+			});
+
+			parser.on('readable', function() {
+				var item = undefined;
+
+				while (item = this.read()) {
+					news.push(item);
+				}
+			});
+
+		});
+	};
 
 	function displayFeed(priority, feeds) {
 
 		return new Promise(function(resolve, reject) {
-
-			var News = require('./news.js');
-			var news = new News();
 
 			if (!priority)
 				priority = 'normal';
@@ -59,7 +102,7 @@ var NewsAnimation = module.exports = function(matrix) {
 
 			matrix.emit('emoji', {id:123, priority:priority});
 
-			news.fetch(feed.url).then(function(news) {
+			fetchNews(feed.url).then(function(news) {
 
 				news = news.splice(0, 5);
 
@@ -72,7 +115,6 @@ var NewsAnimation = module.exports = function(matrix) {
 			.catch(function(error) {
 				reject(error);
 			});
-
 		});
 
 	};
@@ -82,21 +124,15 @@ var NewsAnimation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			getNewsFeeds().then(function(feeds) {
-				displayFeed(priority, feeds).then(function() {
-					resolve();
-				})
-				.catch(function(error) {
-					throw error;
-				});
-
+				return displayFeed(priority, feeds);
+			})
+			.then(function() {
+				resolve();
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inga nyheter tillgängliga'});
-				console.log('Error fetching news.');
-				console.log(error);
-				resolve();
+				reject(error);
 			});
-
 		});
 
 	};
