@@ -55,27 +55,24 @@ var Animation = module.exports = function(matrix) {
 					return symbol.symbol;
 				});
 
-				yahoo.fetch(list).then(function(rows) {
-					var map = {};
+				return yahoo.fetch(list);
+			})
 
-					rows.forEach(function(row) {
-						map[row.symbol] = row;
-					});
+			.then(function(rows) {
+				var map = {};
 
-					matrix.emit('emoji', {id:534, priority:priority});
-
-					symbols.forEach(function(symbol) {
-						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbolX].priceX);
-						matrix.emit('text', {text:text, textColor:'blue'});
-					});
-
-					resolve();
-
-				})
-
-				.catch(function(error) {
-					reject(error);
+				rows.forEach(function(row) {
+					map[row.symbol] = row;
 				});
+
+				matrix.emit('emoji', {id:534, priority:priority});
+
+				symbols.forEach(function(symbol) {
+					var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbolX].priceX);
+					matrix.emit('text', {text:text, textColor:'blue'});
+				});
+
+				resolve();
 
 			})
 			.catch(function(error) {
