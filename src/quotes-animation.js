@@ -62,6 +62,7 @@ var Animation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
+			throw new Error('OLLE');
 			var stockNames = {};
 
 			var symbols = stocks.map(function(stock) {
@@ -74,36 +75,28 @@ var Animation = module.exports = function(matrix) {
 
 			fetchQuotes(symbols).then(function(quotes) {
 
-				try {
-					var snapshot = {};
+				var snapshot = {};
 
-					quotes.forEach(function(quote) {
-						snapshot[quote.symbol] = quote;
-					});
+				quotes.forEach(function(quote) {
+					snapshot[quote.symbol] = quote;
+				});
 
-					matrix.emit('emoji', {id:769, priority:priority});
+				matrix.emit('emoji', {id:769, priority:priority});
 
-					stocks.forEach(function(stock) {
-						var quote  = snapshot[stock.symbol];
-						var name   = stockNames[stock.symbol];
-						var change = parseFloat(quote.changeInPercent) * 100;
-						var text   = sprintf('%s%.01f%%', change > 0 ? '+' : '', change);
-						var color  = change >= 0 ? 'blue' : 'red';
+				stocks.forEach(function(stock) {
+					var quote  = snapshot[stock.symbol];
+					var name   = stockNames[stock.symbol];
+					var change = parseFloat(quote.changeInPercent) * 100;
+					var text   = sprintf('%s%.01f%%', change > 0 ? '+' : '', change);
+					var color  = change >= 0 ? 'blue' : 'red';
 
-						matrix.emit('text', {text:name + '  ' + text, textColor:color});
-					});
+					matrix.emit('text', {text:name + '  ' + text, textColor:color});
+				});
 
-					resolve();
-
-				}
-				catch(error) {
-					console.log(error.stack);
-				}
+				resolve();
 			})
 			.catch(function(error) {
-				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
-				console.log('Error fetching quotes.', error);
-				resolve();
+				reject(error);
 			});
 
 		});
@@ -114,18 +107,12 @@ var Animation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			getStocks().then(function(stocks) {
-				displayStocks(priority, stocks).then(function() {
-					resolve();
-				})
-				.catch(function(error) {
-					throw error;
-				});
+				return displayStocks(priority, stocks);
 			})
 			.catch(function(error) {
 				console.log('Error fetching quotes.');
-				console.log(error.stack);
 				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
-				resolve();
+				reject(error);
 			});
 
 		});
