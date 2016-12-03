@@ -143,31 +143,38 @@ var WeatherAnimation = module.exports = function(matrix) {
 		});
 	};
 
+	function displayWeatherLocations(locations) {
+		return new Promise(function(resolve, reject) {
+
+			var promise = Promise.resolve();
+
+			locations.forEach(function(location) {
+				promise = promise.then(function() {
+					return displayWeather(location);
+				})
+			});
+
+			promise.then(function() {
+				resolve();
+			})
+
+			.catch(function(error) {
+				reject(error);
+			});
+		});
+	};
 
 	this.run = function(priority) {
 
 		return new Promise(function(resolve, reject) {
 
 			getLocations().then(function(locations) {
-
 				matrix.emit('emoji', {id:616, priority:priority});
 
-				var promise = Promise.resolve();
-
-				locations.forEach(function(location) {
-					promise = promise.then(function() {
-						return displayWeather(location);
-					})
-				});
-
-				promise.then(function() {
-					resolve();
-				})
-
-				.catch(function(error) {
-					reject(error);
-				});
-
+				return displayWeatherLocations(locations);
+			})
+			.then(function() {
+				resolve();
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inget väder tillgängligt'});

@@ -48,6 +48,10 @@ var Module = module.exports = function() {
 				resolve(rates);
 
 			})
+			.catch(function(error) {
+				reject(error);
+			});
+
 
 		});
 

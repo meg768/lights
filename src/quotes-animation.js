@@ -108,6 +108,9 @@ var Animation = module.exports = function(matrix) {
 			getStocks().then(function(stocks) {
 				return displayStocks(priority, stocks);
 			})
+			.then(function() {
+				resolve();
+			})
 			.catch(function(error) {
 				console.log('Error fetching quotes.');
 				matrix.emit('text', {text:'Inga aktiekurser tillgängliga'});
