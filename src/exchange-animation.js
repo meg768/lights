@@ -65,7 +65,7 @@ var Animation = module.exports = function(matrix) {
 					matrix.emit('emoji', {id:534, priority:priority});
 
 					symbols.forEach(function(symbol) {
-						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbol].priceX);
+						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbolX].priceX);
 						matrix.emit('text', {text:text, textColor:'blue'});
 					});
 
