@@ -52,8 +52,8 @@ var Animation = module.exports = function(matrix) {
 				matrix.emit('text', {text:'Inga valutor tillgängliga'});
 				console.log('Error fetching exchange.');
 				reject(error);
-
 			}
+
 			getSymbols().then(function(symbols) {
 				var yahoo = new YahooExchange();
 
@@ -71,7 +71,7 @@ var Animation = module.exports = function(matrix) {
 					matrix.emit('emoji', {id:534, priority:priority});
 
 					symbols.forEach(function(symbol) {
-						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbolX].priceX);
+						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbol].price);
 						matrix.emit('text', {text:text, textColor:'blue'});
 					});
 
