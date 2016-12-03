@@ -62,7 +62,6 @@ var Animation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
-			throw new Error('OLLE');
 			var stockNames = {};
 
 			var symbols = stocks.map(function(stock) {
