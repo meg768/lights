@@ -65,7 +65,7 @@ var Animation = module.exports = function(matrix) {
 					matrix.emit('emoji', {id:534, priority:priority});
 
 					symbols.forEach(function(symbol) {
-						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbol].price);
+						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbol].priceX);
 						matrix.emit('text', {text:text, textColor:'blue'});
 					});
 
@@ -74,15 +74,14 @@ var Animation = module.exports = function(matrix) {
 				})
 
 				.catch(function(error) {
-					throw error;
+					reject(error);
 				});
 
 			})
 			.catch(function(error) {
 				matrix.emit('text', {text:'Inget valutor tillgängliga'});
 				console.log('Error fetching exchange.');
-				console.log(error.stack);
-				resolve();
+				reject(error);
 			});
 		});
 
