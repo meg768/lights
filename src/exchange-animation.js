@@ -55,28 +55,26 @@ var Animation = module.exports = function(matrix) {
 					return symbol.symbol;
 				});
 
-				return yahoo.fetch(list);
-			})
+				yahoo.fetch(list).then(function(rows) {
+					var map = {};
 
-			.then(function(rows) {
-				var map = {};
+					rows.forEach(function(row) {
+						map[row.symbol] = row;
+					});
 
-				rows.forEach(function(row) {
-					map[row.symbol] = row;
-				});
+					matrix.emit('emoji', {id:534, priority:priority});
 
-				matrix.emit('emoji', {id:534, priority:priority});
+					symbols.forEach(function(symbol) {
+						var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbolX].priceX);
+						matrix.emit('text', {text:text, textColor:'blue'});
+					});
 
-				symbols.forEach(function(symbol) {
-					var text = sprintf('%s  %.02f', symbol.name, map[symbol.symbolX].priceX);
-					matrix.emit('text', {text:text, textColor:'blue'});
-				});
+					resolve();
 
-				resolve();
-
+				})
 			})
 			.catch(function(error) {
-				matrix.emit('text', {text:'Inget valutor tillgängliga'});
+				matrix.emit('text', {text:'Inga valutor tillgängliga'});
 				console.log('Error fetching exchange.');
 				reject(error);
 			});
