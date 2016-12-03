@@ -48,6 +48,12 @@ var Animation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
+			function fail(error) {
+				matrix.emit('text', {text:'Inga valutor tillgängliga'});
+				console.log('Error fetching exchange.');
+				reject(error);
+
+			}
 			getSymbols().then(function(symbols) {
 				var yahoo = new YahooExchange();
 
@@ -72,11 +78,12 @@ var Animation = module.exports = function(matrix) {
 					resolve();
 
 				})
+				.catch(function(error) {
+					fail(error);
+				});
 			})
 			.catch(function(error) {
-				matrix.emit('text', {text:'Inga valutor tillgängliga'});
-				console.log('Error fetching exchange.');
-				reject(error);
+				fail(error);
 			});
 		});
 
