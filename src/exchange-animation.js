@@ -5,13 +5,60 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Timer      = require('yow/timer');
 
-var YahooExchange = require('./yahoo-exchange.js');
-var MongoDB       = require('mongodb');
+var MongoDB    = require('mongodb');
 
 var Animation = module.exports = function(matrix) {
 
 	var _symbols = [];
 	var _timer = new Timer();
+
+	function fetchExchange(symbols) {
+
+		return new Promise(function(resolve, reject) {
+			var Gopher = require('yow/gopher');
+			var yahoo  = new Gopher('https://query.yahooapis.com');
+
+			if (!isArray(symbols))
+				symbols = [symbols];
+
+			symbols = symbols.map(function(symbol) {
+				return '\'' + symbol + '\'';
+			});
+			var query = {};
+
+			query.q        = 'select * from yahoo.finance.xchange where pair in (' + symbols.join(',') + ')';
+			query.format   = 'json';
+			query.env      = 'store://datatables.org/alltableswithkeys';
+			query.callback = '';
+
+			yahoo.get('v1/public/yql', {query:query}).then(function(data) {
+				var items = data.query.results.rate;
+				var rates = [];
+
+				if (!isArray(items))
+					items = [items];
+
+				items.forEach(function(item) {
+
+					var rate = {};
+					rate.symbol    = item.id;
+					rate.price     = parseFloat(item.Ask);
+					rate.name      = item.Name;
+
+					rates.push(rate);
+				});
+
+				resolve(rates);
+
+			})
+			.catch(function(error) {
+				reject(error);
+			});
+
+
+		});
+
+	}
 
 	function getSymbols() {
 
@@ -55,13 +102,12 @@ var Animation = module.exports = function(matrix) {
 			}
 
 			getSymbols().then(function(symbols) {
-				var yahoo = new YahooExchange();
 
 				var list = symbols.map(function(symbol) {
 					return symbol.symbol;
 				});
 
-				yahoo.fetch(list).then(function(rows) {
+				fetchExchange(list).then(function(rows) {
 					var map = {};
 
 					rows.forEach(function(row) {
