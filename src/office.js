@@ -96,7 +96,7 @@ var Module = function() {
 		tellstick.socket.once('connect', function() {
 
 			var rule    = new Schedule.RecurrenceRule();
-			rule.hour   = 0;
+			rule.hour   = 3;
 			rule.minute = 0;
 
 			Schedule.scheduleJob(rule, function() {

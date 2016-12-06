@@ -91,6 +91,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 				'Light Snow'    : 'Lätt snöfall',
 				'T-Storms'      : 'Åska',
 
+				'Fog'           : 'Dimmigt',
 				'Clear'         : 'Klart',
 				'Mostly Clear'  : 'Mestadels klart'
 			};
