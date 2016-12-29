@@ -36,12 +36,10 @@ var Module = function() {
 	function listen() {
 		tellstick.getDevice('RV-01').on('ON', function() {
 			sendSMS('Rörelse på kontoret!');
-			tellstick.getDevice('RV-01').pauseEvents(30000);
 		});
 
 		tellstick.getDevice('RV-02').on('ON', function() {
 			sendSMS('Rörelse i källaren!');
-			tellstick.getDevice('RV-02').pauseEvents(30000);
 		});
 
 		tellstick.getDevice('VS-01').on('ON', function() {
