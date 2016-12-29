@@ -21,6 +21,7 @@ var Module = function() {
 
 		var options  = {};
 		options.to   = ['+46702262122', '+46706291882'];
+		options.to   = ['+46706291882'];
 		options.from = '+46769447443';
 		options.body = msg;
 
