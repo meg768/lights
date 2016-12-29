@@ -71,9 +71,11 @@ var Module = module.exports = function() {
 
 	function run() {
 
+		console.log('SMS module loaded.');
 
 		tellstick.socket.once('connect', function() {
 
+			console.log('SMS module connected to Tellstick.');
 			sendSMS('SMS-notifiering på.');
 
 			listen();
