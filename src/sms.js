@@ -4,7 +4,7 @@ var random     = require('yow/random');
 var Timer      = require('yow/timer');
 var tellstick  = require('./tellstick.js');
 
-var Module = module.exports = function() {
+var Module = function() {
 
 	function debug(msg) {
 		console.log(msg);
@@ -84,3 +84,5 @@ var Module = module.exports = function() {
 	}
 	run();
 }
+
+module.exports = new Module();
