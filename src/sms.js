@@ -34,35 +34,37 @@ var Module = function() {
 
 	function listen() {
 		tellstick.getDevice('RV-01').on('ON', function() {
-			// Make sure we don't get too many events at once
-			_motionSensor.pauseEvents(30000);
 			sendSMS('Rörelse på kontoret!');
-
-
+			tellstick.getDevice('RV-01').pauseEvents(30000);
 		});
 
 		tellstick.getDevice('RV-02').on('ON', function() {
-			// Make sure we don't get too many events at once
-			_motionSensor.pauseEvents(30000);
 			sendSMS('Rörelse i källaren!');
-
-
+			tellstick.getDevice('RV-02').pauseEvents(30000);
 		});
 
-		tellstick.getDevice('RV-02').on('ON', function() {
-			// Make sure we don't get too many events at once
-			_motionSensor.pauseEvents(30000);
-			sendSMS('Rörelse i källaren!');
+		tellstick.getDevice('VS-01').on('ON', function() {
+			sendSMS('Terasslampor på.');
+		});
 
+		tellstick.getDevice('VS-01').on('OFF', function() {
+			sendSMS('Terasslampor av.');
+		});
 
+		tellstick.getDevice('VS-02').on('ON', function() {
+			sendSMS('Lampor i stora rummet på.');
+		});
+
+		tellstick.getDevice('VS-02').on('OFF', function() {
+			sendSMS('Lampor i stora rummet av.');
 		});
 
 		tellstick.getDevice('VS-03').on('ON', function() {
-			sendSMS('Ljusen tändes i matrummet.');
+			sendSMS('Lampor i matrummet på.');
 		});
 
 		tellstick.getDevice('VS-03').on('OFF', function() {
-			sendSMS('Ljusen släcktes i matrummet.');
+			sendSMS('Lampor i matrummet av.');
 		});
 
 
