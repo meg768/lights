@@ -17,7 +17,7 @@ var Module = function() {
 		var client = require('twilio')(sid, token);
 
 		var now = new Date();
-		var msg = sprintf('%04d-%02d-%02d:%02d:%02d - %s', now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), text);
+		var msg = sprintf('%04d-%02d-%02d %02d:%02d: %s', now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), text);
 
 		var options  = {};
 		options.to   = ['+46702262122', '+46706291882'];
@@ -78,7 +78,7 @@ var Module = function() {
 		tellstick.socket.once('connect', function() {
 
 			console.log('SMS module connected to Tellstick.');
-			sendSMS('SMS-notifiering på.');
+			//sendSMS('SMS-notifiering på.');
 
 			listen();
 
