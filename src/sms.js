@@ -32,6 +32,9 @@ var Module = function() {
 		});
 	}
 
+	this.send = function(msg) {
+		sendSMS(text);
+	}
 
 	function listen() {
 		tellstick.getDevice('RV-01').on('ON', function() {

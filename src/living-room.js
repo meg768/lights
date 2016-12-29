@@ -46,7 +46,7 @@ var Module = module.exports = function() {
 		var times = [
 			{state:'ON',   time:'07:00'},
 			{state:'OFF',  time:'10:00'},
-			{state:'ON',   time:'15:30'},
+			{state:'ON',   time:'15:50'},
 			{state:'OFF',  time:'01:00'}
 		];
 /*
