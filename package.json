@@ -29,6 +29,7 @@
     "socket.io": "^1.5.1",
     "socket.io-client": "^1.5.1",
     "suncalc": "^1.7.0",
+    "twilio": "^2.11.1",
     "urijs": "^1.18.2",
     "weather-js": "^1.0.2",
     "yahoo-finance": "^0.2.15",
