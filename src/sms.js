@@ -50,11 +50,11 @@ var Module = function() {
 			sendSMS('Terasslampor av.');
 		});
 
-		tellstick.getDevice('VS-02').on('ON', function() {
+		tellstick.getDevice('VS-04').on('ON', function() {
 			sendSMS('Lampor i stora rummet på.');
 		});
 
-		tellstick.getDevice('VS-02').on('OFF', function() {
+		tellstick.getDevice('VS-04').on('OFF', function() {
 			sendSMS('Lampor i stora rummet av.');
 		});
 
