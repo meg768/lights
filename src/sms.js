@@ -79,7 +79,7 @@ var Module = function() {
 		tellstick.socket.once('connect', function() {
 
 			console.log('SMS module connected to Tellstick.');
-			//sendSMS('SMS-notifiering på.');
+			sendSMS('SMS-notifiering på.');
 
 			listen();
 
