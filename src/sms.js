@@ -33,7 +33,7 @@ var Module = function() {
 	}
 
 	this.send = function(msg) {
-		sendSMS(text);
+		sendSMS(msg);
 	}
 
 	function listen() {
