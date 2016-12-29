@@ -45,31 +45,6 @@ var Module = function() {
 			sendSMS('Rörelse i källaren!');
 		});
 
-		tellstick.getDevice('VS-01').on('ON', function() {
-			sendSMS('Terasslampor på.');
-		});
-
-		tellstick.getDevice('VS-01').on('OFF', function() {
-			sendSMS('Terasslampor av.');
-		});
-
-		tellstick.getDevice('VS-04').on('ON', function() {
-			sendSMS('Lampor i stora rummet på.');
-		});
-
-		tellstick.getDevice('VS-04').on('OFF', function() {
-			sendSMS('Lampor i stora rummet av.');
-		});
-
-		tellstick.getDevice('VS-03').on('ON', function() {
-			sendSMS('Lampor i matrummet på.');
-		});
-
-		tellstick.getDevice('VS-03').on('OFF', function() {
-			sendSMS('Lampor i matrummet av.');
-		});
-
-
 	}
 
 
@@ -80,7 +55,6 @@ var Module = function() {
 		tellstick.socket.once('connect', function() {
 
 			console.log('SMS module connected to Tellstick.');
-			sendSMS('SMS-notifiering på.');
 
 			listen();
 
