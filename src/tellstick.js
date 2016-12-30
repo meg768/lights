@@ -173,9 +173,11 @@ var Device = function(socket, name) {
 					var job = Schedule.scheduleJob(rule, function() {
 						_this.setState(item.state);
 
+						/*
 						var sms = require('./sms.js');
 						var msg = sprintf('Lampa %s är nu %s.', _this.name, item.state);
 						sms.send(msg);
+						*/
 					});
 
 					_triggers.push({job:job, state:item.state});
