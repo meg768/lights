@@ -21,7 +21,7 @@ var Module = function() {
 
 		var options  = {};
 		options.to   = ['+46702262122', '+46706291882'];
-		options.to   = ['+46706291882'];
+		//options.to   = ['+46706291882'];
 		options.from = '+46769447443';
 		options.body = msg;
 
@@ -39,10 +39,12 @@ var Module = function() {
 	function listen() {
 		tellstick.getDevice('RV-01').on('ON', function() {
 			sendSMS('Rörelse på kontoret!');
+			tellstick.getDevice('RV-01').pauseEvents(60000);
 		});
 
 		tellstick.getDevice('RV-02').on('ON', function() {
 			sendSMS('Rörelse i källaren!');
+			tellstick.getDevice('RV-02').pauseEvents(60000);
 		});
 
 	}
