@@ -72,9 +72,6 @@ var App = function(argv) {
 			require('./src/office.js');
 		}
 
-		require('./src/sms.js');
-
-
 	}
 
 

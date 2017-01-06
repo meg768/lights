@@ -62,7 +62,7 @@ var Module = function() {
 
 		});
 	}
-	run();
+	// run();
 }
 
 module.exports = new Module();
