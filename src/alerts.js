@@ -46,7 +46,7 @@ var Module = function() {
 			if (_active) {
 				console.log('Alert in the office.')
 				_cellarSensor.pauseEvents(60000);
-				alert('Rörelse på kontoret.');
+				alert('Rörelse i källaren.');
 			}
 		});
 
@@ -54,7 +54,7 @@ var Module = function() {
 			if (_active) {
 				console.log('Alert in the cellar.')
 				_officeSensor.pauseEvents(60000);
-				alert('Rörelse i källaren.');
+				alert('Rörelse på kontoret.');
 			}
 		});
 
