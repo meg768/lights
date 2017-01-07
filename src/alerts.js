@@ -11,7 +11,6 @@ var Module = function() {
 	var _livingRoomSensor = tellstick.getDevice('RV-03');
 
 	function alert(text) {
-		return;
 		var sid    = 'AC6d347f8c4600eb938fe37b692c19f018';
 		var token  = '9c1471d846f5ad2e8650cba838daa6b7';
 		var client = require('twilio')(sid, token);
@@ -21,6 +20,7 @@ var Module = function() {
 
 		var options  = {};
 		options.to   = ['+46702262122', '+46706291882', '+46704626863'];
+		options.to   = ['+46706291882'];
 		options.from = '+46769447443';
 		options.body = msg;
 
