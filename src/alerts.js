@@ -21,6 +21,7 @@ var Module = function() {
 		var options  = {};
 		options.to   = ['+46702262122', '+46706291882', '+46704626863'];
 		options.to   = ['+46706291882'];
+		options.to   = ['+46702262122', '+46706291882'];
 		options.from = '+46769447443';
 		options.body = msg;
 
@@ -54,7 +55,7 @@ var Module = function() {
 
 		_livingRoomSensor.on('ON', function() {
 			if (_active) {
-				console.log('Alert in the office.');
+				console.log('Alert in the living room.');
 				_livingRoomSensor.pauseEvents(60000);
 				alert('Rörelse i stora rummet.');
 			}
