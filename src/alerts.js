@@ -8,6 +8,7 @@ var Module = function() {
 	var _switch = tellstick.getDevice('VS-05');
 	var _cellarSensor = tellstick.getDevice('RV-02');
 	var _officeSensor = tellstick.getDevice('RV-01');
+	var _livingRoomSensor = tellstick.getDevice('RV-03');
 
 	function alert(text) {
 		var sid    = 'AC6d347f8c4600eb938fe37b692c19f018';
@@ -18,7 +19,7 @@ var Module = function() {
 		var msg = sprintf('%04d-%02d-%02d %02d:%02d %s', now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), text);
 
 		var options  = {};
-		options.to   = ['+46702262122', '+46706291882'];
+		options.to   = ['+46702262122', '+46706291882', '+46704626863'];
 		options.from = '+46769447443';
 		options.body = msg;
 
@@ -33,14 +34,31 @@ var Module = function() {
 
 	function listen() {
 		_switch.on('ON', function() {
-			console.log('Alerts activated.');
-			_active = true;
+			if (!_active) {
+				_active = true;
+
+				console.log('Alerts activated.');
+				alert('Larm aktiverat.')
+			}
 		});
 
 		_switch.on('OFF', function() {
-			console.log('Alerts deactivated.');
-			_active = false;
+			if (_active) {
+				_active = false;
+
+				console.log('Alerts deactivated.');
+				alert('Larm avaktiverat.')
+			}
 		});
+
+		_livingRoomSensor.on('ON', function() {
+			if (_active) {
+				console.log('Alert in the office.')
+				_livingRoomSensor.pauseEvents(60000);
+				alert('Rörelse i stora rummet.');
+			}
+		});
+
 
 		_cellarSensor.on('ON', function() {
 			if (_active) {
