@@ -15,7 +15,7 @@ var Module = function() {
 		var client = require('twilio')(sid, token);
 
 		var now = new Date();
-		var msg = sprintf('%04d-%02d-%02d %02d:%02d %s', now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), text);
+		var msg = sprintf('%04d-%02d-%02d %02d:%02d %s', now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), text);
 
 		var options  = {};
 		options.to   = ['+46702262122', '+46706291882'];
