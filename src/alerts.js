@@ -11,6 +11,7 @@ var Module = function() {
 	var _livingRoomSensor = tellstick.getDevice('RV-03');
 
 	function alert(text) {
+		return;
 		var sid    = 'AC6d347f8c4600eb938fe37b692c19f018';
 		var token  = '9c1471d846f5ad2e8650cba838daa6b7';
 		var client = require('twilio')(sid, token);
@@ -53,7 +54,7 @@ var Module = function() {
 
 		_livingRoomSensor.on('ON', function() {
 			if (_active) {
-				console.log('Alert in the office.')
+				console.log('Alert in the office.');
 				_livingRoomSensor.pauseEvents(60000);
 				alert('Rörelse i stora rummet.');
 			}
@@ -62,17 +63,21 @@ var Module = function() {
 
 		_cellarSensor.on('ON', function() {
 			if (_active) {
-				console.log('Alert in the office.')
+				console.log('Alert in the office.');
 				_cellarSensor.pauseEvents(60000);
 				alert('Rörelse i källaren.');
 			}
 		});
 
 		_officeSensor.on('ON', function() {
+			var matrix = require('./matrix-64x32.js');
+
 			if (_active) {
-				console.log('Alert in the cellar.')
+				console.log('Alert in the cellar.');
 				_officeSensor.pauseEvents(60000);
 				alert('Rörelse på kontoret.');
+
+				matrix.emit('text', {text:'Inbrott pågår!', priority:'high', iterations:2});
 			}
 		});
 
