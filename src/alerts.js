@@ -77,7 +77,7 @@ var Module = function() {
 				_officeSensor.pauseEvents(60000);
 				alert('Rörelse på kontoret.');
 
-				matrix.emit('text', {text:'Inbrott pågår!', priority:'high', iterations:2});
+				matrix.emit('text', {text:'Inbrott pågår!', priority:'!', iterations:3});
 			}
 		});
 
