@@ -13,10 +13,6 @@ var Matrix            = require('./matrix.js');
 
 var animations = [];
 
-//animations.push(ExchangeAnimation);
-//animations.push(QuotesAnimation);
-//animations.push(WeatherAnimation);
-
 animations.push(ClockAnimation);
 animations.push(NewsAnimation);
 

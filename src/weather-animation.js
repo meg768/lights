@@ -5,47 +5,19 @@ var Timer      = require('yow/timer');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 
-var MongoDB    = require('mongodb');
-
-
 
 var WeatherAnimation = module.exports = function(matrix) {
 
-	var _locations = [];
-	var _timer = new Timer();
-
-
-
 	function getLocations() {
 
-		if (_locations.length > 0)
-			return Promise.resolve(_locations);
+		var locations = [
+			{name:'Lund', key:'Lund, Sweden'},
+			{name:'Stockholm', key:'Stockholm, Sweden'}
+		];
 
-		return new Promise(function(resolve, reject) {
-
-			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-
-				db.collection('config').findOne({type:'weather'}).then(function(item) {
-
-					db.close();
-
-					// Invalidate after a while
-					_timer.setTimer(1000*60*60, function() {
-						_locations = [];
-					});
-
-					resolve(_locations = item.locations);
-				})
-				.catch(function (error) {
-					throw error;
-				});
-			})
-			.catch(function (error) {
-				reject(error);
-			});
-		});
-
+		return Promise.resolve(locations);
 	}
+
 
 	function fetchWeather(location) {
 

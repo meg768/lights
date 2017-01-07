@@ -5,12 +5,18 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Timer      = require('yow/timer');
 
-var MongoDB    = require('mongodb');
-
 var Animation = module.exports = function(matrix) {
 
-	var _symbols = [];
-	var _timer = new Timer();
+	function getSymbols() {
+
+		var symbols = [
+			{symbol: 'USDSEK', name:'USD'},
+			{symbol: 'EURSEK', name:'EUR'}
+
+		];
+
+		return Promise.resolve(symbols);
+	}
 
 	function fetchExchange(symbols) {
 
@@ -24,6 +30,7 @@ var Animation = module.exports = function(matrix) {
 			symbols = symbols.map(function(symbol) {
 				return '\'' + symbol + '\'';
 			});
+
 			var query = {};
 
 			query.q        = 'select * from yahoo.finance.xchange where pair in (' + symbols.join(',') + ')';
@@ -60,36 +67,7 @@ var Animation = module.exports = function(matrix) {
 
 	}
 
-	function getSymbols() {
 
-		if (_symbols.length > 0)
-			return Promise.resolve(_symbols);
-
-		return new Promise(function(resolve, reject) {
-
-			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-
-				db.collection('config').findOne({type:'exchange'}).then(function(item) {
-					db.close();
-
-					// Invalidate after a while
-					_timer.setTimer(1000*60*60, function() {
-						_symbols = [];
-					});
-
-					resolve(_symbols = item.symbols);
-
-				})
-				.catch(function(error) {
-					throw error;
-				});
-			})
-			.catch(function (error) {
-				reject(error);
-			});
-		});
-
-	}
 
 	this.run = function(priority) {
 

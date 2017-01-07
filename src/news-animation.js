@@ -4,45 +4,39 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Timer      = require('yow/timer');
 
-var MongoDB    = require('mongodb');
-
-
 var NewsAnimation = module.exports = function(matrix) {
 
 	var _index = 0;
-	var _feeds = [];
-	var _timer = new Timer();
 
 	function getNewsFeeds() {
 
-		if (_feeds.length > 0)
-			return Promise.resolve(_feeds);
+		var feeds =  [
+			{
+				name: 'Dagens Industri',
+				url: 'http://di.se/rss',
+				color: 'red',
+			},
+			{
+				name: 'Google',
+				url: 'https://news.google.se/news?cf=all&pz=1&ned=sv_se&ict=ln&num=5&output=rss',
+				color: 'blue'
+			},
+			{
+				name: 'Sydsvenskan',
+				url: 'http://www.sydsvenskan.se/rss.xml',
+				color: 'rgb(255, 0, 255)'
+			},
+			{
+				name: 'Veckans Affärer',
+				url: 'http://www.vafinans.se/rss/nyheter',
+				color: 'green'
 
-		return new Promise(function(resolve, reject) {
+			}
+		];
 
-			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-
-				db.collection('config').findOne({type:'news'}).then(function(item) {
-
-					db.close();
-
-					// Invalidate after a while
-					_timer.setTimer(1000*60*60, function() {
-						_feeds = [];
-					});
-
-					resolve(_feeds = item.feeds);
-				})
-				.catch(function (error) {
-					reject(error);
-				});
-			})
-			.catch(function (error) {
-				reject(error);
-			});
-		});
-
+		return Promise.resolve(feeds);
 	}
+
 
 	function fetchNews(url) {
 

@@ -5,43 +5,24 @@ var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Timer      = require('yow/timer');
 
-var MongoDB     = require('mongodb');
-
 var Animation = module.exports = function(matrix) {
 
-	var _stocks = [];
-	var _timer = new Timer();
-
 	function getStocks() {
+		var stocks = [
 
-		if (_stocks.length > 0)
-			return Promise.resolve(_stocks);
+			{symbol: '^OMXS30',   name: 'OMX'},
+			{symbol: '^GSPC',     name: 'S&P500'},
+			{symbol: '^GDAXI',    name: 'DAX'},
+			{symbol: '^FTSE',     name: 'FTSE'},
+			{symbol: '^HSI',      name: 'Hang Seng'},
+			{symbol: '^N225',     name: 'Nikkei'},
+			{symbol: 'PHI.ST',    name: 'PHI'},
+			{symbol: 'GC=F',      name: 'Guld'},
+			{symbol: 'CL=F',      name: 'Olja'}
 
-		return new Promise(function(resolve, reject) {
+		];
 
-			MongoDB.connect('mongodb://app-o.se:27017/ljuset').then(function(db) {
-
-				db.collection('config').findOne({type:'quotes'}).then(function(item) {
-
-					db.close();
-
-					// Invalidate after a while
-					_timer.setTimer(1000*60*60, function() {
-						_stocks = [];
-					});
-
-					resolve(_stocks = item.stocks);
-				})
-				.catch(function(error) {
-					throw error;
-				})
-
-			})
-			.catch(function (error) {
-				reject(error);
-			});
-		});
-
+		return Promise.resolve(stocks);
 	}
 
 	function fetchQuotes(symbols) {
