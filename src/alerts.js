@@ -90,7 +90,7 @@ var Module = function() {
 			_awake = false;
 
 			// Wake up after X minutes
-			_timer.setTimer(60000 * 1, function() {
+			_timer.setTimer(60000 * 5, function() {
 				_awake = true;
 			});
 		}
