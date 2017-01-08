@@ -102,7 +102,7 @@ var Module = function() {
 		_switch.on('ON', function() {
 			if (!_active) {
 				_active = true;
-				_awake  = true;
+				_Xawake  = true;
 
 				console.log('Alerts activated.');
 				alert('Larm aktiverat.')
