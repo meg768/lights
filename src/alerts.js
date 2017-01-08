@@ -5,39 +5,104 @@ var tellstick  = require('./tellstick.js');
 var Module = function() {
 
 	var _active = false;
+	var _awake  = true;
 	var _switch = tellstick.getDevice('VS-05');
 	var _cellarSensor = tellstick.getDevice('RV-02');
 	var _officeSensor = tellstick.getDevice('RV-01');
 	var _livingRoomSensor = tellstick.getDevice('RV-03');
+	var _timer = new Timer();
+
+	function runPromises(promises) {
+
+		return new Promise(function(resolve, reject) {
+			var tmp = Promise.resolve();
+
+			promises.forEach(function(promise) {
+				tmp = tmp.then(function() {
+					return promise();
+				});
+			});
+
+			tmp.then(function() {
+				resolve();
+			})
+			.catch(function(error) {
+				reject(error);
+			});
+
+		});
+
+	};
+
+	function sendSMS(to, text) {
+		return new Promise(function(resolve, reject) {
+			var sid    = 'AC6d347f8c4600eb938fe37b692c19f018';
+			var token  = '9c1471d846f5ad2e8650cba838daa6b7';
+			var client = require('twilio')(sid, token);
+
+			var options  = {};
+			options.to   = to;
+			options.from = '+46769447443';
+			options.body = text;
+
+			client.sendSms(options, function(error, message) {
+
+			    if (error)
+					reject(error);
+				else
+					resolve();
+			});
+
+		});
+	};
+
 
 	function alert(text) {
-		var sid    = 'AC6d347f8c4600eb938fe37b692c19f018';
-		var token  = '9c1471d846f5ad2e8650cba838daa6b7';
-		var client = require('twilio')(sid, token);
+		var alerts = [];
 
 		var now = new Date();
 		var msg = sprintf('%04d-%02d-%02d %02d:%02d %s', now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), text);
 
-		var options  = {};
-		options.to   = ['+46702262122', '+46706291882', '+46704626863'];
-		options.to   = ['+46706291882'];
-		options.to   = ['+46702262122', '+46706291882'];
-		options.from = '+46769447443';
-		options.body = msg;
+		console.log('Sending SMS:', text);
 
-		client.sendSms(options, function(error, message) {
-			console.log('Sending SMS:', msg);
+		//alerts.push(sendSMS.bind(this, '+46702262122', msg));
+		alerts.push(sendSMS.bind(this, '+46706291882', msg));
 
-		    if (error)
-				console.log(error);
+		runPromises(alerts).then(function() {
+			console.log('SMS sent to all recipients.');
+		})
+		.catch(function(error) {
+			console.log(error);
 		});
+
 	}
 
+
+	function movement(sensor) {
+
+		if (_active) {
+			console.log('Movement on sensor', sensor.name, '...');
+
+			if (_awake) {
+				alert('Rörelse i huset.');
+			}
+
+			_awake = false;
+
+			// Wake up after X minutes
+			_timer.setTimer(60000 * 1, function() {
+				_awake = true;
+			});
+		}
+
+
+	}
 
 	function listen() {
 		_switch.on('ON', function() {
 			if (!_active) {
 				_active = true;
+				_awake  = true;
 
 				console.log('Alerts activated.');
 				alert('Larm aktiverat.')
@@ -54,32 +119,15 @@ var Module = function() {
 		});
 
 		_livingRoomSensor.on('ON', function() {
-			if (_active) {
-				console.log('Alert in the living room.');
-				_livingRoomSensor.pauseEvents(60000);
-				alert('Rörelse i stora rummet.');
-			}
+			movement(_livingRoomSensor);
 		});
 
-
 		_cellarSensor.on('ON', function() {
-			if (_active) {
-				console.log('Alert in the office.');
-				_cellarSensor.pauseEvents(60000);
-				alert('Rörelse i källaren.');
-			}
+			movement(_cellarSensor);
 		});
 
 		_officeSensor.on('ON', function() {
-			var matrix = require('./matrix-64x32.js');
-
-			if (_active) {
-				console.log('Alert in the cellar.');
-				_officeSensor.pauseEvents(60000);
-				alert('Rörelse på kontoret.');
-
-				matrix.emit('text', {text:'Inbrott pågår!', priority:'!', iterations:3});
-			}
+			movement(_officeSensor);
 		});
 
 	}
