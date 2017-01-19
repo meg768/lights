@@ -4,7 +4,7 @@ var tellstick  = require('./tellstick.js');
 
 var Module = function() {
 
-	var _active = false;
+	var _active = true;
 	var _awake  = true;
 	var _switch = tellstick.getDevice('VS-05');
 	var _cellarSensor = tellstick.getDevice('RV-02');
