@@ -68,8 +68,8 @@ var Module = function() {
 
 		console.log('Sending SMS:', text);
 
-		//alerts.push(sendSMS.bind(this, '+46702262122', msg));
-		//alerts.push(sendSMS.bind(this, '+46706291882', msg));
+		alerts.push(sendSMS.bind(this, '+46702262122', msg));
+		alerts.push(sendSMS.bind(this, '+46706291882', msg));
 
 		runPromises(alerts).then(function() {
 			console.log('SMS sent to all recipients.');
