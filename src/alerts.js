@@ -10,7 +10,11 @@ var Module = function() {
 	var _cellarSensor = tellstick.getDevice('RV-02');
 	var _officeSensor = tellstick.getDevice('RV-01');
 	var _livingRoomSensor = tellstick.getDevice('RV-03');
+
 	var _timer = new Timer();
+
+	var _warningTimer = new Timer();
+	var _warningLamp = tellstick.getDevice('PS-02');
 
 	function runPromises(promises) {
 
@@ -66,7 +70,7 @@ var Module = function() {
 		console.log('Sending SMS:', text);
 
 		//alerts.push(sendSMS.bind(this, '+46702262122', msg));
-		alerts.push(sendSMS.bind(this, '+46706291882', msg));
+		//alerts.push(sendSMS.bind(this, '+46706291882', msg));
 
 		runPromises(alerts).then(function() {
 			console.log('SMS sent to all recipients.');
@@ -77,6 +81,10 @@ var Module = function() {
 
 	}
 
+	function warning(delay) {
+		_warningLamp.turnOn();
+		_warningTimer.setTimer(delay, _warningLamp.turnOff);
+	}
 
 	function movement(sensor) {
 
@@ -85,6 +93,7 @@ var Module = function() {
 
 			if (_awake) {
 				alert('Rörelse i huset.');
+				warning(60000 * 30);
 			}
 
 			_awake = false;
@@ -100,21 +109,27 @@ var Module = function() {
 
 	function listen() {
 		_switch.on('ON', function() {
+			warning(5000);
+
 			if (!_active) {
 				_active = true;
 				_awake  = true;
 
 				console.log('Alerts activated.');
-				alert('Larm aktiverat.')
+				alert('Larm aktiverat.');
+
 			}
 		});
 
 		_switch.on('OFF', function() {
+			warning(5000);
+
 			if (_active) {
 				_active = false;
 
 				console.log('Alerts deactivated.');
-				alert('Larm avaktiverat.')
+				alert('Larm avaktiverat.');
+
 			}
 		});
 
@@ -138,6 +153,8 @@ var Module = function() {
 		console.log('Alert module loaded.');
 
 		tellstick.socket.once('connect', function() {
+			warning(2000);
+
 			listen();
 		});
 	}
