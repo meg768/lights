@@ -40,9 +40,8 @@ var Module = function() {
 
 	function sendSMS(to, text) {
 		return new Promise(function(resolve, reject) {
-			var sid    = 'AC6d347f8c4600eb938fe37b692c19f018';
-			var token  = '9c1471d846f5ad2e8650cba838daa6b7';
-			var client = require('twilio')(sid, token);
+			var config = require('config.js');
+			var client = require('twilio')(config.twilio.sid, config.twilio.token);
 
 			var options  = {};
 			options.to   = to;
