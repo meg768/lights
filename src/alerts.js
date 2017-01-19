@@ -40,7 +40,7 @@ var Module = function() {
 
 	function sendSMS(to, text) {
 		return new Promise(function(resolve, reject) {
-			var config = require('config.js');
+			var config = require('./config.js');
 			var client = require('twilio')(config.twilio.sid, config.twilio.token);
 
 			var options  = {};
