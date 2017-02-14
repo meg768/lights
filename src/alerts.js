@@ -10,6 +10,7 @@ var Module = function() {
 	var _cellarSensor = tellstick.getDevice('RV-02');
 	var _officeSensor = tellstick.getDevice('RV-01');
 	var _livingRoomSensor = tellstick.getDevice('RV-03');
+	var _doorbell = tellstick.getDevice('RK-01');
 
 	var _timer = new Timer();
 
@@ -142,6 +143,13 @@ var Module = function() {
 
 		_officeSensor.on('ON', function() {
 			movement(_officeSensor);
+		});
+
+		_doorbell.on('ON', function() {
+			alert('Det ringer på dörren.');
+			
+			// Make sure we don't get too many events at once
+			_doorbell.pauseEvents(60000);
 		});
 
 	}
