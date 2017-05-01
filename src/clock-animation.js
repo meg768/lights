@@ -22,7 +22,7 @@ var QuotesAnimation = module.exports = function(matrix) {
 			options.textColor   = sprintf('rgb(%d, %d, %d)', color[0], color[1], color[2]);
 			options.text        = sprintf('%02d:%02d', now.getHours(), now.getMinutes());
 			options.fontSize    = 22;
-			options.speed       = 0.70;
+			//options.speed       = 0.70;
 			options.priority    = priority;
 			options.iterations  = 2;
 
