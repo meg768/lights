@@ -15,7 +15,7 @@ var Module = function() {
 	var _timer = new Timer();
 
 	var _warningTimer = new Timer();
-	var _warningLamp = tellstick.getDevice('PS-02');
+	var _warningLamp = tellstick.getDevice('VS-02');
 
 	function runPromises(promises) {
 
@@ -93,7 +93,7 @@ var Module = function() {
 
 			if (_awake) {
 				alert('Rörelse i huset.');
-				warning(60000 * 30);
+				warning(60000 * 1);
 			}
 
 			_awake = false;
@@ -147,7 +147,7 @@ var Module = function() {
 
 		_doorbell.on('ON', function() {
 			alert('Det ringer på dörren.');
-			
+
 			// Make sure we don't get too many events at once
 			_doorbell.pauseEvents(60000);
 		});
