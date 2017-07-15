@@ -93,7 +93,7 @@ var Module = function() {
 
 			if (_awake) {
 				alert('Rörelse i huset.');
-				warning(60000 * 1);
+				warning(60000 * 20);
 			}
 
 			_awake = false;
