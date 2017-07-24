@@ -69,7 +69,7 @@ var Module = function() {
 
 		console.log('Sending SMS:', text);
 
-		alerts.push(sendSMS.bind(this, '+46702262122', msg));
+		//alerts.push(sendSMS.bind(this, '+46702262122', msg));
 		alerts.push(sendSMS.bind(this, '+46706291882', msg));
 
 		runPromises(alerts).then(function() {
@@ -116,7 +116,7 @@ var Module = function() {
 				_awake  = true;
 
 				console.log('Alerts activated.');
-				//alert('Larm aktiverat.');
+				alert('Larm aktiverat.');
 
 			}
 		});
@@ -128,7 +128,7 @@ var Module = function() {
 				_active = false;
 
 				console.log('Alerts deactivated.');
-				//alert('Larm avaktiverat.');
+				alert('Larm avaktiverat.');
 
 			}
 		});
