@@ -116,7 +116,7 @@ var Module = function() {
 				_awake  = true;
 
 				console.log('Alerts activated.');
-				alert('Larm aktiverat.');
+				//alert('Larm aktiverat.');
 
 			}
 		});
@@ -128,7 +128,7 @@ var Module = function() {
 				_active = false;
 
 				console.log('Alerts deactivated.');
-				alert('Larm avaktiverat.');
+				//alert('Larm avaktiverat.');
 
 			}
 		});
