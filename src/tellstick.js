@@ -194,7 +194,8 @@ util.inherits(Device, EventEmitter);
 
 var Tellstick = function() {
 
-	this.socket = require('socket.io-client')('http://85.24.190.138:3002/tellstick');
+//	this.socket = require('socket.io-client')('http://85.24.190.138:3002/tellstick');
+	this.socket = require('socket.io-client')('http://app-o.se/tellstick');
 
 	var _devices = {};
 	var _socket = this.socket;
