@@ -37,4 +37,4 @@ animations.push(ClockAnimation);
 animations.push(ExchangeAnimation);
 
 
-var matrix = module.exports = new Matrix('http://85.24.190.138:3003/hzeller-matrix', animations);
+var matrix = module.exports = new Matrix('http://app-o.se/hzeller-matrix-32x32', animations);
