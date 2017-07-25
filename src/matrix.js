@@ -39,6 +39,8 @@ var Matrix = module.exports = function(url, animators) {
 
 	function runNextAnimation(priority) {
 
+		console.log('Running next animation...');
+
 		if (_running && _animations.length > 0 && !_busy) {
 			var animation = _animations[_index % _animations.length];
 
@@ -55,7 +57,7 @@ var Matrix = module.exports = function(url, animators) {
 				console.log('Animation failed.');
 				console.log(error.stack);
 				console.log('Restarting...');
-				
+
 				setTimeout(runNextAnimation, 5000);
 			});
 		}

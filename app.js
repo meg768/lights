@@ -48,29 +48,11 @@ var App = function(argv) {
 
 		prefixLogs();
 
-		if (argv.listen) {
-			require('./src/socket-server.js')(argv);
-		}
-
-		if (argv.all || argv.terrace) {
-			require('./src/terrace.js');
-		}
-
-		if (argv.all || argv.cellar) {
-			require('./src/cellar.js');
-		}
-
-		if (argv.all || argv.diningRoom) {
-			require('./src/dining-room.js');
-		}
-
-		if (argv.all || argv.livingRoom) {
-			require('./src/living-room.js');
-		}
-
-		if (argv.all || argv.office) {
-			require('./src/office.js');
-		}
+		require('./src/terrace.js');
+		require('./src/cellar.js');
+		require('./src/dining-room.js');
+		require('./src/living-room.js');
+		require('./src/office.js');
 
 		require('./src/alerts.js');
 
