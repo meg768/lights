@@ -25,4 +25,4 @@ animations.push(WeatherAnimation);
 animations.push(ClockAnimation);
 animations.push(ExchangeAnimation);
 
-var matrix = module.exports = new Matrix('http://app-o.se/hzeller-matrix-64x32', animations);
+var matrix = module.exports = new Matrix('http://app-o.se/matrix-64x32', animations);
