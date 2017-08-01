@@ -20,7 +20,7 @@ var Pushover = function() {
 
 				push.send(payload, function(error, result) {
 					if (error) {
-						console.error('UPPS', error);
+						console.error(error);
 					}
 				});
 			}
