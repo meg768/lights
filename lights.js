@@ -48,7 +48,7 @@ var App = function(argv) {
 		pushover.notify('Huset aktiverat.');
 
 		prefixLogs();
-/*
+
 		require('./src/terrace.js');
 		require('./src/cellar.js');
 		require('./src/dining-room.js');
@@ -57,7 +57,6 @@ var App = function(argv) {
 
 		require('./src/alerts.js');
 		//require('./src/neopixel-lamp.js');
-*/
 	}
 
 
