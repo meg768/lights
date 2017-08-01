@@ -24,6 +24,7 @@
     "mysql": "^2.12.0",
     "node-schedule": "^1.2.0",
     "npm": "^4.0.2",
+    "pushover-notifications": "^0.2.4",
     "request": "^2.76.0",
     "rest-request": "^1.0.7",
     "socket.io": "^1.5.1",

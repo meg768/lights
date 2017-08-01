@@ -1,6 +1,7 @@
 var sprintf    = require('yow/sprintf');
 var Timer      = require('yow/timer');
 var tellstick  = require('./tellstick.js');
+var pushover   = require('./pushover.js');
 
 var Module = function() {
 
@@ -17,68 +18,9 @@ var Module = function() {
 	var _warningTimer = new Timer();
 	var _warningLamp = tellstick.getDevice('VS-02');
 
-	function runPromises(promises) {
-
-		return new Promise(function(resolve, reject) {
-			var tmp = Promise.resolve();
-
-			promises.forEach(function(promise) {
-				tmp = tmp.then(function() {
-					return promise();
-				});
-			});
-
-			tmp.then(function() {
-				resolve();
-			})
-			.catch(function(error) {
-				reject(error);
-			});
-
-		});
-
-	};
-
-	function sendSMS(to, text) {
-		return new Promise(function(resolve, reject) {
-			var config = require('./config.js');
-			var client = require('twilio')(config.twilio.sid, config.twilio.token);
-
-			var options  = {};
-			options.to   = to;
-			options.from = '+46769447443';
-			options.body = text;
-
-			client.sendSms(options, function(error, message) {
-
-			    if (error)
-					reject(error);
-				else
-					resolve();
-			});
-
-		});
-	};
-
 
 	function alert(text) {
-		var alerts = [];
-
-		var now = new Date();
-		var msg = sprintf('%04d-%02d-%02d %02d:%02d %s', now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), text);
-
-		console.log('Sending SMS:', text);
-
-		//alerts.push(sendSMS.bind(this, '+46702262122', msg));
-		alerts.push(sendSMS.bind(this, '+46706291882', msg));
-
-		runPromises(alerts).then(function() {
-			console.log('SMS sent to all recipients.');
-		})
-		.catch(function(error) {
-			console.log(error);
-		});
-
+		pushover.send({message:text});
 	}
 
 	function warning(delay) {
