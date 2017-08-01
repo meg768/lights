@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+
+
 var fs = require('fs');
 var util = require('util');
 var Path = require('path');
@@ -7,7 +9,6 @@ var sprintf = require('yow/sprintf');
 var mkpath = require('yow/fs').mkpath;
 var isObject = require('yow/is').isObject;
 var prefixLogs = require('yow/logs').prefix;
-var pushover = require('./src/pushover.js');
 
 
 function debug() {
@@ -45,6 +46,15 @@ var App = function(argv) {
 
 	function run() {
 		require('dotenv').config();
+
+
+		console.log('X', process.env);
+
+		//process.env.PUSHOVER_USER='u1mrd1fpevhm8opcbhywcmmdst7qja';
+		//process.env.PUSHOVER_TOKEN='acwdzhchysr2dmb43jb8bce65kevru';
+
+
+		var pushover = require('./src/pushover.js');
 
 		pushover.notify('Huset aktiverat.');
 
