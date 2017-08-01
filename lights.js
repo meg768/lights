@@ -45,7 +45,7 @@ var App = function(argv) {
 
 	function run() {
 
-		pushover.send({message:'Lampor aktiverade.'});
+		pushover.send({message:'Huset aktiverat.'});
 
 		prefixLogs();
 /*
