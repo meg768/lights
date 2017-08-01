@@ -21,14 +21,12 @@ var Pushover = function() {
 
 				push.send(payload, function(error, result) {
 					if (error) {
-						console.log('Upp')
 						console.error(error.message);
 					}
 				});
 			}
 		}
 		catch(error) {
-			console.log('-------------------------');
 			console.error(error);
 		}
 	};
