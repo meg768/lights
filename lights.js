@@ -7,6 +7,7 @@ var sprintf = require('yow/sprintf');
 var mkpath = require('yow/fs').mkpath;
 var isObject = require('yow/is').isObject;
 var prefixLogs = require('yow/logs').prefix;
+var pushover = require('./src/pushover.js');
 
 
 function debug() {
@@ -44,9 +45,8 @@ var App = function(argv) {
 
 	function run() {
 
-		var pushover = require('./src/pushover.js');
+		pushover.send({message:'Lampor aktiverade.'});
 
-		pushover.send({message:'Lampor aktiverade.');
 		prefixLogs();
 
 		require('./src/terrace.js');
