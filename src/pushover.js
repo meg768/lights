@@ -15,6 +15,7 @@ var Pushover = function() {
 	_this.send = function(payload) {
 		try {
 			if (_user != undefined && _token != undefined) {
+				/*
 				var Pushover = require('pushover-notifications');
 				var push = new Pushover({user:_user, token:_token});
 
@@ -22,10 +23,13 @@ var Pushover = function() {
 					if (error) {
 						console.error(error);
 					}
-				});
+				})
+				;
+				*/
 			}
 		}
 		catch(error) {
+			console.log('-------------------------');
 			console.error(error);
 		}
 	};
