@@ -1,29 +1,41 @@
-
-
+/*
+	See https://pushover.net/api for payload parameters
+*/
 
 var Pushover = function() {
 
-	this.send = function(message) {
-		/*
-			message.message  = 'Hej';
-			message.title    =  "Well";
-			message.sound    =  'magic';
-			message.device   =  'iphone';
-			message.priority = 0;
-		*/
+	var _this  = this;
+	var _user  = process.env.PUSHOVER_USER;
+	var _token = process.env.PUSHOVER_TOKEN;
 
-		var Pushover = require('pushover-notifications');
-		var config = require('./config.js');
-
-		var push = new Pushover({user:config.pushover.user, token:config.pushover.token});
-
-		push.send(message, function(error, result) {
-			if (error) {
-				console.error(error);
-			}
-		});
+	if (_user == undefined || _token == undefined) {
+		console.log('Environment variables PUSHOVER_USER and/or PUSHOVER_TOKEN not defined. Push notifications will no be able to be sent.');
 	}
 
+	_this.send = function(payload) {
+		if (_user != undefined && _token != undefined) {
+			var Pushover = require('pushover-notifications');
+			var push = new Pushover({user:_user, token:_token});
+
+			push.send(payload, function(error, result) {
+				if (error) {
+					console.error(error);
+				}
+			});
+		}
+	};
+
+	_this.notify = function(message) {
+		return _this.send({priority:0, message:message});
+	};
+
+	_this.error = function(error) {
+		return _this.send({priority:1, message:error.message});
+	};
+
+	_this.alert = function(error) {
+		return _this.send({priority:1, message:error.message});
+	};
 
 };
 
