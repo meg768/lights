@@ -9,19 +9,24 @@ var Pushover = function() {
 	var _token = process.env.PUSHOVER_TOKEN;
 
 	if (_user == undefined || _token == undefined) {
-		console.log('Environment variables PUSHOVER_USER and/or PUSHOVER_TOKEN not defined. Push notifications will no be able to be sent.');
+		console.log('Environment variables PUSHOVER_USER and/or PUSHOVER_TOKEN not defined. Push notifications will not be able to be sent.');
 	}
 
 	_this.send = function(payload) {
-		if (_user != undefined && _token != undefined) {
-			var Pushover = require('pushover-notifications');
-			var push = new Pushover({user:_user, token:_token});
+		try {
+			if (_user != undefined && _token != undefined) {
+				var Pushover = require('pushover-notifications');
+				var push = new Pushover({user:_user, token:_token});
 
-			push.send(payload, function(error, result) {
-				if (error) {
-					console.error(error);
-				}
-			});
+				push.send(payload, function(error, result) {
+					if (error) {
+						console.error(error);
+					}
+				});
+			}
+		}
+		catch(error) {
+			console.error(error);
 		}
 	};
 
