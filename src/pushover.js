@@ -22,7 +22,7 @@ var Pushover = function() {
 				push.send(payload, function(error, result) {
 					if (error) {
 						console.log('Upp')
-						console.error(error);
+						console.error(error.message);
 					}
 				});
 			}
