@@ -45,7 +45,7 @@ var App = function(argv) {
 
 	function run() {
 
-		pushover.send({message:'Huset aktiverat.'});
+		pushover.notify('Huset aktiverat.');
 
 		prefixLogs();
 /*
@@ -58,7 +58,6 @@ var App = function(argv) {
 		require('./src/alerts.js');
 		//require('./src/neopixel-lamp.js');
 */
-	pushover.notify('HEJ');
 	}
 
 
