@@ -44,11 +44,12 @@ var App = function(argv) {
 	}
 
 	function run() {
+		require('dotenv').config();
 
 		pushover.notify('Huset aktiverat.');
 
 		prefixLogs();
-
+/*
 		require('./src/terrace.js');
 		require('./src/cellar.js');
 		require('./src/dining-room.js');
@@ -57,6 +58,7 @@ var App = function(argv) {
 
 		require('./src/alerts.js');
 		//require('./src/neopixel-lamp.js');
+*/
 	}
 
 
