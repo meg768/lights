@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('yow/env')(__filename);
 
 var fs = require('fs');
 var util = require('util');
@@ -8,6 +9,9 @@ var sprintf = require('yow/sprintf');
 var mkpath = require('yow/fs').mkpath;
 var isObject = require('yow/is').isObject;
 var prefixLogs = require('yow/logs').prefix;
+var pushover = require('./src/pushover.js');
+
+
 
 
 function debug() {
@@ -44,9 +48,7 @@ var App = function(argv) {
 	}
 
 	function run() {
-		require('dotenv').config({path:'./lights.env'});
 
-		var pushover = require('./src/pushover.js');
 
 		pushover.notify('Huset aktiverat.');
 
