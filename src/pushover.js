@@ -17,6 +17,7 @@ var Pushover = function() {
 			if (_user != undefined && _token != undefined) {
 
 				var Pushover = require('pushover-notifications');
+				console.log('Xkjfhsdkghsdkjgfhkjghfskdjhgkdjhfg');
 				var push = new Pushover({user:_user, token:_token});
 
 				push.send(payload, function(error, result) {
