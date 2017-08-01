@@ -10,7 +10,7 @@ var mkpath = require('yow/fs').mkpath;
 var isObject = require('yow/is').isObject;
 var prefixLogs = require('yow/logs').prefix;
 var pushover = require('./src/pushover.js');
-
+var config = require('yow/config')(__filename);
 
 
 
@@ -51,7 +51,7 @@ var App = function(argv) {
 
 
 		pushover.notify('Huset aktiverat.');
-
+		console.log(config);
 		prefixLogs();
 /*
 		require('./src/terrace.js');
