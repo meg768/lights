@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('yow/env')(__filename);
+require('dotenv').config();
 
 var fs = require('fs');
 var util = require('util');
@@ -51,9 +51,8 @@ var App = function(argv) {
 
 
 		pushover.notify('Huset aktiverat.');
-		console.log(config);
+
 		prefixLogs();
-/*
 		require('./src/terrace.js');
 		require('./src/cellar.js');
 		require('./src/dining-room.js');
@@ -62,7 +61,6 @@ var App = function(argv) {
 
 		require('./src/alerts.js');
 		//require('./src/neopixel-lamp.js');
-*/
 	}
 
 
