@@ -142,7 +142,7 @@ var WeatherAnimation = module.exports = function(matrix) {
 		return new Promise(function(resolve, reject) {
 
 			getLocations().then(function(locations) {
-				matrix.emit('emoji', {id:616, priority:priority});
+				matrix.emit('emoji', {id:78, priority:priority});
 
 				return displayWeatherLocations(locations);
 			})

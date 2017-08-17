@@ -59,7 +59,8 @@ var App = function(argv) {
 		require('./src/office.js');
 
 		require('./src/alerts.js');
-		//require('./src/neopixel-lamp.js');
+
+
 	}
 
 

@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 
-
+var Matrix            = require('./matrix.js');
 var ClockAnimation    = require('./clock-animation.js');
-var QuotesAnimation   = require('./quotes-animation.js');
 var NewsAnimation     = require('./news-animation.js');
 var GifAnimation      = require('./gif-animation.js');
 var WeatherAnimation  = require('./weather-animation.js');
-var ExchangeAnimation = require('./exchange-animation.js');
+var AvanzaAnimation   = require('./avanza-animation.js');
 
 
-var Matrix            = require('./matrix.js');
 
 
 
@@ -28,13 +26,11 @@ animations.push(ClockAnimation);
 animations.push(GifAnimation);
 
 animations.push(ClockAnimation);
-animations.push(QuotesAnimation);
+animations.push(AvanzaAnimation);
 
 animations.push(ClockAnimation);
 animations.push(GifAnimation);
 
-animations.push(ClockAnimation);
-animations.push(ExchangeAnimation);
 
 
-var matrix = module.exports = new Matrix('http://app-o.se/matrix-32x32', animations);
+var matrix = module.exports = new Matrix('http://app-o.se/matrix-32x32', [animations]);
