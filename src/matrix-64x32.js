@@ -8,3 +8,5 @@ var AvanzaAnimation   = require('./avanza-animation.js');
 
 
 var matrix = module.exports = new Matrix('http://app-o.se/matrix-64x32', [ClockAnimation, AvanzaAnimation, ClockAnimation, WeatherAnimation, ClockAnimation, NewsAnimation]);
+
+//var matrix = module.exports = new Matrix('http://app-o.se/matrix-64x32', [AvanzaAnimation]);
