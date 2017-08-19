@@ -164,6 +164,7 @@ var Animation = module.exports = function(matrix) {
 			})
 
 			.catch(function(error) {
+				console.log(error);
 				reject(error);
 			})
 		});
