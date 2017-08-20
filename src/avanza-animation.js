@@ -19,13 +19,38 @@ var Animation = module.exports = function(matrix) {
 	];
 
 	function login() {
-		if (_avanza.session.username == undefined) {
-			return _avanza.login();
+
+		function scheduleLogin() {
+
+			function autoLogin() {
+
+				console.log('Logging in to Avanza again...');
+
+				_avanza.login().then(function() {
+				})
+				.catch(function(error) {
+					console.log(error);
+				})
+
+				scheduleLogin();
+			}
+
+			// Login again after 3 hours
+			setTimeout(autoLogin, 1000 * 60 * 60 * 3);
 		}
-		else {
-			return Promise.resolve();
-		}
+
+		return new Promise(function(resolve, reject) {
+			_avanza.login().then(function() {
+				scheduleLogin();
+				resolve();
+			})
+			.catch(function(error) {
+				reject(error);
+			})
+
+		})
 	}
+
 
 	function getPrice(id) {
 		return new Promise(function(resolve, reject) {
