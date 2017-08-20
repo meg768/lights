@@ -55,7 +55,7 @@ var Matrix = module.exports = function(url, animators) {
 				_busy = false;
 
 				console.log('Animation failed.');
-				console.log(error.stack);
+				console.log(error);
 				console.log('Restarting...');
 
 				setTimeout(runNextAnimation, 5000);
