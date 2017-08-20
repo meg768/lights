@@ -4,6 +4,7 @@ var Colors     = require('color-convert');
 var isArray    = require('yow/is').isArray;
 var isString   = require('yow/is').isString;
 var Timer      = require('yow/timer');
+var pushover   = require('./pushover.js');
 
 var Avanza     = require('avanza-mobile-client');
 
@@ -29,6 +30,7 @@ var Animation = module.exports = function(matrix) {
 				_avanza.login().then(function() {
 				})
 				.catch(function(error) {
+					pushover.error('Problem logging in to Avanza.');
 					console.log(error);
 				})
 

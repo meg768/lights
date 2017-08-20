@@ -2,6 +2,8 @@
 	See https://pushover.net/api for payload parameters
 */
 
+var isString = require('yow/is').isString;
+
 var Pushover = function() {
 
 	var _this  = this;
@@ -36,7 +38,7 @@ var Pushover = function() {
 	};
 
 	_this.error = function(error) {
-		return _this.send({priority:1, message:error.message});
+		return _this.send({priority:1, message: error instanceof Error ? error.message : error});
 	};
 
 	_this.alert = function(error) {
