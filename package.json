@@ -27,6 +27,7 @@
     "npm": "^4.0.2",
     "pushover-notifications": "^0.2.4",
     "request": "^2.76.0",
+    "sky-brightness": "^1.0.9",
     "socket.io": "^1.5.1",
     "socket.io-client": "^1.5.1",
     "suncalc": "^1.7.0",

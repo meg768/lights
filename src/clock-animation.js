@@ -5,7 +5,7 @@ var isString   = require('yow/is').isString;
 var Colors     = require('color-convert');
 
 
-var QuotesAnimation = module.exports = function(matrix) {
+var ClockAnimation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
 
