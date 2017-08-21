@@ -49,8 +49,8 @@ var App = function(argv) {
 	function run() {
 
 
-		require('./src/matrix-64x32.js');
-		return;
+		//require('./src/matrix-64x32.js');
+		//return;
 
 		pushover.notify('Huset aktiverat.');
 
