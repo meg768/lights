@@ -12,6 +12,8 @@ var Animation = module.exports = function(matrix) {
 
 	var _avanza = new Avanza();
 	var _index = 0;
+	var _timer = new Timer();
+
 	var _watchLists = [
 		{name: 'Valutor', emoji:534},
 		{name: 'Index', emoji:188},
@@ -19,39 +21,28 @@ var Animation = module.exports = function(matrix) {
 		{name: 'Fonder', emoji:546}
 	];
 
+
 	function login() {
 
-		function scheduleLogin() {
-
-			function autoLogin() {
-
-				console.log('Logging in to Avanza again...');
-
-				_avanza.login().then(function() {
-				})
-				.catch(function(error) {
-					pushover.error('Problem logging in to Avanza.');
-					console.log(error);
-				})
-
-				scheduleLogin();
-			}
-
-			// Login again after 3 hours
-			setTimeout(autoLogin, 1000 * 60 * 60 * 3);
-		}
+		if (_avanza.session.username != undefined)
+			return Promise.resolve();
 
 		return new Promise(function(resolve, reject) {
+
+			console.log('Loggin in to Avanza...');
+
 			_avanza.login().then(function() {
-				scheduleLogin();
 				resolve();
 			})
 			.catch(function(error) {
+				pushover.error('Problem logging in to Avanza.');
 				reject(error);
 			})
 
 		})
 	}
+
+
 
 
 	function getPrice(id) {
@@ -175,6 +166,7 @@ var Animation = module.exports = function(matrix) {
 
 	this.run = function(priority) {
 
+
 		var watchList = _watchLists[_index];
 
 		_index = (_index + 1) % _watchLists.length;
@@ -182,11 +174,19 @@ var Animation = module.exports = function(matrix) {
 
 		return new Promise(function(resolve, reject) {
 
+			// Do not invalidate session now!
+			_timer.cancel();
+
 			login().then(function() {
 				return displayWatchlist(watchList);
 			})
 
 			.then(function() {
+				// Invalidate the session after some time...
+				_timer.setTimer(1000 * 60 * 60 * 3, function() {
+					console.log('Invalidating Avanza session...');
+					_avanza.session = {};
+				});
 				resolve();
 			})
 
@@ -196,6 +196,7 @@ var Animation = module.exports = function(matrix) {
 			})
 		});
 	};
+
 
 
 };
