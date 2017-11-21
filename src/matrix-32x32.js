@@ -34,4 +34,4 @@ animations.push(GifAnimation);
 
 
 
-var matrix = module.exports = new Matrix('http://app-o.se/matrix-32x32', animations);
+var matrix = module.exports = new Matrix('http://app-o.se/matrix?instance=32x32', animations);
