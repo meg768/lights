@@ -60,7 +60,7 @@ var App = function(argv) {
 		require('./src/dining-room.js');
 		require('./src/living-room.js');
 		require('./src/office.js');
-
+		require('./src/x-mas.js');
 		require('./src/alerts.js');
 
 
