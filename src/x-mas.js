@@ -11,10 +11,10 @@ var Module = function() {
 
 
 		var times = [
-			{state:'ON',   time:'07:00'},
+			{state:'ON',   time:'06:00'},
 			{state:'OFF',  time:'10:00'},
-			{state:'ON',   time:'16:00'},
-			{state:'OFF',  time:'03:00'}
+			{state:'ON',   time:'15:00'},
+			{state:'OFF',  time:'02:00'}
 		];
 
 		return times;
