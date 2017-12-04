@@ -4,8 +4,7 @@ var tellstick   = require('./tellstick.js');
 
 var Module = function() {
 
-	var _star = tellstick.getDevice('XMAS-01');
-	var _candles = tellstick.getDevice('XMAS-02');
+	var _switch = tellstick.getDevice('XMAS-01');
 
 	function getOnOffTimes() {
 
@@ -27,8 +26,7 @@ var Module = function() {
 		tellstick.socket.once('connect', function() {
 
 			function setupTimer() {
-				_candles.setTimer(getOnOffTimes());
-				_star.setTimer(getOnOffTimes());
+				_switch.setTimer(getOnOffTimes());
 			}
 
 			var rule    = new Schedule.RecurrenceRule();
